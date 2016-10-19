@@ -23,7 +23,7 @@ form{
 }
 
 .btn{
-	font-family: "Comic sans-serif", sans-serif!important;
+	font-family: "Helvetica", "Helvetica Neue", "Trebuchet MS", Tahoma, Arial, sans-serif, "Comic Sans MS" !important;
     padding: 15px 40px;
     background-color: #FD9E16;
     border: 2px solid #FD9E16;
@@ -47,4 +47,13 @@ form{
     height: 50px!important;
     text-align: center!important;
     font-size: 20px;
+}
+
+footer{
+	font-family: "Helvetica", "Helvetica Neue", "Trebuchet MS", Tahoma, Arial, sans-serif, "Comic Sans MS" !important;
+	display:block;
+	position:fixed;
+	bottom:0;
+	right:0;
+	color:white!important;
 }
