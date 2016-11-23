@@ -1,0 +1,54 @@
+﻿html,body { height: 100%; margin: 0px; padding: 0px; }
+body {
+background-image: url("image/back.jpg")!important;
+background-size:cover;
+background-repeat: no-repeat;
+width:100%;
+height:100%;
+}
+
+.navbar-brand {
+	color: #FD9E16 !important;
+}
+.navbar-inverse {
+background-image: linear-gradient(to bottom,#7f3300 0,#311400 100%) !important;
+border-radius: 0px !important;
+border-color: transparent !important;
+}
+.navbar-nav a {
+	color: #FD9E16 !important;
+}
+.dropdown-menu {
+	color : #622C09 !important;
+}
+.dropdown-menu :hover{
+	background-image: linear-gradient(to bottom,#7f3300 0,#311400 100%) !important;
+	color : white !important;
+}
+h1,h2,h4,h5,h6 {
+	font-family: 'Ubuntu Light', Ubuntu, 'Segoe UI Semilight', 'Segoe UI Light', 'Segoe UI', 'Trebuchet MS', Tahoma, Arial, sans-serif;
+	color : #B38A7A !important;
+}
+p
+{
+    font-family:Ubuntu, 'Segoe UI Semilight', 'Segoe UI Light', 'Segoe UI', 'Trebuchet MS', Tahoma, Arial, sans-serif;
+	color: #FFFFFF !important;
+}
+h1 {
+	color : #48556E !important;	
+}
+h2 {
+	font-size: 27px;
+	color : #48556E !important;
+}
+h3 {
+	font-size: 35px;
+	color : #ffc471 !important;
+}
+#global {
+	display:block !important;
+	max-width : 1200px !important;
+	background-color : #f3F3F3 !important;
+	min-height: 100% !important;
+	margin:0 auto !important;
+}
