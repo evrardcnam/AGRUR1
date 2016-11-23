@@ -1,7 +1,12 @@
 <?php
 
+<<<<<<< HEAD
 // Définit une livraison
 class Livraison { 
+=======
+// Exemple de classe pouvant extraire un résultat de requête 
+class Livraison{ 
+>>>>>>> master
 
   //données privées de la classe
   private $_idLivraison;
@@ -9,7 +14,11 @@ class Livraison {
   private $_typeProduit;
   private $_quantiteLivree;
 
+<<<<<<< HEAD
   // Constructeur de la classe depuis la couche d'accès aux données
+=======
+  //constructeur de la classe servant à faire le lien entre la couche d'accées aux données et la classe.
+>>>>>>> master
   public function __construct(DBQueryResult $result){
     $this->_idLivraison = $result->idLivraison;
     $this->_dateLivraison = $result->dateLivraison;
@@ -18,7 +27,11 @@ class Livraison {
 
   }
   
+<<<<<<< HEAD
   // Accesseur
+=======
+  //méthode permettant de retourner les valeurs
+>>>>>>> master
   public function __get($var){
     switch ($var){
       case 'id':
@@ -39,7 +52,11 @@ class Livraison {
     }
   }
   
+<<<<<<< HEAD
   // Conversion en chaînes de caractères
+=======
+  //méthode permettant de convertir la classe en une chaine de caractère
+>>>>>>> master
   public function __toString(){
     return $this->_idLivraison;
   }

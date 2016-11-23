@@ -16,6 +16,42 @@ class DBQueryResult {
 // Décrit une couche d'accès aux données.
 class DBLayer {
 	public function __construct() {}
+
+	public function getProducteurs() {
+		$results = $this->query("SELECT * FROM Producteur ORDER BY nomProducteur ASC");
+		if (!$results) { return $results; }
+		else {
+			$object_results = array();
+			foreach ($results as $result){
+				object_results[] = new Producteur($result);
+			}
+			return object_results;
+		}
+	}
+
+	public function getProducteur(string $nom) {
+		$results = $this->query("SELECT * FROM Producteur WHERE nomProducteur LIKE " . $nom);
+		if (!$results) { return null; }
+		else {
+			$object_results = array();
+			return new Producteur($results[0]);
+		}
+	}
+
+	public function getClients() {
+		$results = $this->query("SELECT * FROM Client ORDER BY idClient ASC");
+		if (!$results) { return $results; }
+		else {
+			$object_results = array();
+			foreach ($results as $result){
+				object_results[] = new Client($result);
+			}
+			return object_results;
+		}
+	}
+
+
+
 	// Connexion à la base de données. Action réalisée par les autres fonctions internes.
 	private function dbconnect() {
 		$conn = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_DB);
@@ -37,7 +73,7 @@ class DBLayer {
 			else { return null; }
 		}
 		$results = array();
-		while ($row = mysql_fetch_array($res)){
+		while ($row = mysqli_fetch_array($res)){
 			$result = new DBQueryResult();
 			foreach ($row as $k=>$v){
 				$result->$k = $v;
@@ -66,7 +102,8 @@ class DBLayer {
 			}
 			$results[] = $result;
 		}
-		return $results;      
+		$stmt->close();
+		return $results;
 	}
 }
 ?>

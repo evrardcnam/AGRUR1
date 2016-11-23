@@ -1,7 +1,12 @@
 <?php
 
+<<<<<<< HEAD
 // Définit un producteur
 class Producteur { 
+=======
+// Exemple de classe pouvant extraire un résultat de requête 
+class Producteur{ 
+>>>>>>> master
 
   //données privées de la classe
   private $_nomProducteur;
@@ -9,7 +14,11 @@ class Producteur {
   private $_adherent;
   private $_adresseProducteur;
    
+<<<<<<< HEAD
   // Constructeur de la classe depuis la couche d'accès aux données
+=======
+  //constructeur de la classe servant à faire le lien entre la couche d'accées aux données et la classe.
+>>>>>>> master
   public function __construct(DBQueryResult $result){
     $this->_nomProducteur = $result->nomProducteur;
     $this->_dateAdhesion = $result->dateAdhesion;
@@ -17,7 +26,11 @@ class Producteur {
     $this->_adresseProducteur = $result->adresseProducteur;
   }
   
+<<<<<<< HEAD
   // Accesseur
+=======
+  //méthode permettant de retourner les valeurs
+>>>>>>> master
   public function __get($var){
     switch ($var){
       case 'nom':
@@ -38,7 +51,11 @@ class Producteur {
     }
   }
   
+<<<<<<< HEAD
   // Conversion en chaînes de caractères
+=======
+  //méthode permettant de convertir la classe en une chaine de caractère
+>>>>>>> master
   public function __toString(){
     return $this->_nomProducteur;
   }
