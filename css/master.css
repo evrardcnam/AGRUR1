@@ -1,6 +1,6 @@
 ﻿html,body { height: 100%; margin: 0px; padding: 0px; }
 body {
-background-image: url("image/back.jpg")!important;
+background-image: url("../img/back.jpg")!important;
 background-size:cover;
 background-repeat: no-repeat;
 width:100%;

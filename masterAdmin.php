@@ -22,7 +22,7 @@
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Production <span class="caret"></span></a>
 							<ul class="dropdown-menu">
 								<li><a class="slavePage" href="producteurs.php">Producteurs</a></li>
-								<li><a class="slavePage" href="vergers.php">Vergers</a><li>
+								<li><a class="slavePage" href="vergers.php">Vergers</a></li>
 								<li><a class="slavePage" href="varietes.php">Variétés</a></li>
 								<li><a class="slavePage" href="livraisons.php">Livraisons</a></li>
 								<li><a class="slavePage" href="lots.php">Lots</a></li>
@@ -45,8 +45,15 @@
 							</ul>
 						</li>
 					</ul>
+					<ul class="nav navbar-nav pull-right">
+						<li><a href="javascript:logout();"><span class="glyphicon glyphicon-off"></span></a></li>
+					</ul>
 				</div>
 			</nav>
+			<div id="content">
+				<h1>Bienvenue chez AGRUR</h1>
+				<p>Utilisez les menus ci-dessus pour naviguer sur l'interface d'administration.</p>
+			</div>
 		</div>
 	</body>
 </html>
