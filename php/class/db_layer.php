@@ -18,7 +18,7 @@ class DBLayer {
 
 	// Obtenir tous les producteurs
 	public static function getProducteurs() {
-		$results = $this->query("SELECT * FROM Producteur ORDER BY nomProducteur ASC");
+		$results = $this->query("SELECT * FROM producteur ORDER BY nomProducteur ASC");
 		if (!$results) { return $results; }
 		else {
 			$object_results = array();
@@ -31,14 +31,14 @@ class DBLayer {
 
 	// Obtient un producteur spécifique.
 	public static function getProducteur(string $nom) {
-		$results = $this->query("SELECT * FROM Producteur WHERE nomProducteur LIKE " . $nom . " LIMIT 0,1");
+		$results = $this->query("SELECT * FROM producteur WHERE nomProducteur LIKE " . $nom . " LIMIT 0,1");
 		if (!$results) { return null; }
 		else { return new Producteur($results[0]); }
 	}
 
 	// Obtenir tous les clients
 	public static function getClients() {
-		$results = $this->query("SELECT * FROM Client ORDER BY idClient ASC");
+		$results = $this->query("SELECT * FROM client ORDER BY idClient ASC");
 		if (!$results) { return $results; }
 		else {
 			$object_results = array();
@@ -51,14 +51,14 @@ class DBLayer {
 
 	// Obtenir un client par son nom
 	public static function getClient(string $nom) {
-		$results = $this->query("SELECT * FROM Client WHERE nomClient LIKE " . $nom . " LIMIT 0,1");
+		$results = $this->query("SELECT * FROM client WHERE nomClient LIKE " . $nom . " LIMIT 0,1");
 		if (!$results) { return null; }
 		else { return new Client($results[0]); }
 	}
 
 	// Obtenir toutes les certifications
 	public static function getCertifications() {
-		$results = $this->query("SELECT * FROM Certification ORDER BY libelleCertification ASC");
+		$results = $this->query("SELECT * FROM certification ORDER BY libelleCertification ASC");
 		if (!$results) { return $results; }
 		else {
 			$object_results = array();
@@ -71,12 +71,38 @@ class DBLayer {
 	
 	// Obtenir toutes les commandes
 	public static function getCommandes() {
-		$results = $this->query("SELECT * FROM Commande ORDER BY numCommande ASC");
+		$results = $this->query("SELECT * FROM commande ORDER BY numCommande ASC");
 		if (!$results) { return $results; }
 		else {
 			$object_results = array();
 			foreach ($results as $result){
-				$object_results[] = new Certification($result);
+				$object_results[] = new Commande($result);
+			}
+			return $object_results;
+		}
+	}
+
+	// Obtenir tous les conditionnements
+	public static function getConditionnements() {
+		$results = $this->query("SELECT * FROM conditionnement ORDER BY libelleConditionnement ASC");
+		if (!$results) { return $results; }
+		else {
+			$object_results = array();
+			foreach ($results as $result){
+				$object_results[] = new Conditionnement($result);
+			}
+			return $object_results;
+		}
+	}
+
+	// Obtenir tous les lots
+	public static function getLots() {
+		$results = $this->query("SELECT * FROM lot ORDER BY codeLot ASC");
+		if (!$results) { return $results; }
+		else {
+			$object_results = array();
+			foreach ($results as $result){
+				$object_results[] = new Lot($result);
 			}
 			return $object_results;
 		}
@@ -84,7 +110,7 @@ class DBLayer {
 
 	// Obtenir toutes les certifications validées pour un producteur
 	public static function getCertificationsValidees(Producteur $p) {
-		$results = $this->query("SELECT * FROM Certification C, Obtient O WHERE O.idCertification = C.idCertification AND O.nomProducteur LIKE " . $p->nom . " ORDER BY libelleCertification ASC");
+		$results = $this->query("SELECT C.idCertification, C.libelleCertification, O.dateObtention FROM certification C, obtient O WHERE O.idCertification = C.idCertification AND O.nomProducteur LIKE " . $p->nom . " ORDER BY libelleCertification ASC");
 		if (!$results) { return $results; }
 		else {
 			$object_results = array();
@@ -97,9 +123,16 @@ class DBLayer {
 
 	// Obtenir le lot d'une commande
 	public static function getLotCommande(Commande $c) {
-		$results = $this->query("SELECT * FROM Lot WHERE numCommande = " . $c->num . " LIMIT 0,1");
+		$results = $this->query("SELECT * FROM lot WHERE numCommande = " . $c->num . " LIMIT 0,1");
 		if (!$results) { return null; }
 		else { return new Lot($results[0]); }
+	}
+
+	// Obtenir le conditionnement d'une commande
+	public static function getConditionnementCommande(Commande $c) {
+		$results = $this->query("SELECT D.idConditionnement, D.libelleConditionnement, D.poids FROM conditionnement D, commande C WHERE C.idConditionnement = D.idConditionnement AND numCommande = " . $c->num . " LIMIT 0,1");
+		if (!$results) { return null; }
+		else { return new Conditionnement($results[0]); }
 	}
 
 	// Connexion à la base de données. Action réalisée par les autres fonctions internes.

@@ -7,6 +7,7 @@ class Commande
     private $_dateEnvoie;
     private $_nomClient;
     private $_codeLot;
+    private $_idConditionnement;
     // Constructeur de la classe depuis la couche d'accès aux données
     public function __construct(DBQueryResult $result)
     {
@@ -14,6 +15,7 @@ class Commande
         $this->_dateEnvoie = $result->dateEnvoie;
         $this->_nomClient = $result->nomClient;
         $this->_codeLot = $result->codeLot;
+        $this->_idConditionnement = $result->idConditionnement;
     }
     // Accesseur
     public function __get($var)
@@ -35,8 +37,13 @@ class Commande
                 return $this->_codeLot;
                 break;
             case 'lot':
-                return getLotCommande($_numCommande);
+                return getLotCommande($this);
                 break;
+            case 'idConditionnement':
+                return $this->_idConditionnement;
+                break;
+            case 'conditionnement':
+                return getConditionnementCommande($this);
             default:
                 return null;
                 break;
