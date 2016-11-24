@@ -17,11 +17,11 @@ class CertObtenue extends Certification {
             default:
                 return $super->__get($var);
                 break;
+        }
     }
-}
-// Conversion en chaînes de caractères
-public function __toString(){
-    return $super->__toString();
-}
+    // Conversion en chaînes de caractères
+    public function __toString(){
+        return $super->__toString();
+    }
 }
 ?>

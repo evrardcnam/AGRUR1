@@ -115,7 +115,7 @@ class DBLayer {
 		else {
 			$object_results = array();
 			foreach ($results as $result){
-				$object_results[] = new Lot($result);
+				$object_results[] = new Livraison($result);
 			}
 			return $object_results;
 		}
@@ -185,6 +185,11 @@ class DBLayer {
 		$results = $this->query("SELECT D.idConditionnement, D.libelleConditionnement, D.poids FROM conditionnement D, commande C WHERE C.idConditionnement = D.idConditionnement AND numCommande = " . $c->num . " LIMIT 0,1");
 		if (!$results) { return null; }
 		else { return new Conditionnement($results[0]); }
+	}
+
+	// Obtenir le conditionnement d'une commande
+	public static function getClientCommande(Commande $c) {
+		return getClient($c->nomClient);
 	}
 
 	// Obtenir tous les lots d'une livraison

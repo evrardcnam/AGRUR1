@@ -26,11 +26,11 @@ class Client {
             default:
                 return null;
                 break;
+        }
     }
-}
-// Conversion en chaînes de caractères
-public function __toString(){
-    return $this->_nomClient;
-}
+    // Conversion en chaînes de caractères
+    public function __toString(){
+        return $this->_nomClient;
+    }
 }
 ?>

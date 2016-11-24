@@ -21,11 +21,11 @@ class Certification {
             default:
                 return null;
                 break;
+        }
     }
-}
-// Conversion en chaînes de caractères
-public function __toString(){
-    return $this->_libelleCertification;
-}
+    // Conversion en chaînes de caractères
+    public function __toString(){
+        return $this->_libelleCertification;
+    }
 }
 ?>

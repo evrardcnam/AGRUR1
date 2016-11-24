@@ -41,11 +41,11 @@ class Livraison {
             default:
                 return null;
                 break;
+        }
     }
-}
-// Conversion en chaînes de caractères
-public function __toString(){
-    return $this->_idLivraison;
-}
+    // Conversion en chaînes de caractères
+    public function __toString(){
+        return $this->_idLivraison;
+    }
 }
 ?>
