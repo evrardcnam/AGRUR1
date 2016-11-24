@@ -134,6 +134,19 @@ class DBLayer {
 		}
 	}
 
+	// Obtenir toutes les variétés
+	public static function getVarietes() {
+		$results = $this->query("SELECT * FROM variete ORDER BY libelle ASC");
+		if (!$results) { return $results; }
+		else {
+			$object_results = array();
+			foreach ($results as $result){
+				$object_results[] = new Variete($result);
+			}
+			return $object_results;
+		}
+	}
+
 	// Obtenir toutes les certifications validées pour un producteur
 	public static function getCertificationsValidees(Producteur $p) {
 		$results = $this->query("SELECT C.idCertification, C.libelleCertification, O.dateObtention FROM certification C, obtient O WHERE O.idCertification = C.idCertification AND O.nomProducteur LIKE " . $p->nom . " ORDER BY libelleCertification ASC");
@@ -184,6 +197,13 @@ class DBLayer {
 	// Obtenir le producteur auquel appartient un verger
 	public static function getProducteurVerger(Verger $v) {
 		return getProducteur($v->nomProducteur);
+	}
+
+	// Obtenir la variété cultivée dans un verger
+	public static function getVarieteVerger(Verger $v) {
+		$results = $this->query("SELECT * FROM variete WHERE libelle = " . $v->libelleVariete . " LIMIT 0,1");
+		if (!$results) { return null; }
+		else { return new Variete($results[0]); }
 	}
 
 	// Connexion à la base de données. Action réalisée par les autres fonctions internes.
