@@ -26,11 +26,11 @@ class Commune {
             default:
                 return null;
                 break;
+        }
     }
-}
-// Conversion en chaînes de caractères
-public function __toString(){
-    return $this->_nomCommune;
-}
+    // Conversion en chaînes de caractères
+    public function __toString(){
+        return $this->_nomCommune;
+    }
 }
 ?>

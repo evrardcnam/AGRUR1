@@ -147,6 +147,19 @@ class DBLayer {
 		}
 	}
 
+	// Obtenir toutes les communes
+	public static function getCommunes() {
+		$results = $this->query("SELECT * FROM commune ORDER BY nomCommune ASC");
+		if (!$results) { return $results; }
+		else {
+			$object_results = array();
+			foreach ($results as $result){
+				$object_results[] = new Commune($result);
+			}
+			return $object_results;
+		}
+	}
+
 	// Obtenir toutes les certifications validées pour un producteur
 	public static function getCertificationsValidees(Producteur $p) {
 		$results = $this->query("SELECT C.idCertification, C.libelleCertification, O.dateObtention FROM certification C, obtient O WHERE O.idCertification = C.idCertification AND O.nomProducteur LIKE " . $p->nom . " ORDER BY libelleCertification ASC");
@@ -204,6 +217,13 @@ class DBLayer {
 		$results = $this->query("SELECT * FROM variete WHERE libelle = " . $v->libelleVariete . " LIMIT 0,1");
 		if (!$results) { return null; }
 		else { return new Variete($results[0]); }
+	}
+
+	// Obtenir la commune où se trouve un verger
+	public static function getCommuneVerger(Verger $v) {
+		$results = $this->query("SELECT * FROM commune WHERE idCommune = " . $v->idCommune . " LIMIT 0,1");
+		if (!$results) { return null; }
+		else { return new Commune($results[0]); }
 	}
 
 	// Connexion à la base de données. Action réalisée par les autres fonctions internes.
