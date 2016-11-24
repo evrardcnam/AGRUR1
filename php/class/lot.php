@@ -1,53 +1,36 @@
 <?php
-
-<<<<<<< HEAD
 // Définit un lot
-class Lot { 
-=======
-// Exemple de classe pouvant extraire un résultat de requête 
-class Lot{ 
->>>>>>> master
-
-  //données privées de la classe
-  private $_codeLot;
-  private $_calibreLot;
-   
-<<<<<<< HEAD
-  // Constructeur de la classe depuis la couche d'accès aux données
-=======
-  //constructeur de la classe servant à faire le lien entre la couche d'accées aux données et la classe.
->>>>>>> master
-  public function __construct(DBQueryResult $result){
-    $this->_codeLot = $result->codeLot;
-    $this->_calibreLot = $result->calibreLot;
-  }
-  
-<<<<<<< HEAD
-  // Accesseur
-=======
-  //méthode permettant de retourner les valeurs
->>>>>>> master
-  public function __get($var){
-    switch ($var){
-      case 'code':
-        return $this->_codeLot;
-        break;
-      case 'calibre':
-        return $this->_calibreLot;
-        break; 
-      default:
-        return null;
-        break;
+class Lot {
+    //données privées de la classe
+    private $_codeLot;
+    private $_calibreLot;
+    private $_idLivraison;
+    // Constructeur de la classe depuis la couche d'accès aux données
+    public function __construct(DBQueryResult $result){
+        $this->_codeLot = $result->codeLot;
+        $this->_calibreLot = $result->calibreLot;
+        $this->_idLivraison = $result->idLivraison;
     }
-  }
-  
-<<<<<<< HEAD
-  // Conversion en chaînes de caractères
-=======
-  //méthode permettant de convertir la classe en une chaine de caractère
->>>>>>> master
-  public function __toString(){
-    return $this->_codeLot;
-  }
+    // Accesseur
+    public function __get($var){
+        switch ($var){
+            case 'code':
+                return $this->_codeLot;
+                break;
+            case 'calibre':
+                return $this->_calibreLot;
+                break;
+            case 'idLivraison':
+                return $this->_idLivraison;
+                break;
+            default:
+                return null;
+                break;
+        }
+    }
+    // Conversion en chaînes de caractères
+    public function __toString(){
+        return $this->_codeLot;
+    }
 }
 ?>

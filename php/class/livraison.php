@@ -1,64 +1,51 @@
 <?php
-
-<<<<<<< HEAD
 // Définit une livraison
-class Livraison { 
-=======
-// Exemple de classe pouvant extraire un résultat de requête 
-class Livraison{ 
->>>>>>> master
-
-  //données privées de la classe
-  private $_idLivraison;
-  private $_dateLivraison;
-  private $_typeProduit;
-  private $_quantiteLivree;
-
-<<<<<<< HEAD
-  // Constructeur de la classe depuis la couche d'accès aux données
-=======
-  //constructeur de la classe servant à faire le lien entre la couche d'accées aux données et la classe.
->>>>>>> master
-  public function __construct(DBQueryResult $result){
-    $this->_idLivraison = $result->idLivraison;
-    $this->_dateLivraison = $result->dateLivraison;
-    $this->_typeProduit = $result->typeProduit;
-    $this->_quantiteLivree = $result->quantiteLivree;
-
-  }
-  
-<<<<<<< HEAD
-  // Accesseur
-=======
-  //méthode permettant de retourner les valeurs
->>>>>>> master
-  public function __get($var){
-    switch ($var){
-      case 'id':
-        return $this->_idLivraison;
-        break;
-      case 'dateLivraison':
-        return $this->_dateLivraison;
-        break;
-      case 'type':
-        return $this->_typeProduit;
-        break;
-      case 'quantiteLivree':
-        return $this->_quantiteLivree;
-        break; 
-      default:
-        return null;
-        break;
+class Livraison {
+    //données privées de la classe
+    private $_idLivraison;
+    private $_dateLivraison;
+    private $_typeProduit;
+    private $_quantiteLivree;
+    private $_idVerger;
+    // Constructeur de la classe depuis la couche d'accès aux données
+    public function __construct(DBQueryResult $result){
+        $this->_idLivraison = $result->idLivraison;
+        $this->_dateLivraison = $result->dateLivraison;
+        $this->_typeProduit = $result->typeProduit;
+        $this->_quantiteLivree = $result->quantiteLivree;
+        $this->_idVerger = $result->idVerger;
     }
-  }
-  
-<<<<<<< HEAD
-  // Conversion en chaînes de caractères
-=======
-  //méthode permettant de convertir la classe en une chaine de caractère
->>>>>>> master
-  public function __toString(){
-    return $this->_idLivraison;
-  }
+    // Accesseur
+    public function __get($var){
+        switch ($var){
+            case 'id':
+                return $this->_idLivraison;
+                break;
+            case 'date':
+                return $this->_dateLivraison;
+                break;
+            case 'type':
+                return $this->_typeProduit;
+                break;
+            case 'quantite':
+                return $this->_quantiteLivree;
+                break;
+            case 'lots':
+                return getLotsLivraison($this);
+                break;
+            case 'idVerger':
+                return $this->_idVerger;
+                break;
+            case 'verger':
+                return getVergerLivraison($this);
+            default:
+                return null;
+                break;
+        }
+    }
+    // Conversion en chaînes de caractères
+    public function __toString(){
+        return $this->_idLivraison;
+    }
 }
 ?>

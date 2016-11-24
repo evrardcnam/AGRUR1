@@ -1,31 +1,27 @@
 <?php
-// Définit une variété
-class Variete {
+// Définit une certification obtenue par un producteur
+class CertObtenue extends Certification {
     //données privées de la classe
-    private $_libelle;
-    private $_varieteAoc;
+    private $_dateObtention;
     // Constructeur de la classe depuis la couche d'accès aux données
     public function __construct(DBQueryResult $result){
-        $this->_libelle = $result->libelle;
-        $this->_varieteAoc = $result->varieteAoc;
+        $super($result);
+        $this->_dateObtention = $result->dateObtention;
     }
     // Accesseur
     public function __get($var){
         switch ($var){
-            case 'ilibelle':
-                return $this->_libelle;
-                break;
-            case 'varieteAoc':
-                return $this->_varieteAoc;
+            case 'date':
+                return $this->_dateObtention;
                 break;
             default:
-                return null;
+                return $super->__get($var);
                 break;
         }
     }
     // Conversion en chaînes de caractères
     public function __toString(){
-        return $this->_libelle;
+        return $super->__toString();
     }
 }
 ?>
