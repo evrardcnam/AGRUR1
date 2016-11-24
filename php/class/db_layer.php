@@ -108,6 +108,19 @@ class DBLayer {
 		}
 	}
 
+	// Obtenir toutes les livraisons
+	public static function getLivraisons() {
+		$results = $this->query("SELECT * FROM livraison ORDER BY idVerger ASC, dateLivraison DESC");
+		if (!$results) { return $results; }
+		else {
+			$object_results = array();
+			foreach ($results as $result){
+				$object_results[] = new Lot($result);
+			}
+			return $object_results;
+		}
+	}
+
 	// Obtenir toutes les certifications validées pour un producteur
 	public static function getCertificationsValidees(Producteur $p) {
 		$results = $this->query("SELECT C.idCertification, C.libelleCertification, O.dateObtention FROM certification C, obtient O WHERE O.idCertification = C.idCertification AND O.nomProducteur LIKE " . $p->nom . " ORDER BY libelleCertification ASC");
@@ -133,6 +146,19 @@ class DBLayer {
 		$results = $this->query("SELECT D.idConditionnement, D.libelleConditionnement, D.poids FROM conditionnement D, commande C WHERE C.idConditionnement = D.idConditionnement AND numCommande = " . $c->num . " LIMIT 0,1");
 		if (!$results) { return null; }
 		else { return new Conditionnement($results[0]); }
+	}
+
+	// Obtenir tous les lots d'une livraison
+	public static function getLotsLivraison(Livraison $l) {
+		$results = $this->query("SELECT * FROM lot WHERE idLivraison = " . $l->id . " ORDER BY codeLot ASC");
+		if (!$results) { return $results; }
+		else {
+			$object_results = array();
+			foreach ($results as $result){
+				$object_results[] = new Lot($result);
+			}
+			return $object_results;
+		}
 	}
 
 	// Connexion à la base de données. Action réalisée par les autres fonctions internes.
