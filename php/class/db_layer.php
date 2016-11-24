@@ -121,6 +121,19 @@ class DBLayer {
 		}
 	}
 
+	// Obtenir tous les vergers
+	public static function getVergers() {
+		$results = $this->query("SELECT * FROM verger ORDER BY nomProducteur ASC, nomVerger ASC");
+		if (!$results) { return $results; }
+		else {
+			$object_results = array();
+			foreach ($results as $result){
+				$object_results[] = new Verger($result);
+			}
+			return $object_results;
+		}
+	}
+
 	// Obtenir toutes les certifications validées pour un producteur
 	public static function getCertificationsValidees(Producteur $p) {
 		$results = $this->query("SELECT C.idCertification, C.libelleCertification, O.dateObtention FROM certification C, obtient O WHERE O.idCertification = C.idCertification AND O.nomProducteur LIKE " . $p->nom . " ORDER BY libelleCertification ASC");
@@ -159,6 +172,18 @@ class DBLayer {
 			}
 			return $object_results;
 		}
+	}
+
+	// Obtenir le verger d'origine d'une livraison
+	public static function getVergerLivraison(Livraison $l) {
+		$results = $this->query("SELECT * FROM verger WHERE idVerger = " . $l->idVerger . " LIMIT 0,1");
+		if (!$results) { return null; }
+		else { return new Verger($results[0]); }
+	}
+
+	// Obtenir le producteur auquel appartient un verger
+	public static function getProducteurVerger(Verger $v) {
+		return getProducteur($v->nomProducteur);
 	}
 
 	// Connexion à la base de données. Action réalisée par les autres fonctions internes.
