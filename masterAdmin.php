@@ -21,27 +21,27 @@
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Production <span class="caret"></span></a>
 							<ul class="dropdown-menu">
-								<li><a class="slavePage" href="producteurs.php">Producteurs</a></li>
-								<li><a class="slavePage" href="vergers.php">Vergers</a></li>
-								<li><a class="slavePage" href="varietes.php">Variétés</a></li>
-								<li><a class="slavePage" href="livraisons.php">Livraisons</a></li>
-								<li><a class="slavePage" href="lots.php">Lots</a></li>
-								<li><a class="slavePage" href="conditionnements.php">Conditionnements</a></li>
+								<li><a class="slavePage" href="php/producteurs.php">Producteurs</a></li>
+								<li><a class="slavePage" href="php/vergers.php">Vergers</a></li>
+								<li><a class="slavePage" href="php/varietes.php">Variétés</a></li>
+								<li><a class="slavePage" href="php/livraisons.php">Livraisons</a></li>
+								<li><a class="slavePage" href="php/lots.php">Lots</a></li>
+								<li><a class="slavePage" href="php/conditionnements.php">Conditionnements</a></li>
 							</ul>
 						</li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Clientèle <span class="caret"></span></a>
 							<ul class="dropdown-menu">
-								<li><a class="slavePage" href="clients.php">Clients</a></li>
-								<li><a class="slavePage" href="commandes.php">Commandes</a></li>
+								<li><a class="slavePage" href="php/clients.php">Clients</a></li>
+								<li><a class="slavePage" href="php/commandes.php">Commandes</a></li>
 							</ul>
 						</li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administration <span class="caret"></span></a>
 							<ul class="dropdown-menu">
-								<li><a class="slavePage" href="utilisateurs.php">Utilisateurs</a></li>
-								<li><a class="slavePage" href="communes.php">Communes</a></li>
-								<li><a class="slavePage" href="certifications.php">Certifications</a></li>
+								<li><a class="slavePage" href="php/utilisateurs.php">Utilisateurs</a></li>
+								<li><a class="slavePage" href="php/communes.php">Communes</a></li>
+								<li><a class="slavePage" href="php/certifications.php">Certifications</a></li>
 							</ul>
 						</li>
 					</ul>

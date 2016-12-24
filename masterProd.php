@@ -22,16 +22,16 @@
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Production <span class="caret"></span></a>
 							<ul class="dropdown-menu">
-								<li><a class="slavePage" href="Vergers.html">Vergers</a></li>
-								<li><a class="slavePage" href="Livraisons.html">Livraisons</a></li>
-								<li><a class="slavePage" href="Lots.html">Lots</a></li>
+								<li><a class="slavePage" href="php/vergers.php">Vergers</a></li>
+								<li><a class="slavePage" href="php/livraisons.php">Livraisons</a></li>
+								<li><a class="slavePage" href="php/lots.php">Lots</a></li>
 							</ul>
 						</li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Vente <span class="caret"></span></a>
 							<ul class="dropdown-menu">
-								<li><a class="slavePage" href="Clientèle.html">Clientèle</a></li>
-								<li><a class="slavePage" href="Commandes.html">Commandes</a></li>
+								<li><a class="slavePage" href="php/clients.php">Clientèle</a></li>
+								<li><a class="slavePage" href="php/commandes.php">Commandes</a></li>
 							</ul>
 						</li>
 					</ul>
