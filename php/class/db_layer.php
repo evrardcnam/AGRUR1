@@ -205,6 +205,30 @@ class DBLayer {
 	}
 
 	/**
+	 * Obtenir les utilisateurs.
+	 */
+	public static function getUtilisateurs() {
+		$results = $this->query("SELECT id, name, admin FROM users ORDER BY name ASC");
+		if (!$results) { return $results; }
+		else {
+			$object_results = array();
+			foreach ($results as $result){
+				$object_results[] = new Utilisateur($result);
+			}
+			return $object_results;
+		}
+	}
+
+	/**
+	 * Obtenir un utilisateur par son pseudonyme.
+	 */
+	public static function getUtilisateur(string $pseudo) {
+		$results = $this->query("SELECT id, name, admin FROM users WHERE name LIKE " . $pseudo . " LIMIT 0,1");
+		if (!$results) { return null; }
+		else { return new Utilisateur($results[0]); }
+	}
+
+	/**
 	 * Obtenir le lot associé à une commande. 
 	 */
 	public static function getLotCommande(Commande $c) {
@@ -276,6 +300,33 @@ class DBLayer {
 		$results = $this->query("SELECT * FROM commune WHERE idCommune = " . $v->idCommune . " LIMIT 0,1");
 		if (!$results) { return null; }
 		else { return new Commune($results[0]); }
+	}
+
+	/**
+	 * Obtenir l'utilisateur associé à un producteur.'
+	 */
+	public static function getUtilisateurProducteur(Producteur $p) {
+		$results = $this->query("SELECT id,name,admin FROM users WHERE id = " . $p->idUtilisateur . " LIMIT 0,1");
+		if (!$results) { return null; }
+		else { return new Utilisateur($results[0]); }
+	}
+
+	/**
+	 * Obtenir le producteur associé à un utilisateur.'
+	 */
+	public static function getProducteurUtilisateur(Utilisateur $u) {
+		$results = $this->query("SELECT * FROM producteur WHERE idUser = " . $u->id . " LIMIT 0,1");
+		if (!$results) { return null; }
+		else { return new Producteur($results[0]); }
+	}
+
+	/**
+	 * Vérifier le mot de passe d'un utilisateur par rapport à une saisie.
+	 */
+	public static function checkPassword(Utilisateur $u, string $pass) {
+		if($u == null) return false;
+		$results = $this->query("SELECT pass FROM users WHERE idUser = " . $u->id . " LIMIT 0,1");
+		return password_verify($pass, $results[0]->pass);
 	}
 
 	/**
