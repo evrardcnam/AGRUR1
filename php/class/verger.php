@@ -38,19 +38,19 @@ class Verger {
                 return $this->_nomProducteur;
                 break;
             case 'producteur':
-                return getProducteurVerger($this);
+                return DBLayer::getProducteurVerger($this);
                 break;
             case 'libelleVariete':
                 return $this->_libelleVariete;
                 break;
             case 'variete':
-                return getVarieteVerger($this);
+                return DBLayer::getVarieteVerger($this);
                 break;
             case 'idCommune':
                 return $this->_idCommune;
                 break;
             case 'commune':
-                return getCommuneVerger($this);
+                return DBLayer::getCommuneVerger($this);
                 break;
             default:
                 return null;

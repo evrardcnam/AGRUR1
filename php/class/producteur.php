@@ -28,6 +28,8 @@ class Producteur {
             case 'adresse':
                 return $this->_adresseProducteur;
                 break;
+            case 'certifications':
+                return DBLayer::getCertificationsValidees($this);
             default:
                 return null;
                 break;

@@ -31,13 +31,13 @@ class Livraison {
                 return $this->_quantiteLivree;
                 break;
             case 'lots':
-                return getLotsLivraison($this);
+                return DBLayer::getLotsLivraison($this);
                 break;
             case 'idVerger':
                 return $this->_idVerger;
                 break;
             case 'verger':
-                return getVergerLivraison($this);
+                return DBLayer::getVergerLivraison($this);
             default:
                 return null;
                 break;

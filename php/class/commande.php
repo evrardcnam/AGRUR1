@@ -31,19 +31,19 @@ class Commande
                 return $this->_nomClient;
                 break;
             case 'client':
-                return getClient($_nomClient);
+                return DBLayer::getClient($_nomClient);
                 break;
             case 'codeLot':
                 return $this->_codeLot;
                 break;
             case 'lot':
-                return getLotCommande($this);
+                return DBLayer::getLotCommande($this);
                 break;
             case 'idConditionnement':
                 return $this->_idConditionnement;
                 break;
             case 'conditionnement':
-                return getConditionnementCommande($this);
+                return DBLayer::getConditionnementCommande($this);
             default:
                 return null;
                 break;
