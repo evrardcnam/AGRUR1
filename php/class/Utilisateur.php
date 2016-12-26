@@ -41,7 +41,7 @@ class Utilisateur {
     /**
      * Vérifie si l'utilisateur a le mot de passe sélectionné.'
      */
-    public function checkPassword(string $pass) {
+    public function checkPassword($pass) {
         return DBLayer::checkPassword($this, $pass);
     }
 
