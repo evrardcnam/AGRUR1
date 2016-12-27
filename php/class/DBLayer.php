@@ -168,7 +168,7 @@ class DBLayer {
 	 * Obtenir toutes les livraisons 
 	 */
 	public static function getLivraisons() {
-		$results = DBLayer::query("SELECT * FROM livraison ORDER BY idVerger ASC, dateLivraison DESC");
+		$results = DBLayer::query("SELECT l.idLivraison,l.dateLivraison,l.typeProduit,l.quantiteLivree,l.idVerger,count(o.codeLot) AS nbLots FROM livraison l, lot o WHERE l.idLivraison = o.idLivraison GROUP BY l.idLivraison ORDER BY l.idVerger ASC, l.dateLivraison DESC");
 		if (!$results) { return $results; }
 		else {
 			$object_results = array();

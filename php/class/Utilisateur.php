@@ -7,6 +7,7 @@ class Utilisateur {
     private $_id;
     private $_name;
     private $_admin;
+    private $_nomProducteur;
     /**
      * Constructeur de la classe depuis la couche d'accès aux données
      */
