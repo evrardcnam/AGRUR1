@@ -27,7 +27,7 @@ class DBLayer {
 	 */
 	private static function dbconnect() {
 		$conn = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_DB);
-		if ($conn->connect_error) {
+		if (!$conn || $conn->connect_error) {
 			die('Erreur de connexion (' . $conn->connect_errno . ') ' . $conn->connect_error);
 		}
 		return $conn;

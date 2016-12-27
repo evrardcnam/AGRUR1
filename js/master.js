@@ -16,11 +16,11 @@ function showPage(href) {
     });
 }
 
-// Mise à jour des liens de pages esclave
+// Mise à jour des liens de pages esclaves
 function updateLinks() {
     $("a.slavePage").click(function() {
         showPage($(this).attr("data-link"));
-    }).removeClass("slavePage");
+    }).attr("href","#").removeClass("slavePage");
 }
 
 $(function() { // Code exécuté une fois la page chargée
