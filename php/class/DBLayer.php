@@ -243,7 +243,7 @@ class DBLayer {
 	 * Obtenir les utilisateurs.
 	 */
 	public static function getUtilisateurs() {
-		$results = DBLayer::query("SELECT id, name, admin FROM users ORDER BY name ASC");
+		$results = DBLayer::query("SELECT id, name, admin, nomProducteur FROM users ORDER BY name ASC");
 		if (!$results) { return $results; }
 		else {
 			$object_results = array();

@@ -14,6 +14,7 @@ class Utilisateur {
         $this->_id = $result->id;
         $this->_name = $result->name;
         $this->_admin = $result->admin;
+        $this->_nomProducteur = $result->nomProducteur;
     }
     /**
      * Accesseur
@@ -29,8 +30,11 @@ class Utilisateur {
             case 'admin':
                 return $this->_admin;
                 break;
+            case 'nomProducteur':
+                return $this->_nomProducteur;
+                break;
             case 'producteur':
-                return DBLayer::getProducteurUtilisateur($this);
+                return DBLayer::getProducteur($this->_nomProducteur);
                 break;
             default:
                 return null;
