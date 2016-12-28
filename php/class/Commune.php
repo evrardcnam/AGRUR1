@@ -20,6 +20,7 @@ class Commune {
             case 'nom':
                 return $this->_nomCommune;
                 break;
+            case 'aoc':
             case 'communeAoc':
                 return $this->_communeAoc;
                 break;

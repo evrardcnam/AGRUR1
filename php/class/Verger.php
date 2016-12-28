@@ -5,7 +5,7 @@ class Verger {
     private $_idVerger;
     private $_nomVerger;
     private $_superficie;
-    private $_arbreParHectare;
+    private $_arbresParHectare;
     private $_nomProducteur;
     private $_libelleVariete;
     private $_idCommune;
@@ -14,7 +14,7 @@ class Verger {
         $this->_idVerger = $result->idVerger;
         $this->_nomVerger = $result->nomVerger;
         $this->_superficie = $result->superficie;
-        $this->_arbreParHectare = $result->arbreParHectare;
+        $this->_arbresParHectare = $result->arbresParHectare;
         $this->_nomProducteur = $result->nomProducteur;
         $this->_libelleVariete = $result->libelle;
         $this->_idCommune = $result->idCommune;
@@ -31,8 +31,8 @@ class Verger {
             case 'superficie':
                 return $this->_superficie;
                 break;
-            case 'arbreParHectare':
-                return $this->_arbreParHectare;
+            case 'arbresParHectare':
+                return $this->_arbresParHectare;
                 break;
             case 'nomProducteur':
                 return $this->_nomProducteur;

@@ -15,8 +15,10 @@ class Client {
     public function __get($var){
         switch ($var){
             case 'nom':
+            case 'nomClient':
                 return $this->_nomClient;
                 break;
+            case 'adresse':
             case 'adresseClient':
                 return $this->_adresseClient;
                 break;

@@ -15,6 +15,7 @@ class Variete {
             case 'ilibelle':
                 return $this->_libelle;
                 break;
+            case 'aoc':
             case 'varieteAoc':
                 return $this->_varieteAoc;
                 break;

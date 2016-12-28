@@ -22,8 +22,10 @@ class Commande
     {
         switch ($var) {
             case 'num':
+            case 'numCommande':
                 return $this->_numCommande;
                 break;
+            case 'date':
             case 'dateEnvoie':
                 return $this->_dateEnvoie;
                 break;
@@ -39,9 +41,11 @@ class Commande
             case 'lot':
                 return DBLayer::getLotCommande($this);
                 break;
+            case 'idCond':
             case 'idConditionnement':
                 return $this->_idConditionnement;
                 break;
+            case 'cond':
             case 'conditionnement':
                 return DBLayer::getConditionnementCommande($this);
             default:
