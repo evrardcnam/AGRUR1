@@ -12,6 +12,7 @@ class AuthManager {
         if(!$user->checkPassword($pass)) return false; // Mot de passe incorrect
         session_start();
         $_SESSION['user'] = $user;
+        return true;
     }
 
     /**
@@ -19,7 +20,7 @@ class AuthManager {
      * false si aucun utilisateur n'est connecté pour la session active, sinon retourne le rôle de l'utilisateur.
      * Le rôle de l'utilisateur est U_ADMIN s'il est administrateur ou U_PRODUCTEUR s'il est producteur.
      */
-    public static function isLoggedOn() {
+    public static function loginStatus() {
         if(!($_SESSION['user'] instanceof Utilisateur)) return false;
         else if ($_SESSION['user']->admin) return U_ADMIN;
         else return U_PRODUCTEUR; 

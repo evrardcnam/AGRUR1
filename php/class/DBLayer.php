@@ -75,7 +75,7 @@ class DBLayer {
 	 * Obtenir un producteur spécifique par son nom 
 	 */
 	public static function getProducteur($nom) {
-		$results = DBLayer::query("SELECT * FROM producteur WHERE nomProducteur LIKE " . $nom . " LIMIT 0,1");
+		$results = DBLayer::query('SELECT * FROM producteur WHERE nomProducteur LIKE "' . $nom . '" LIMIT 0,1"');
 		if (!$results) { return null; }
 		else { return new Producteur($results[0]); }
 	}
@@ -99,7 +99,7 @@ class DBLayer {
 	 * Obtenir un client par son nom 
 	 */
 	public static function getClient($nom) {
-		$results = DBLayer::query("SELECT * FROM client WHERE nomClient LIKE " . $nom . " LIMIT 0,1");
+		$results = DBLayer::query('SELECT * FROM client WHERE nomClient LIKE "' . $nom . '" LIMIT 0,1');
 		if (!$results) { return null; }
 		else { return new Client($results[0]); }
 	}
@@ -228,7 +228,7 @@ class DBLayer {
 	 * Obtenir toutes les certifications validées pour un producteur spécifique 
 	 */
 	public static function getCertificationsValidees(Producteur $p) {
-		$results = DBLayer::query("SELECT C.idCertification, C.libelleCertification, O.dateObtention FROM certification C, obtient O WHERE O.idCertification = C.idCertification AND O.nomProducteur LIKE " . $p->nom . " ORDER BY libelleCertification ASC");
+		$results = DBLayer::query('SELECT C.idCertification, C.libelleCertification, O.dateObtention FROM certification C, obtient O WHERE O.idCertification = C.idCertification AND O.nomProducteur LIKE "' . $p->nom . '" ORDER BY libelleCertification ASC');
 		if (!$results) { return $results; }
 		else {
 			$object_results = array();
@@ -258,7 +258,7 @@ class DBLayer {
 	 * Obtenir un utilisateur par son pseudonyme.
 	 */
 	public static function getUtilisateur($pseudo) {
-		$results = DBLayer::query("SELECT id, name, admin FROM users WHERE name LIKE " . $pseudo . " LIMIT 0,1");
+		$results = DBLayer::query('SELECT id, name, admin FROM users WHERE name LIKE "' . $pseudo . '" LIMIT 0,1');
 		if (!$results) { return null; }
 		else { return new Utilisateur($results[0]); }
 	}
@@ -360,7 +360,7 @@ class DBLayer {
 	 */
 	public static function checkPassword(Utilisateur $u, $pass) {
 		if($u == null) return false;
-		$results = DBLayer::query("SELECT pass FROM users WHERE idUser = " . $u->id . " LIMIT 0,1");
+		$results = DBLayer::query("SELECT pass FROM users WHERE id = " . $u->id . " LIMIT 0,1");
 		return password_verify($pass, $results[0]->pass);
 	}
 }
