@@ -5,7 +5,7 @@ class CertObtenue extends Certification {
     private $_dateObtention;
     // Constructeur de la classe depuis la couche d'accès aux données
     public function __construct(DBQueryResult $result){
-        $super($result);
+        parent::__construct($result);
         $this->_dateObtention = $result->dateObtention;
     }
     // Accesseur
@@ -15,7 +15,7 @@ class CertObtenue extends Certification {
                 return $this->_dateObtention;
                 break;
             default:
-                return $super->__get($var);
+                return parent::__get($var);
                 break;
         }
     }

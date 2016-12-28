@@ -35,7 +35,7 @@ class Utilisateur {
                 return $this->_nomProducteur;
                 break;
             case 'producteur':
-                return DBLayer::getProducteur($this->_nomProducteur);
+                return DBLayer::getProducteurUtilisateur($this);
                 break;
             default:
                 return null;
