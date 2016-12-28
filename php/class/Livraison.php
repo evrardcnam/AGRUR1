@@ -6,6 +6,7 @@ class Livraison {
     private $_dateLivraison;
     private $_typeProduit;
     private $_quantiteLivree;
+    private $_nbLots;
     private $_idVerger;
     // Constructeur de la classe depuis la couche d'accès aux données
     public function __construct(DBQueryResult $result){
@@ -13,6 +14,7 @@ class Livraison {
         $this->_dateLivraison = $result->dateLivraison;
         $this->_typeProduit = $result->typeProduit;
         $this->_quantiteLivree = $result->quantiteLivree;
+        $this->_nbLots = $result->nbLots;
         $this->_idVerger = $result->idVerger;
     }
     // Accesseur
@@ -30,14 +32,17 @@ class Livraison {
             case 'quantite':
                 return $this->_quantiteLivree;
                 break;
+            case 'nbLots':
+                return $this->_nbLots;
+                break;
             case 'lots':
-                return getLotsLivraison($this);
+                return DBLayer::getLotsLivraison($this);
                 break;
             case 'idVerger':
                 return $this->_idVerger;
                 break;
             case 'verger':
-                return getVergerLivraison($this);
+                return DBLayer::getVergerLivraison($this);
             default:
                 return null;
                 break;
