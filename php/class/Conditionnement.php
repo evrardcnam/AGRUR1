@@ -5,12 +5,36 @@ class Conditionnement {
     private $_idConditionnement;
     private $_libelleConditionnement;
     private $_poids;
-    // Constructeur de la classe depuis la couche d'accès aux données
-    public function __construct(DBQueryResult $result){
-        $this->_idConditionnement = $result->idConditionnement;
-        $this->_libelleConditionnement = $result->libelleConditionnement;
-        $this->_poids = $result->poids;
+
+    public function __construct() {
     }
+    
+    // Constructeur de la classe depuis l'extérieur
+    public static function fromValues($id, $libelle, $poids) {
+        $instance = new self();
+        $instance->fillValues($id, $libelle, $poids);
+        return $instance;
+    }
+
+    // Constructeur de la classe depuis la couche d'accès aux données
+    public static function fromResult(DBQueryResult $result) {
+        $instance = new self();
+        $instance->fillRow($result);
+        return $instance;
+    }
+    
+    protected function fillValues($id, $libelle, $poids) {
+        $_idConditionnement = $id;
+        $_libelleConditionnement = $libelle;
+        $_poids = $poids;
+    }
+
+    protected function fillRow(DBQueryResult $row) {
+        $_idConditionnement = $row->idConditionnement;
+        $_libelleConditionnement = $row->libelleConditionnement;
+        $_poids = $row->poids;
+    }
+    
     // Accesseur
     public function __get($var){
         switch ($var){

@@ -8,15 +8,40 @@ class Commande
     private $_nomClient;
     private $_codeLot;
     private $_idConditionnement;
-    // Constructeur de la classe depuis la couche d'accès aux données
-    public function __construct(DBQueryResult $result)
-    {
-        $this->_numCommande = $result->numCommande;
-        $this->_dateEnvoie = $result->dateEnvoie;
-        $this->_nomClient = $result->nomClient;
-        $this->_codeLot = $result->codeLot;
-        $this->_idConditionnement = $result->idConditionnement;
+
+    public function __construct() {
     }
+    
+    // Constructeur de la classe depuis l'extérieur
+    public static function fromValues($num, $date, $nomClient, $codeLot, $idCond) {
+        $instance = new self();
+        $instance->fillValues($num, $date, $nomClient, $codeLot, $idCond);
+        return $instance;
+    }
+
+    // Constructeur de la classe depuis la couche d'accès aux données
+    public static function fromResult(DBQueryResult $result) {
+        $instance = new self();
+        $instance->fillRow($result);
+        return $instance;
+    }
+
+    protected function fillValues($num, $date, $nomClient, $codeLot, $idCond) {
+        $this->_numCommande = $num;
+        $this->_dateEnvoie = $date;
+        $this->_nomClient = $nomClient;
+        $this->_codeLot = $codeLot;
+        $this->_idConditionnement = $idCond;
+    }
+
+    protected function fillRow(DBQueryResult $row) {
+        $this->_numCommande = $row->numCommande;
+        $this->_dateEnvoie = $row->dateEnvoie;
+        $this->_nomClient = $row->nomClient;
+        $this->_codeLot = $row->codeLot;
+        $this->_idConditionnement = $row->idConditionnement;
+    }
+    
     // Accesseur
     public function __get($var)
     {
