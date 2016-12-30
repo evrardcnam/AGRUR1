@@ -587,5 +587,102 @@ class DBLayer {
 		return DBLayer::preparedQuery("UPDATE utilisateur SET `name`=?, `pass`=?, `admin`=?, `nomProducteur`=? WHERE `id`=?",
 			"issis", $u->nom, crypt($pass), $u->admin, $u->nomProducteur, $u->id);
 	}
+
+	/**
+	 * Ajouter un producteur dans la base de données.
+	 */
+	public static function removeProducteur(Producteur $p) {
+		if(!isset($p)) return false;
+		return DBLayer::preparedQuery("DELETE FROM producteur WHERE nomProducteur LIKE ?", "s", $p->nom);
+	}
+	
+	/**
+	 * Ajouter un client dans la base de données.
+	 */
+	public static function removeClient(Client $c) {
+		if(!isset($c)) return false;
+		return DBLayer::preparedQuery("DELETE FROM client WHERE `nomClient` LIKE ?", "s", $c->nom);
+	}
+
+	/**
+	 * Ajouter une certification dans la base de données.
+	 */
+	public static function removeCertification(Certification $c) {
+		if(!isset($c)) return false;
+		return DBLayer::preparedQuery("DELETE FROM certification WHERE `idCertification`=?", "i", $c->id);
+	}
+
+	/**
+	 * Ajouter une commande dans la base de données.
+	 */
+	public static function removeCommande(Commande $c) {
+		if(!isset($c)) return false;
+		return DBLayer::preparedQuery("DELETE FROM commande WHERE `numCommande`=?", "i", $c->num);
+	}
+
+	/**
+	 * Ajouter un conditionnement dans la base de données.
+	 */
+	public static function removeConditionnement(Conditionnement $c) {
+		if(!isset($c)) return false;
+		return DBLayer::preparedQuery("DELETE FROM conditionnement WHERE `idConditionnement`=?", "i", $c->id);
+	}
+
+	/**
+	 * Ajouter un lot dans la base de données.
+	 */
+	public static function removeLot(Lot $l) {
+		if(!isset($l)) return false;
+		return DBLayer::preparedQuery("DELETE FROM lot WHERE `codeLot` LIKE ?", "s", $l->code);
+	}
+
+	/**
+	 * Ajouter une livraison dans la base de données.
+	 */
+	public static function removeLivraison(Livraison $l) {
+		if(!isset($l)) return false;
+		return DBLayer::preparedQuery("DELETE FROM livraison WHERE `idLivraison`=?", "i", $l->id);
+	}
+
+	/**
+	 * Ajouter un verger dans la base de données.
+	 */
+	public static function removeVerger(Verger $v) {
+		if(!isset($v)) return false;
+		return DBLayer::preparedQuery("DELETE FROM verger WHERE `idVerger`=?", "i", $v->id);
+	}
+
+	/**
+	 * Ajouter une variété dans la base de données.
+	 */
+	public static function removeVariete(Variete $v) {
+		if(!isset($v)) return false;
+		return DBLayer::preparedQuery("DELETE FROM variete WHERE `libelle` LIKE ?", "s", $v->libelle);
+	}
+
+	/**
+	 * Ajouter une commune dans la base de données.
+	 */
+	public static function removeCommune(Commune $c) {
+		if(!isset($c)) return false;
+		return DBLayer::preparedQuery("DELETE FROM commune WHERE `idCommune`=?", "i", $c->id);
+	}
+
+	/**
+	 * Ajouter une validation de certification dans la base de données.
+	 */
+	public static function removeCertObtenue(CertObtenue $c) {
+		if(!isset($c)) return false;
+		return DBLayer::preparedQuery("DELETE FROM obtient WHERE `idCertification`=? AND `nomProducteur` LIKE ?",
+			"is", $c->id, $c->nomProducteur);
+	}
+
+	/**
+	 * Ajouter un utilisateur dans la base de données.
+	 */
+	public static function removeUtilisateur(Utilisateur $u) {
+		if(!isset($u)) return false;
+		return DBLayer::preparedQuery("DELETE FROM utilisateur WHERE `id`=?", "i", $u->id);
+	}
 }
 ?>
