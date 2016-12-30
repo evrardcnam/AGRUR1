@@ -8,15 +8,42 @@ class Livraison {
     private $_quantiteLivree;
     private $_nbLots;
     private $_idVerger;
-    // Constructeur de la classe depuis la couche d'accès aux données
-    public function __construct(DBQueryResult $result){
-        $this->_idLivraison = $result->idLivraison;
-        $this->_dateLivraison = $result->dateLivraison;
-        $this->_typeProduit = $result->typeProduit;
-        $this->_quantiteLivree = $result->quantiteLivree;
-        $this->_nbLots = $result->nbLots;
-        $this->_idVerger = $result->idVerger;
+
+    public function __construct() {
     }
+    
+    // Constructeur de la classe depuis l'extérieur
+    public static function fromValues($id, $date, $type, $quantite, $nbLots, $idVerger) {
+        $instance = new self();
+        $instance->fillValues($id, $date, $type, $quantite, $nbLots, $idVerger);
+        return $instance;
+    }
+
+    // Constructeur de la classe depuis la couche d'accès aux données
+    public static function fromResult(DBQueryResult $result) {
+        $instance = new self();
+        $instance->fillRow($result);
+        return $instance;
+    }
+
+    protected function fillValues($id, $date, $type, $quantite, $nbLots, $idVerger) {
+        $this->_idLivraison = $id;
+        $this->_dateLivraison = $date;
+        $this->_typeProduit = $type;
+        $this->_quantiteLivree = $quantite;
+        $this->_nbLots = $nbLots;
+        $this->_idVerger = $idverger;
+    }
+
+    protected function fillRow(DBQueryResult $row) {
+        $this->_idLivraison = $row->idLivraison;
+        $this->_dateLivraison = $row->dateLivraison;
+        $this->_typeProduit = $row->typeProduit;
+        $this->_quantiteLivree = $row->quantiteLivree;
+        $this->_nbLots = $row->nbLots;
+        $this->_idVerger = $row->idVerger;
+    }
+
     // Accesseur
     public function __get($var){
         switch ($var){

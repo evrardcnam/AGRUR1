@@ -4,11 +4,34 @@ class Certification {
     //données privées de la classe
     private $_idCertification;
     private $_libelleCertification;
-    // Constructeur de la classe depuis la couche d'accès aux données
-    public function __construct(DBQueryResult $result){
-        $this->_idCertification = $result->idCertification;
-        $this->_libelleCertification = $result->libelleCertification;
+
+    public function __construct() {
     }
+    
+    // Constructeur de la classe depuis l'extérieur
+    public static function fromValues($idCertification, $libelleCertification) {
+        $instance = new self();
+        $instance->fillValues($idCertification, $libelleCertification);
+        return $instance;
+    }
+
+    // Constructeur de la classe depuis la couche d'accès aux données
+    public static function fromResult(DBQueryResult $result) {
+        $instance = new self();
+        $instance->fillRow($result);
+        return $instance;
+    }
+    
+    protected function fillValues($idCertification, $libelleCertification) {
+        $this->_idCertification = $idCertification;
+        $this->_libelleCertification = $libelleCertification;
+    }
+
+    protected function fillRow(DBQueryResult $row) {
+        $this->_idCertification = $row->idCertification;
+        $this->_libelleCertification = $row->libelleCertification;
+    }
+    
     // Accesseur
     public function __get($var){
         switch ($var){

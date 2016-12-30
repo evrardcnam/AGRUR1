@@ -4,12 +4,36 @@ class CertObtenue extends Certification {
     //données privées de la classe
     private $_dateObtention;
     private $_nomProducteur;
-    // Constructeur de la classe depuis la couche d'accès aux données
-    public function __construct(DBQueryResult $result){
-        parent::__construct($result);
-        $this->_dateObtention = $result->dateObtention;
-        $this->_nomProducteur = $result->nomProducteur;
+
+    public function __construct() {
     }
+    
+    // Constructeur de la classe depuis l'extérieur
+    public static function fromValues($idCertification, $libelleCertification, $nomProducteur, $dateObtention) {
+        $instance = new self();
+        $instance->fillValues($idCertification, $libelleCertification, $nomProducteur, $dateObtention);
+        return $instance;
+    }
+
+    // Constructeur de la classe depuis la couche d'accès aux données
+    public static function fromResult(DBQueryResult $result){
+        $instance = new self();
+        $instance->fillRow($result);
+        return $instance;
+    }
+
+    protected function fillValues($idCertification, $libelleCertification, $nomProducteur, $dateObtention) {
+        parent::fillValues($idCertification, $libelleCertification);
+        $this->_dateObtention = $dateObtention;
+        $this->_nomProducteur = $nomProducteur;
+    }
+
+    protected function fillRow(DBQueryResult $row) {
+        parent::fillRow($row);
+        $this->_dateObtention = $row->dateObtention;
+        $this->_nomProducteur = $row->nomProducteur;
+    }
+
     // Accesseur
     public function __get($var){
         switch ($var){

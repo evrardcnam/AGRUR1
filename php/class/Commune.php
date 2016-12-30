@@ -5,12 +5,36 @@ class Commune {
     private $_idCommune;
     private $_nomCommune;
     private $_communeAoc;
-    // Constructeur de la classe depuis la couche d'accès aux données
-    public function __construct(DBQueryResult $result){
-        $this->_idCommune = $result->idCommune;
-        $this->_nomCommune = $result->nomCommune;
-        $this->_communeAoc = $result->communeAoc;
+
+    public function __construct() {
     }
+    
+    // Constructeur de la classe depuis l'extérieur
+    public static function fromValues($id, $nom, $aoc) {
+        $instance = new self();
+        $instance->fillValues($id, $nom, $aoc);
+        return $instance;
+    }
+
+    // Constructeur de la classe depuis la couche d'accès aux données
+    public static function fromResult(DBQueryResult $result) {
+        $instance = new self();
+        $instance->fillRow($result);
+        return $instance;
+    }
+    
+    protected function fillValues($id, $nom, $aoc) {
+        $_idCommune = $id;
+        $_nomCommune = $nom;
+        $_communeAoc = $aoc;
+    }
+
+    protected function fillRow(DBQueryResult $row) {
+        $_idCommune = $row->idCommune;
+        $_nomCommune = $row->nomCommune;
+        $_communeAoc = $row->communeAoc;
+    }
+    
     // Accesseur
     public function __get($var){
         switch ($var){

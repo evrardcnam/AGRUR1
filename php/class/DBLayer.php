@@ -64,9 +64,7 @@ class DBLayer {
 	private static function preparedQuery($sql, $types, ...$values) {
 		$db = DBLayer::dbconnect();
 		$stmt = $db->stmt_init();
-		var_dump($stmt);
 		$stmt->prepare($sql);
-		var_dump($stmt);
 		$stmt->bind_param($types, ...$values);
 		$ret = $stmt->execute();
 		$stmt->close();
@@ -106,7 +104,7 @@ class DBLayer {
 		else {
 			$object_results = array();
 			foreach ($results as $result){
-				$object_results[] = new Client($result);
+				$object_results[] = Client::fromResult($result);
 			}
 			return $object_results;
 		}
@@ -118,7 +116,7 @@ class DBLayer {
 	public static function getClient($nom) {
 		$results = DBLayer::query('SELECT * FROM client WHERE nomClient LIKE "' . $nom . '" LIMIT 0,1');
 		if (!$results) { return null; }
-		else { return new Client($results[0]); }
+		else { return Client::fromResult($results[0]); }
 	}
 
 	/**
@@ -130,7 +128,7 @@ class DBLayer {
 		else {
 			$object_results = array();
 			foreach ($results as $result){
-				$object_results[] = new Certification($result);
+				$object_results[] = Certification::fromResult($result);
 			}
 			return $object_results;
 		}
@@ -145,7 +143,7 @@ class DBLayer {
 		else {
 			$object_results = array();
 			foreach ($results as $result){
-				$object_results[] = new Commande($result);
+				$object_results[] = Commande::fromResult($result);
 			}
 			return $object_results;
 		}
@@ -160,7 +158,7 @@ class DBLayer {
 		else {
 			$object_results = array();
 			foreach ($results as $result){
-				$object_results[] = new Conditionnement($result);
+				$object_results[] = Conditionnement::fromResult($result);
 			}
 			return $object_results;
 		}
@@ -175,7 +173,7 @@ class DBLayer {
 		else {
 			$object_results = array();
 			foreach ($results as $result){
-				$object_results[] = new Lot($result);
+				$object_results[] = Lot::fromResult($result);
 			}
 			return $object_results;
 		}
@@ -190,7 +188,7 @@ class DBLayer {
 		else {
 			$object_results = array();
 			foreach ($results as $result){
-				$object_results[] = new Livraison($result);
+				$object_results[] = Livraison::fromResult($result);
 			}
 			return $object_results;
 		}
@@ -205,7 +203,7 @@ class DBLayer {
 		else {
 			$object_results = array();
 			foreach ($results as $result){
-				$object_results[] = new Verger($result);
+				$object_results[] = Verger::fromResult($result);
 			}
 			return $object_results;
 		}
@@ -220,7 +218,7 @@ class DBLayer {
 		else {
 			$object_results = array();
 			foreach ($results as $result){
-				$object_results[] = new Variete($result);
+				$object_results[] = Variete::fromResult($result);
 			}
 			return $object_results;
 		}
@@ -235,7 +233,7 @@ class DBLayer {
 		else {
 			$object_results = array();
 			foreach ($results as $result){
-				$object_results[] = new Commune($result);
+				$object_results[] = Commune::fromResult($result);
 			}
 			return $object_results;
 		}
@@ -250,7 +248,7 @@ class DBLayer {
 		else {
 			$object_results = array();
 			foreach ($results as $result){
-				$object_results[] = new CertObtenue($result);
+				$object_results[] = CertObtenue::fromResult($result);
 			}
 			return $object_results;
 		}
@@ -265,7 +263,7 @@ class DBLayer {
 		else {
 			$object_results = array();
 			foreach ($results as $result){
-				$object_results[] = new Utilisateur($result);
+				$object_results[] = Utilisateur::fromResult($result);
 			}
 			return $object_results;
 		}
@@ -277,7 +275,7 @@ class DBLayer {
 	public static function getUtilisateur($pseudo) {
 		$results = DBLayer::query('SELECT id, name, admin FROM users WHERE name LIKE "' . $pseudo . '" LIMIT 0,1');
 		if (!$results) { return null; }
-		else { return new Utilisateur($results[0]); }
+		else { return Utilisateur::fromResult($results[0]); }
 	}
 
 	/**
@@ -286,7 +284,7 @@ class DBLayer {
 	public static function getLotCommande(Commande $c) {
 		$results = DBLayer::query("SELECT * FROM lot WHERE numCommande = " . $c->num . " LIMIT 0,1");
 		if (!$results) { return null; }
-		else { return new Lot($results[0]); }
+		else { return Lot::fromResult($results[0]); }
 	}
 
 	/**
@@ -295,7 +293,7 @@ class DBLayer {
 	public static function getConditionnementCommande(Commande $c) {
 		$results = DBLayer::query("SELECT D.idConditionnement, D.libelleConditionnement, D.poids FROM conditionnement D, commande C WHERE C.idConditionnement = D.idConditionnement AND numCommande = " . $c->num . " LIMIT 0,1");
 		if (!$results) { return null; }
-		else { return new Conditionnement($results[0]); }
+		else { return Conditionnement::fromResult($results[0]); }
 	}
 
 	/**
@@ -314,7 +312,7 @@ class DBLayer {
 		else {
 			$object_results = array();
 			foreach ($results as $result){
-				$object_results[] = new Lot($result);
+				$object_results[] = Lot::fromResult($result);
 			}
 			return $object_results;
 		}
@@ -326,7 +324,7 @@ class DBLayer {
 	public static function getVergerLivraison(Livraison $l) {
 		$results = DBLayer::query("SELECT * FROM verger WHERE idVerger = " . $l->idVerger . " LIMIT 0,1");
 		if (!$results) { return null; }
-		else { return new Verger($results[0]); }
+		else { return Verger::fromResult($results[0]); }
 	}
 
 	/**
@@ -342,7 +340,7 @@ class DBLayer {
 	public static function getVarieteVerger(Verger $v) {
 		$results = DBLayer::query("SELECT * FROM variete WHERE libelle = " . $v->libelleVariete . " LIMIT 0,1");
 		if (!$results) { return null; }
-		else { return new Variete($results[0]); }
+		else { return Variet::fromResult($results[0]); }
 	}
 
 	/**
@@ -351,7 +349,7 @@ class DBLayer {
 	public static function getCommuneVerger(Verger $v) {
 		$results = DBLayer::query("SELECT * FROM commune WHERE idCommune = " . $v->idCommune . " LIMIT 0,1");
 		if (!$results) { return null; }
-		else { return new Commune($results[0]); }
+		else { return Commune::fromResult($results[0]); }
 	}
 
 	/**
@@ -360,7 +358,7 @@ class DBLayer {
 	public static function getUtilisateurProducteur(Producteur $p) {
 		$results = DBLayer::query("SELECT id,name,admin FROM users WHERE id = " . $p->idUtilisateur . " LIMIT 0,1");
 		if (!$results) { return null; }
-		else { return new Utilisateur($results[0]); }
+		else { return Utilisateur::fromResult($results[0]); }
 	}
 
 	/**

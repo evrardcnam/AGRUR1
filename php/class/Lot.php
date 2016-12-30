@@ -6,13 +6,38 @@ class Lot {
     private $_calibreLot;
     private $_idLivraison;
     private $_numCommande;
-    // Constructeur de la classe depuis la couche d'accès aux données
-    public function __construct(DBQueryResult $result){
-        $this->_codeLot = $result->codeLot;
-        $this->_calibreLot = $result->calibreLot;
-        $this->_idLivraison = $result->idLivraison;
-        $this->_numCommande = $result->numCommande;
+
+    public function __construct() {
     }
+    
+    // Constructeur de la classe depuis l'extérieur
+    public static function fromValues($code, $calibre, $idLivraison, $numCommande) {
+        $instance = new self();
+        $instance->fillValues($code, $calibre, $idLivraison, $numCommande);
+        return $instance;
+    }
+
+    // Constructeur de la classe depuis la couche d'accès aux données
+    public static function fromResult(DBQueryResult $result) {
+        $instance = new self();
+        $instance->fillRow($result);
+        return $instance;
+    }
+
+    protected function fillValues($code, $calibre, $idLivraison, $numCommande) {
+        $this->_codeLot = $code;
+        $this->_calibreLot = $calibre;
+        $this->_idLivraison = $idLivraison;
+        $this->_numCommande = $numCommande;
+    }
+
+    protected function fillRow(DBQueryResult $row) {
+        $this->_codeLot = $row->codeLot;
+        $this->_calibreLot = $row->calibreLot;
+        $this->_idLivraison = $row->idLivraison;
+        $this->_numCommande = $row->numCommande;
+    }
+
     // Accesseur
     public function __get($var){
         switch ($var){
