@@ -488,5 +488,104 @@ class DBLayer {
 		return DBLayer::preparedQuery("INSERT INTO utilisateur(id,name,pass,admin,nomProducteur) VALUES (?,?,?,?,?)",
 			"issis", $u->id, $u->nom, crypt($pass), $u->admin, $u->nomProducteur);
 	}
+
+	/**
+	 * Mettre à jour un producteur dans la base de données.
+	 */
+	public static function setProducteur($nom, Producteur $p) {
+		if(!isset($nom, $p)) return false;
+		return DBLayer::preparedQuery("UPDATE producteur SET `nomProducteur`=?,`adresseProducteur`=?,`adherent`=?,`dateAdhesion`=?,`idUser`=? WHERE `nomProducteur` LIKE ?",
+			"ssisis", $p->nom, $p->adresse, $p->adherent, $p->dateAdhesion, $p->idUser, $nom);
+	}
+	
+	/**
+	 * Mettre à jour un client dans la base de données.
+	 */
+	public static function setClient($nom, Client $c) {
+		if(!isset($nom, $c)) return false;
+		return DBLayer::preparedQuery("UPDATE client SET `nomClient`=?,`adresseClient`=?,`nomResAchats`=? WHERE `nomClient` LIKE ?",
+			"ssss", $c->nom, $c->adresse,$c->nomResAchats, $nom);
+	}
+
+	/**
+	 * Mettre à jour une certification dans la base de données.
+	 */
+	public static function setCertification(Certification $c) {
+		if(!isset($c)) return false;
+		return DBLayer::preparedQuery("UPDATE certification SET `libelleCertification`=? WHERE `idCertification`=?",
+			"si", $c->libelle, $c->id);
+	}
+
+	/**
+	 * Mettre à jour une commande dans la base de données.
+	 */
+	public static function setCommande(Commande $c) {
+		if(!isset($c)) return false;
+		return DBLayer::preparedQuery("UPDATE commande SET `dateEnvoie`=?, `idConditionnement`=?, `codeLot`=?, `nomClient`=? WHERE `numCommande`=?",
+			"sissi", $c->date, $c->idCond, $c->codeLot, $c->nomClient, $c->num);
+	}
+
+	/**
+	 * Mettre à jour un conditionnement dans la base de données.
+	 */
+	public static function setConditionnement(Conditionnement $c) {
+		if(!isset($c)) return false;
+		return DBLayer::preparedQuery("UPDATE conditionnement SET `libelleConditionnement`=?, `poids`=? WHERE `idConditionnement`=?",
+			"sdi", $c->libelle, $c->poids, $c->id);
+	}
+
+	/**
+	 * Mettre à jour un lot dans la base de données.
+	 */
+	public static function setLot($code, Lot $l) {
+		if(!isset($code, $l)) return false;
+		return DBLayer::preparedQuery("UPDATE lot SET `codeLot`=?, `calibreLot`=?, `idLivraison`=?, `numCommande`=? WHERE `codeLot` LIKE ?",
+			"ssiis", $l->code, $l->calibre, $l->idLivraison, $l->numCommande, $code);
+	}
+
+	/**
+	 * Mettre à jour une livraison dans la base de données.
+	 */
+	public static function setLivraison(Livraison $l) {
+		if(!isset($l)) return false;
+		return DBLayer::preparedQuery("UPDATE livraison SET `dateLivraison`=?, `typeProduit`=?, `quantiteLivree`=?, `idVerger`=? WHERE `idLivraison`=?",
+			"ssiii", $l->date, $l->type, $l->quantite, $l->idVerger, $l->id);
+	}
+
+	/**
+	 * Mettre à jour un verger dans la base de données.
+	 */
+	public static function setVerger(Verger $v) {
+		if(!isset($v)) return false;
+		return DBLayer::preparedQuery("UPDATE verger SET `nomVerger`=?, `superficie`=?, `arbresParHectare`=?, `libelle`=?, `idCommune`=?, `nomProducteur`=? WHERE `idVerger`=?",
+			"siisisi", $v->nom, $v->superficie, $v->arbresParHectare, $v->libelleVariete, $v->idCommune, $v->nomProducteur, $v->id);
+	}
+
+	/**
+	 * Mettre à jour une variété dans la base de données.
+	 */
+	public static function setVariete($libelle, Variete $v) {
+		if(!isset($libelle, $v)) return false;
+		return DBLayer::preparedQuery("UPDATE variete SET `libelle`=?, `varieteAoc`=? WHERE `libelle` LIKE ?",
+			"si", $v->libelle, $v->aoc, $libelle);
+	}
+
+	/**
+	 * Mettre à jour une commune dans la base de données.
+	 */
+	public static function setCommune(Commune $c) {
+		if(!isset($c)) return false;
+		return DBLayer::preparedQuery("UPDATE commune SET `nomCommune`=?, `communeAoc`=? WHERE `idCommune`=?",
+			"isi", $c->nom, $c->aoc, $c->id);
+	}
+
+	/**
+	 * Mettre à jour un utilisateur dans la base de données.
+	 */
+	public static function setUtilisateur(Utilisateur $u, $pass) {
+		if(!isset($u, $pass)) return false;
+		return DBLayer::preparedQuery("UPDATE utilisateur SET `name`=?, `pass`=?, `admin`=?, `nomProducteur`=? WHERE `id`=?",
+			"issis", $u->nom, crypt($pass), $u->admin, $u->nomProducteur, $u->id);
+	}
 }
 ?>
