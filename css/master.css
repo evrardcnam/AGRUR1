@@ -105,13 +105,20 @@ div.rowtable > .row > .major {
 	font-weight:bold;
 }
 
-#content .row > div.dataname {
+#content .row.datarow {
+	margin-bottom: 1em;
+}
+
+#content .row.datarow > div.name {
 	color: #FD9E16;
 	text-align:right;
 	font-weight:bold;
+	padding-top:0.5em;
 }
 
-#content .row > div.data {
+#content .row.datarow > div.value {
 	background-color: white;
 	color: black;
+	min-height:3em;
+	padding: 0.5em;
 }

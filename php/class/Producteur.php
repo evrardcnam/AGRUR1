@@ -7,14 +7,40 @@ class Producteur {
     private $_adherent;
     private $_adresseProducteur;
     private $_idUtilisateur;
-    // Constructeur de la classe depuis la couche d'accès aux données
-    public function __construct(DBQueryResult $result){
-        $this->_nomProducteur = $result->nomProducteur;
-        $this->_dateAdhesion = $result->dateAdhesion;
-        $this->_adherent = $result->adherent;
-        $this->_adresseProducteur = $result->adresseProducteur;
-        $this->_idUtilisateur = $result->idUser;
+    
+    public function __construct() {
     }
+    
+    // Constructeur de la classe depuis l'extérieur
+    public static function fromValues($nom, $adresse, $adherent, $date, $idUser) {
+        $instance = new self();
+        $instance->fillValues($nom, $adresse, $adherent, $date, $idUser);
+        return $instance;
+    }
+
+    // Constructeur de la classe depuis la couche d'accès aux données
+    public static function fromResult(DBQueryResult $result) {
+        $instance = new self();
+        $instance->fillRow($result);
+        return $instance;
+    }
+
+    protected function fillValues($nom, $adresse, $adherent, $date, $idUser) {
+        $this->_nomProducteur = $nom;
+        $this->_adresseProducteur = $adresse;
+        $this->_adherent = $adherent;
+        $this->_dateAdhesion = $date;
+        $this->_idUtilisateur = $idUser;
+    }
+
+    protected function fillRow(DBQueryResult $row) {
+        $this->_nomProducteur = $row->nomProducteur;
+        $this->_dateAdhesion = $row->dateAdhesion;
+        $this->_adherent = $row->adherent;
+        $this->_adresseProducteur = $row->adresseProducteur;
+        $this->_idUtilisateur = $row->idUser;
+    }
+
     // Accesseur
     public function __get($var){
         switch ($var){

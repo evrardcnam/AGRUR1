@@ -6,7 +6,7 @@ spl_autoload_register(function ($class_name) {
 });
 // Constantes d'identification pour la base de données
 define('DB_HOST', 'localhost');
-define('DB_USER', 'agrur');
-define('DB_PASSWORD', "les noix c'est la vie");
+define('DB_USER', 'root');
+define('DB_PASSWORD', '');
 define('DB_DB', 'agrur');
 ?>

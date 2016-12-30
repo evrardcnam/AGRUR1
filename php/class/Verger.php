@@ -5,19 +5,46 @@ class Verger {
     private $_idVerger;
     private $_nomVerger;
     private $_superficie;
-    private $_arbreParHectare;
+    private $_arbresParHectare;
     private $_nomProducteur;
     private $_libelleVariete;
     private $_idCommune;
+
+    public function __construct() {
+    }
+    
+    // Constructeur de la classe depuis l'extérieur
+    public static function fromValues($id, $nom, $superficie, $arbresParHectare, $nomProducteur, $libelleVariete, $idCommune) {
+        $instance = new self();
+        $instance->fillValues($id, $nom, $superficie, $arbresParHectare, $nomProducteur, $libelleVariete, $idCommune);
+        return $instance;
+    }
+
     // Constructeur de la classe depuis la couche d'accès aux données
-    public function __construct(DBQueryResult $result){
-        $this->_idVerger = $result->idVerger;
-        $this->_nomVerger = $result->nomVerger;
-        $this->_superficie = $result->superficie;
-        $this->_arbreParHectare = $result->arbreParHectare;
-        $this->_nomProducteur = $result->nomProducteur;
-        $this->_libelleVariete = $result->libelle;
-        $this->_idCommune = $result->idCommune;
+    public static function fromResult(DBQueryResult $result) {
+        $instance = new self();
+        $instance->fillRow($result);
+        return $instance;
+    }
+
+    protected function fillValues($id, $nom, $superficie, $arbresParHectare, $nomProducteur, $libelleVariete, $idCommune) {
+        $this->_idVerger = $id;
+        $this->_nomVerger = $nom;
+        $this->_superficie = $superficie;
+        $this->_arbresParHectare = $arbresParHectare;
+        $this->_nomProducteur = $nomProducteur;
+        $this->_libelleVariete = $libelleVariete;
+        $this->_idCommune = $idCommune;
+    }
+
+    protected function fillRow(DBQueryResult $row) {
+        $this->_idVerger = $row->idVerger;
+        $this->_nomVerger = $row->nomVerger;
+        $this->_superficie = $row->superficie;
+        $this->_arbresParHectare = $row->arbresParHectare;
+        $this->_nomProducteur = $row->nomProducteur;
+        $this->_libelleVariete = $row->libelle;
+        $this->_idCommune = $row->idCommune;
     }
     // Accesseur
     public function __get($var){
@@ -31,8 +58,8 @@ class Verger {
             case 'superficie':
                 return $this->_superficie;
                 break;
-            case 'arbreParHectare':
-                return $this->_arbreParHectare;
+            case 'arbresParHectare':
+                return $this->_arbresParHectare;
                 break;
             case 'nomProducteur':
                 return $this->_nomProducteur;

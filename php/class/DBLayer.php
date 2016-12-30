@@ -26,7 +26,7 @@ class DBLayer {
 	 * N'est utilisée que par les fonctions internes et ne doit pas être exploitée directement par les fonctions publiques. 
 	 */
 	private static function dbconnect() {
-		$conn = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_DB);
+		$conn = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_DB);
 		if (!$conn || $conn->connect_error) {
 			die('Erreur de connexion (' . $conn->connect_errno . ') ' . $conn->connect_error);
 		}
@@ -57,6 +57,21 @@ class DBLayer {
 	}
 
 	/**
+	 * Exécuter une requête préparée sur la base de données. Ne retournera pas de résultat.
+	 * Utiliser query() pour des requêtes SELECT ou requiérant un résultat.
+	 * Ne doit en aucun cas être utilisé directement sur une page.
+	 */
+	private static function preparedQuery($sql, $types, ...$values) {
+		$db = DBLayer::dbconnect();
+		$stmt = $db->stmt_init();
+		$stmt->prepare($sql);
+		$stmt->bind_param($types, ...$values);
+		$ret = $stmt->execute();
+		$stmt->close();
+		return $ret;
+	}
+
+	/**
 	 * Obtenir tous les producteurs.
 	 */
 	public static function getProducteurs() {
@@ -65,7 +80,7 @@ class DBLayer {
 		else {
 			$object_results = array();
 			foreach ($results as $result){
-				$object_results[] = new Producteur($result);
+				$object_results[] = Producteur::fromResult($result);
 			}
 			return $object_results;
 		}
@@ -77,7 +92,7 @@ class DBLayer {
 	public static function getProducteur($nom) {
 		$results = DBLayer::query('SELECT * FROM producteur WHERE nomProducteur LIKE "' . $nom . '" LIMIT 0,1"');
 		if (!$results) { return null; }
-		else { return new Producteur($results[0]); }
+		else { return Producteur::fromResult($results[0]); }
 	}
 
 	/**
@@ -89,7 +104,7 @@ class DBLayer {
 		else {
 			$object_results = array();
 			foreach ($results as $result){
-				$object_results[] = new Client($result);
+				$object_results[] = Client::fromResult($result);
 			}
 			return $object_results;
 		}
@@ -101,7 +116,7 @@ class DBLayer {
 	public static function getClient($nom) {
 		$results = DBLayer::query('SELECT * FROM client WHERE nomClient LIKE "' . $nom . '" LIMIT 0,1');
 		if (!$results) { return null; }
-		else { return new Client($results[0]); }
+		else { return Client::fromResult($results[0]); }
 	}
 
 	/**
@@ -113,7 +128,7 @@ class DBLayer {
 		else {
 			$object_results = array();
 			foreach ($results as $result){
-				$object_results[] = new Certification($result);
+				$object_results[] = Certification::fromResult($result);
 			}
 			return $object_results;
 		}
@@ -128,7 +143,7 @@ class DBLayer {
 		else {
 			$object_results = array();
 			foreach ($results as $result){
-				$object_results[] = new Commande($result);
+				$object_results[] = Commande::fromResult($result);
 			}
 			return $object_results;
 		}
@@ -143,7 +158,7 @@ class DBLayer {
 		else {
 			$object_results = array();
 			foreach ($results as $result){
-				$object_results[] = new Conditionnement($result);
+				$object_results[] = Conditionnement::fromResult($result);
 			}
 			return $object_results;
 		}
@@ -158,7 +173,7 @@ class DBLayer {
 		else {
 			$object_results = array();
 			foreach ($results as $result){
-				$object_results[] = new Lot($result);
+				$object_results[] = Lot::fromResult($result);
 			}
 			return $object_results;
 		}
@@ -173,7 +188,7 @@ class DBLayer {
 		else {
 			$object_results = array();
 			foreach ($results as $result){
-				$object_results[] = new Livraison($result);
+				$object_results[] = Livraison::fromResult($result);
 			}
 			return $object_results;
 		}
@@ -188,7 +203,7 @@ class DBLayer {
 		else {
 			$object_results = array();
 			foreach ($results as $result){
-				$object_results[] = new Verger($result);
+				$object_results[] = Verger::fromResult($result);
 			}
 			return $object_results;
 		}
@@ -203,7 +218,7 @@ class DBLayer {
 		else {
 			$object_results = array();
 			foreach ($results as $result){
-				$object_results[] = new Variete($result);
+				$object_results[] = Variete::fromResult($result);
 			}
 			return $object_results;
 		}
@@ -218,22 +233,22 @@ class DBLayer {
 		else {
 			$object_results = array();
 			foreach ($results as $result){
-				$object_results[] = new Commune($result);
+				$object_results[] = Commune::fromResult($result);
 			}
 			return $object_results;
 		}
 	}
 
 	/**
-	 * Obtenir toutes les certifications validées pour un producteur spécifique 
+	 * Obtenir toutes les certifications validées pour un producteur spécifique .
 	 */
 	public static function getCertificationsValidees(Producteur $p) {
-		$results = DBLayer::query('SELECT C.idCertification, C.libelleCertification, O.dateObtention FROM certification C, obtient O WHERE O.idCertification = C.idCertification AND O.nomProducteur LIKE "' . $p->nom . '" ORDER BY libelleCertification ASC');
+		$results = DBLayer::query('SELECT C.idCertification, C.libelleCertification, O.dateObtention, O.nomProducteur FROM certification C, obtient O WHERE O.idCertification = C.idCertification AND O.nomProducteur LIKE "' . $p->nom . '" ORDER BY libelleCertification ASC');
 		if (!$results) { return $results; }
 		else {
 			$object_results = array();
 			foreach ($results as $result){
-				$object_results[] = new CertObtenue($result);
+				$object_results[] = CertObtenue::fromResult($result);
 			}
 			return $object_results;
 		}
@@ -248,7 +263,7 @@ class DBLayer {
 		else {
 			$object_results = array();
 			foreach ($results as $result){
-				$object_results[] = new Utilisateur($result);
+				$object_results[] = Utilisateur::fromResult($result);
 			}
 			return $object_results;
 		}
@@ -260,7 +275,7 @@ class DBLayer {
 	public static function getUtilisateur($pseudo) {
 		$results = DBLayer::query('SELECT id, name, admin FROM users WHERE name LIKE "' . $pseudo . '" LIMIT 0,1');
 		if (!$results) { return null; }
-		else { return new Utilisateur($results[0]); }
+		else { return Utilisateur::fromResult($results[0]); }
 	}
 
 	/**
@@ -269,7 +284,7 @@ class DBLayer {
 	public static function getLotCommande(Commande $c) {
 		$results = DBLayer::query("SELECT * FROM lot WHERE numCommande = " . $c->num . " LIMIT 0,1");
 		if (!$results) { return null; }
-		else { return new Lot($results[0]); }
+		else { return Lot::fromResult($results[0]); }
 	}
 
 	/**
@@ -278,7 +293,7 @@ class DBLayer {
 	public static function getConditionnementCommande(Commande $c) {
 		$results = DBLayer::query("SELECT D.idConditionnement, D.libelleConditionnement, D.poids FROM conditionnement D, commande C WHERE C.idConditionnement = D.idConditionnement AND numCommande = " . $c->num . " LIMIT 0,1");
 		if (!$results) { return null; }
-		else { return new Conditionnement($results[0]); }
+		else { return Conditionnement::fromResult($results[0]); }
 	}
 
 	/**
@@ -297,7 +312,7 @@ class DBLayer {
 		else {
 			$object_results = array();
 			foreach ($results as $result){
-				$object_results[] = new Lot($result);
+				$object_results[] = Lot::fromResult($result);
 			}
 			return $object_results;
 		}
@@ -309,7 +324,7 @@ class DBLayer {
 	public static function getVergerLivraison(Livraison $l) {
 		$results = DBLayer::query("SELECT * FROM verger WHERE idVerger = " . $l->idVerger . " LIMIT 0,1");
 		if (!$results) { return null; }
-		else { return new Verger($results[0]); }
+		else { return Verger::fromResult($results[0]); }
 	}
 
 	/**
@@ -325,7 +340,7 @@ class DBLayer {
 	public static function getVarieteVerger(Verger $v) {
 		$results = DBLayer::query("SELECT * FROM variete WHERE libelle = " . $v->libelleVariete . " LIMIT 0,1");
 		if (!$results) { return null; }
-		else { return new Variete($results[0]); }
+		else { return Variet::fromResult($results[0]); }
 	}
 
 	/**
@@ -334,7 +349,7 @@ class DBLayer {
 	public static function getCommuneVerger(Verger $v) {
 		$results = DBLayer::query("SELECT * FROM commune WHERE idCommune = " . $v->idCommune . " LIMIT 0,1");
 		if (!$results) { return null; }
-		else { return new Commune($results[0]); }
+		else { return Commune::fromResult($results[0]); }
 	}
 
 	/**
@@ -343,7 +358,7 @@ class DBLayer {
 	public static function getUtilisateurProducteur(Producteur $p) {
 		$results = DBLayer::query("SELECT id,name,admin FROM users WHERE id = " . $p->idUtilisateur . " LIMIT 0,1");
 		if (!$results) { return null; }
-		else { return new Utilisateur($results[0]); }
+		else { return Utilisateur::fromResult($results[0]); }
 	}
 
 	/**
@@ -352,7 +367,7 @@ class DBLayer {
 	public static function getProducteurUtilisateur(Utilisateur $u) {
 		$results = DBLayer::query("SELECT * FROM producteur WHERE idUser = " . $u->id . " LIMIT 0,1");
 		if (!$results) { return null; }
-		else { return new Producteur($results[0]); }
+		else { return Producteur::fromResult($results[0]); }
 	}
 
 	/**
@@ -362,6 +377,310 @@ class DBLayer {
 		if($u == null) return false;
 		$results = DBLayer::query("SELECT pass FROM users WHERE id = " . $u->id . " LIMIT 0,1");
 		return password_verify($pass, $results[0]->pass);
+	}
+
+	/**
+	 * Ajouter un producteur dans la base de données.
+	 */
+	public static function addProducteur(Producteur $p) {
+		if(!isset($p)) return false;
+		return DBLayer::preparedQuery("INSERT INTO producteur(nomProducteur,adresseProducteur,adherent,dateAdhesion,idUser) VALUES (?,?,?,?,?)",
+			"ssisi", $p->nom, $p->adresse, $p->adherent, $p->dateAdhesion, $p->idUser);
+	}
+	
+	/**
+	 * Ajouter un client dans la base de données.
+	 */
+	public static function addClient(Client $c) {
+		if(!isset($c)) return false;
+		return DBLayer::preparedQuery("INSERT INTO client(nomClient,adresseClient,nomResAchats) VALUES (?,?,?)",
+			"sss", $c->nom, $c->adresse,$c->nomResAchats);
+	}
+
+	/**
+	 * Ajouter une certification dans la base de données.
+	 */
+	public static function addCertification(Certification $c) {
+		if(!isset($c)) return false;
+		return DBLayer::preparedQuery("INSERT INTO certification(idCertification,libelleCertification) VALUES (?,?)",
+			"is", $c->id, $c->libelle);
+	}
+
+	/**
+	 * Ajouter une commande dans la base de données.
+	 */
+	public static function addCommande(Commande $c) {
+		if(!isset($c)) return false;
+		return DBLayer::preparedQuery("INSERT INTO commande(numCommande,dateEnvoie,idConditionnement,codeLot,nomClient) VALUES (?,?,?,?,?)",
+			"isiss", $c->num, $c->date, $c->idCond, $c->codeLot, $c->nomClient);
+	}
+
+	/**
+	 * Ajouter un conditionnement dans la base de données.
+	 */
+	public static function addConditionnement(Conditionnement $c) {
+		if(!isset($c)) return false;
+		return DBLayer::preparedQuery("INSERT INTO conditionnement(idConditionnement,libelleConditionnement,poids) VALUES (?,?,?)",
+			"isd", $c->id, $c->libelle, $c->poids);
+	}
+
+	/**
+	 * Ajouter un lot dans la base de données.
+	 */
+	public static function addLot(Lot $l) {
+		if(!isset($l)) return false;
+		return DBLayer::preparedQuery("INSERT INTO lot(codeLot,calibreLot,idLivraison,numCommande) VALUES (?,?,?,?)",
+			"ssii", $l->code, $l->calibre, $l->idLivraison, $l->numCommande);
+	}
+
+	/**
+	 * Ajouter une livraison dans la base de données.
+	 */
+	public static function addLivraison(Livraison $l) {
+		if(!isset($l)) return false;
+		return DBLayer::preparedQuery("INSERT INTO livraison(idLivraison,dateLivraison,typeProduit,quantiteLivree,idVerger) VALUES (?,?,?,?,?)",
+			"issii", $l->id, $l->date, $l->type, $l->quantite, $l->idVerger);
+	}
+
+	/**
+	 * Ajouter un verger dans la base de données.
+	 */
+	public static function addVerger(Verger $v) {
+		if(!isset($v)) return false;
+		return DBLayer::preparedQuery("INSERT INTO verger(idVerger,nomVerger,superficie,arbresParHectare,libelle,idCommune,nomProducteur) VALUES (?,?,?,?,?,?,?)",
+			"isiisis", $v->id, $v->nom, $v->superficie, $v->arbresParHectare, $v->libelleVariete, $v->idCommune, $v->nomProducteur);
+	}
+
+	/**
+	 * Ajouter une variété dans la base de données.
+	 */
+	public static function addVariete(Variete $v) {
+		if(!isset($v)) return false;
+		return DBLayer::preparedQuery("INSERT INTO variete(libelle,varieteAoc) VALUES (?,?)",
+			"si", $v->libelle, $v->aoc);
+	}
+
+	/**
+	 * Ajouter une commune dans la base de données.
+	 */
+	public static function addCommune(Commune $c) {
+		if(!isset($c)) return false;
+		return DBLayer::preparedQuery("INSERT INTO commune(idCommune,nomCommune,communeAoc) VALUES (?,?,?)",
+			"isi", $c->id, $c->nom, $c->aoc);
+	}
+
+	/**
+	 * Ajouter une validation de certification dans la base de données.
+	 */
+	public static function addCertObtenue(CertObtenue $c) {
+		if(!isset($c)) return false;
+		return DBLayer::preparedQuery("INSERT INTO obtient(idCertification,nomProducteur,dateObtention) VALUES (?,?,?)",
+			"iss", $c->id, $c->nomProducteur, $c->date);
+	}
+
+	/**
+	 * Ajouter un utilisateur dans la base de données.
+	 */
+	public static function addUtilisateur(Utilisateur $u, $pass) {
+		if(!isset($u)) return false;
+		return DBLayer::preparedQuery("INSERT INTO utilisateur(id,name,pass,admin,nomProducteur) VALUES (?,?,?,?,?)",
+			"issis", $u->id, $u->nom, crypt($pass), $u->admin, $u->nomProducteur);
+	}
+
+	/**
+	 * Mettre à jour un producteur dans la base de données.
+	 */
+	public static function setProducteur($nom, Producteur $p) {
+		if(!isset($nom, $p)) return false;
+		return DBLayer::preparedQuery("UPDATE producteur SET `nomProducteur`=?,`adresseProducteur`=?,`adherent`=?,`dateAdhesion`=?,`idUser`=? WHERE `nomProducteur` LIKE ?",
+			"ssisis", $p->nom, $p->adresse, $p->adherent, $p->dateAdhesion, $p->idUser, $nom);
+	}
+	
+	/**
+	 * Mettre à jour un client dans la base de données.
+	 */
+	public static function setClient($nom, Client $c) {
+		if(!isset($nom, $c)) return false;
+		return DBLayer::preparedQuery("UPDATE client SET `nomClient`=?,`adresseClient`=?,`nomResAchats`=? WHERE `nomClient` LIKE ?",
+			"ssss", $c->nom, $c->adresse,$c->nomResAchats, $nom);
+	}
+
+	/**
+	 * Mettre à jour une certification dans la base de données.
+	 */
+	public static function setCertification(Certification $c) {
+		if(!isset($c)) return false;
+		return DBLayer::preparedQuery("UPDATE certification SET `libelleCertification`=? WHERE `idCertification`=?",
+			"si", $c->libelle, $c->id);
+	}
+
+	/**
+	 * Mettre à jour une commande dans la base de données.
+	 */
+	public static function setCommande(Commande $c) {
+		if(!isset($c)) return false;
+		return DBLayer::preparedQuery("UPDATE commande SET `dateEnvoie`=?, `idConditionnement`=?, `codeLot`=?, `nomClient`=? WHERE `numCommande`=?",
+			"sissi", $c->date, $c->idCond, $c->codeLot, $c->nomClient, $c->num);
+	}
+
+	/**
+	 * Mettre à jour un conditionnement dans la base de données.
+	 */
+	public static function setConditionnement(Conditionnement $c) {
+		if(!isset($c)) return false;
+		return DBLayer::preparedQuery("UPDATE conditionnement SET `libelleConditionnement`=?, `poids`=? WHERE `idConditionnement`=?",
+			"sdi", $c->libelle, $c->poids, $c->id);
+	}
+
+	/**
+	 * Mettre à jour un lot dans la base de données.
+	 */
+	public static function setLot($code, Lot $l) {
+		if(!isset($code, $l)) return false;
+		return DBLayer::preparedQuery("UPDATE lot SET `codeLot`=?, `calibreLot`=?, `idLivraison`=?, `numCommande`=? WHERE `codeLot` LIKE ?",
+			"ssiis", $l->code, $l->calibre, $l->idLivraison, $l->numCommande, $code);
+	}
+
+	/**
+	 * Mettre à jour une livraison dans la base de données.
+	 */
+	public static function setLivraison(Livraison $l) {
+		if(!isset($l)) return false;
+		return DBLayer::preparedQuery("UPDATE livraison SET `dateLivraison`=?, `typeProduit`=?, `quantiteLivree`=?, `idVerger`=? WHERE `idLivraison`=?",
+			"ssiii", $l->date, $l->type, $l->quantite, $l->idVerger, $l->id);
+	}
+
+	/**
+	 * Mettre à jour un verger dans la base de données.
+	 */
+	public static function setVerger(Verger $v) {
+		if(!isset($v)) return false;
+		return DBLayer::preparedQuery("UPDATE verger SET `nomVerger`=?, `superficie`=?, `arbresParHectare`=?, `libelle`=?, `idCommune`=?, `nomProducteur`=? WHERE `idVerger`=?",
+			"siisisi", $v->nom, $v->superficie, $v->arbresParHectare, $v->libelleVariete, $v->idCommune, $v->nomProducteur, $v->id);
+	}
+
+	/**
+	 * Mettre à jour une variété dans la base de données.
+	 */
+	public static function setVariete($libelle, Variete $v) {
+		if(!isset($libelle, $v)) return false;
+		return DBLayer::preparedQuery("UPDATE variete SET `libelle`=?, `varieteAoc`=? WHERE `libelle` LIKE ?",
+			"si", $v->libelle, $v->aoc, $libelle);
+	}
+
+	/**
+	 * Mettre à jour une commune dans la base de données.
+	 */
+	public static function setCommune(Commune $c) {
+		if(!isset($c)) return false;
+		return DBLayer::preparedQuery("UPDATE commune SET `nomCommune`=?, `communeAoc`=? WHERE `idCommune`=?",
+			"isi", $c->nom, $c->aoc, $c->id);
+	}
+
+	/**
+	 * Mettre à jour un utilisateur dans la base de données.
+	 */
+	public static function setUtilisateur(Utilisateur $u, $pass) {
+		if(!isset($u, $pass)) return false;
+		return DBLayer::preparedQuery("UPDATE utilisateur SET `name`=?, `pass`=?, `admin`=?, `nomProducteur`=? WHERE `id`=?",
+			"issis", $u->nom, crypt($pass), $u->admin, $u->nomProducteur, $u->id);
+	}
+
+	/**
+	 * Ajouter un producteur dans la base de données.
+	 */
+	public static function removeProducteur(Producteur $p) {
+		if(!isset($p)) return false;
+		return DBLayer::preparedQuery("DELETE FROM producteur WHERE nomProducteur LIKE ?", "s", $p->nom);
+	}
+	
+	/**
+	 * Ajouter un client dans la base de données.
+	 */
+	public static function removeClient(Client $c) {
+		if(!isset($c)) return false;
+		return DBLayer::preparedQuery("DELETE FROM client WHERE `nomClient` LIKE ?", "s", $c->nom);
+	}
+
+	/**
+	 * Ajouter une certification dans la base de données.
+	 */
+	public static function removeCertification(Certification $c) {
+		if(!isset($c)) return false;
+		return DBLayer::preparedQuery("DELETE FROM certification WHERE `idCertification`=?", "i", $c->id);
+	}
+
+	/**
+	 * Ajouter une commande dans la base de données.
+	 */
+	public static function removeCommande(Commande $c) {
+		if(!isset($c)) return false;
+		return DBLayer::preparedQuery("DELETE FROM commande WHERE `numCommande`=?", "i", $c->num);
+	}
+
+	/**
+	 * Ajouter un conditionnement dans la base de données.
+	 */
+	public static function removeConditionnement(Conditionnement $c) {
+		if(!isset($c)) return false;
+		return DBLayer::preparedQuery("DELETE FROM conditionnement WHERE `idConditionnement`=?", "i", $c->id);
+	}
+
+	/**
+	 * Ajouter un lot dans la base de données.
+	 */
+	public static function removeLot(Lot $l) {
+		if(!isset($l)) return false;
+		return DBLayer::preparedQuery("DELETE FROM lot WHERE `codeLot` LIKE ?", "s", $l->code);
+	}
+
+	/**
+	 * Ajouter une livraison dans la base de données.
+	 */
+	public static function removeLivraison(Livraison $l) {
+		if(!isset($l)) return false;
+		return DBLayer::preparedQuery("DELETE FROM livraison WHERE `idLivraison`=?", "i", $l->id);
+	}
+
+	/**
+	 * Ajouter un verger dans la base de données.
+	 */
+	public static function removeVerger(Verger $v) {
+		if(!isset($v)) return false;
+		return DBLayer::preparedQuery("DELETE FROM verger WHERE `idVerger`=?", "i", $v->id);
+	}
+
+	/**
+	 * Ajouter une variété dans la base de données.
+	 */
+	public static function removeVariete(Variete $v) {
+		if(!isset($v)) return false;
+		return DBLayer::preparedQuery("DELETE FROM variete WHERE `libelle` LIKE ?", "s", $v->libelle);
+	}
+
+	/**
+	 * Ajouter une commune dans la base de données.
+	 */
+	public static function removeCommune(Commune $c) {
+		if(!isset($c)) return false;
+		return DBLayer::preparedQuery("DELETE FROM commune WHERE `idCommune`=?", "i", $c->id);
+	}
+
+	/**
+	 * Ajouter une validation de certification dans la base de données.
+	 */
+	public static function removeCertObtenue(CertObtenue $c) {
+		if(!isset($c)) return false;
+		return DBLayer::preparedQuery("DELETE FROM obtient WHERE `idCertification`=? AND `nomProducteur` LIKE ?",
+			"is", $c->id, $c->nomProducteur);
+	}
+
+	/**
+	 * Ajouter un utilisateur dans la base de données.
+	 */
+	public static function removeUtilisateur(Utilisateur $u) {
+		if(!isset($u)) return false;
+		return DBLayer::preparedQuery("DELETE FROM utilisateur WHERE `id`=?", "i", $u->id);
 	}
 }
 ?>
