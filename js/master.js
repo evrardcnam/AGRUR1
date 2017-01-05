@@ -19,6 +19,7 @@ function showPage(href) {
 // Mise à jour des liens de pages esclaves
 function updateLinks() {
     $("a.slavePage").click(function() {
+        if($(this).hasClass("danger") && !confirm("Voulez-vous vraiment effectuer cette action ?\nCette opération est irréversible.")) return;
         showPage($(this).attr("data-link"));
     }).attr("href","#").removeClass("slavePage");
 }

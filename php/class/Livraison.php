@@ -32,7 +32,7 @@ class Livraison {
         $this->_typeProduit = $type;
         $this->_quantiteLivree = $quantite;
         $this->_nbLots = $nbLots;
-        $this->_idVerger = $idverger;
+        $this->_idVerger = $idVerger;
     }
 
     protected function fillRow(DBQueryResult $row) {

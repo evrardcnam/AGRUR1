@@ -90,7 +90,7 @@ class DBLayer {
 	 * Obtenir un producteur spécifique par son nom 
 	 */
 	public static function getProducteur($nom) {
-		$results = DBLayer::query('SELECT * FROM producteur WHERE nomProducteur LIKE "' . $nom . '" LIMIT 0,1"');
+		$results = DBLayer::query('SELECT * FROM producteur WHERE nomProducteur LIKE "' . $nom . '" LIMIT 0,1');
 		if (!$results) { return null; }
 		else { return Producteur::fromResult($results[0]); }
 	}
@@ -183,7 +183,7 @@ class DBLayer {
 	 * Obtenir toutes les livraisons 
 	 */
 	public static function getLivraisons() {
-		$results = DBLayer::query("SELECT l.idLivraison,l.dateLivraison,l.typeProduit,l.quantiteLivree,l.idVerger,count(o.codeLot) AS nbLots FROM livraison l, lot o WHERE l.idLivraison = o.idLivraison GROUP BY l.idLivraison ORDER BY l.idVerger ASC, l.dateLivraison DESC");
+		$results = DBLayer::query("SELECT l.idLivraison, l.dateLivraison, l.typeProduit, l.quantiteLivree, l.idVerger, count(o.codeLot) AS nbLots FROM livraison l LEFT OUTER JOIN lot o ON l.idLivraison = o.idLivraison GROUP BY l.idLivraison ORDER BY l.idVerger ASC, l.dateLivraison DESC");
 		if (!$results) { return $results; }
 		else {
 			$object_results = array();
@@ -192,6 +192,15 @@ class DBLayer {
 			}
 			return $object_results;
 		}
+	}
+
+	/**
+	 * Obtenir une livraison par son identifiant unique 
+	 */
+	public static function getLivraison($id) {
+		$results = DBLayer::query("SELECT l.idLivraison, l.dateLivraison, l.typeProduit, l.quantiteLivree, l.idVerger, count(o.codeLot) AS nbLots FROM livraison l LEFT OUTER JOIN lot o ON l.idLivraison = o.idLivraison GROUP BY l.idLivraison HAVING l.idLivraison = " . $id . " LIMIT 0,1");
+		if (!$results) { return null; }
+		else { return Livraison::fromResult($results[0]); }
 	}
 
 	/**
@@ -240,7 +249,7 @@ class DBLayer {
 	}
 
 	/**
-	 * Obtenir toutes les certifications validées pour un producteur spécifique .
+	 * Obtenir toutes les certifications validées pour un producteur spécifique.
 	 */
 	public static function getCertificationsValidees(Producteur $p) {
 		$results = DBLayer::query('SELECT C.idCertification, C.libelleCertification, O.dateObtention, O.nomProducteur FROM certification C, obtient O WHERE O.idCertification = C.idCertification AND O.nomProducteur LIKE "' . $p->nom . '" ORDER BY libelleCertification ASC');
@@ -272,8 +281,17 @@ class DBLayer {
 	/**
 	 * Obtenir un utilisateur par son pseudonyme.
 	 */
-	public static function getUtilisateur($pseudo) {
-		$results = DBLayer::query('SELECT id, name, admin FROM users WHERE name LIKE "' . $pseudo . '" LIMIT 0,1');
+	public static function getUtilisateurPseudo($pseudo) {
+		$results = DBLayer::query('SELECT id, name, admin, nomProducteur FROM users WHERE name LIKE "' . $pseudo . '" LIMIT 0,1');
+		if (!$results) { return null; }
+		else { return Utilisateur::fromResult($results[0]); }
+	}
+
+	/**
+	 * Obtenir un utilisateur par son pseudonyme.
+	 */
+	public static function getUtilisateurId($id) {
+		$results = DBLayer::query('SELECT id, name, admin, nomProducteur FROM users WHERE id="' . $id . '" LIMIT 0,1');
 		if (!$results) { return null; }
 		else { return Utilisateur::fromResult($results[0]); }
 	}
@@ -384,8 +402,8 @@ class DBLayer {
 	 */
 	public static function addProducteur(Producteur $p) {
 		if(!isset($p)) return false;
-		return DBLayer::preparedQuery("INSERT INTO producteur(nomProducteur,adresseProducteur,adherent,dateAdhesion,idUser) VALUES (?,?,?,?,?)",
-			"ssisi", $p->nom, $p->adresse, $p->adherent, $p->dateAdhesion, $p->idUser);
+		return DBLayer::preparedQuery("INSERT INTO producteur(nomProducteur,adresseProducteur,adherent,dateAdhesion) VALUES (?,?,?,?)",
+			"ssis", $p->nom, $p->adresse, $p->adherent, $p->dateAdhesion);
 	}
 	
 	/**
@@ -483,8 +501,8 @@ class DBLayer {
 	 */
 	public static function addUtilisateur(Utilisateur $u, $pass) {
 		if(!isset($u)) return false;
-		return DBLayer::preparedQuery("INSERT INTO utilisateur(id,name,pass,admin,nomProducteur) VALUES (?,?,?,?,?)",
-			"issis", $u->id, $u->nom, crypt($pass), $u->admin, $u->nomProducteur);
+		return DBLayer::preparedQuery("INSERT INTO users(name,pass,admin,nomProducteur) VALUES (?,?,?,?)",
+			"ssis", $u->nom, crypt($pass), $u->admin, $u->admin ? null : $u->nomProducteur);
 	}
 
 	/**
@@ -492,8 +510,8 @@ class DBLayer {
 	 */
 	public static function setProducteur($nom, Producteur $p) {
 		if(!isset($nom, $p)) return false;
-		return DBLayer::preparedQuery("UPDATE producteur SET `nomProducteur`=?,`adresseProducteur`=?,`adherent`=?,`dateAdhesion`=?,`idUser`=? WHERE `nomProducteur` LIKE ?",
-			"ssisis", $p->nom, $p->adresse, $p->adherent, $p->dateAdhesion, $p->idUser, $nom);
+		return DBLayer::preparedQuery("UPDATE producteur SET `nomProducteur`=?,`adresseProducteur`=?,`adherent`=?,`dateAdhesion`=? WHERE `nomProducteur` LIKE ?",
+			"ssiss", $p->nom, $p->adresse, $p->adherent, $p->dateAdhesion, $nom);
 	}
 	
 	/**
@@ -582,8 +600,8 @@ class DBLayer {
 	 */
 	public static function setUtilisateur(Utilisateur $u, $pass) {
 		if(!isset($u, $pass)) return false;
-		return DBLayer::preparedQuery("UPDATE utilisateur SET `name`=?, `pass`=?, `admin`=?, `nomProducteur`=? WHERE `id`=?",
-			"issis", $u->nom, crypt($pass), $u->admin, $u->nomProducteur, $u->id);
+		return DBLayer::preparedQuery("UPDATE users SET `name`=?, `pass`=?, `admin`=?, `nomProducteur`=? WHERE `id`=?",
+			"ssisi", $u->nom, crypt($pass), $u->admin, $u->admin ? null : $u->nomProducteur, $u->id);
 	}
 
 	/**
@@ -680,7 +698,7 @@ class DBLayer {
 	 */
 	public static function removeUtilisateur(Utilisateur $u) {
 		if(!isset($u)) return false;
-		return DBLayer::preparedQuery("DELETE FROM utilisateur WHERE `id`=?", "i", $u->id);
+		return DBLayer::preparedQuery("DELETE FROM users WHERE `id`=?", "i", $u->id);
 	}
 }
 ?>
