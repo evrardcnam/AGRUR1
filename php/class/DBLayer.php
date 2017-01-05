@@ -64,9 +64,7 @@ class DBLayer {
 	private static function preparedQuery($sql, $types, ...$values) {
 		$db = DBLayer::dbconnect();
 		$stmt = $db->stmt_init();
-		var_dump($stmt);
 		$stmt->prepare($sql);
-		var_dump($stmt);
 		$stmt->bind_param($types, ...$values);
 		$ret = $stmt->execute();
 		$stmt->close();
@@ -92,7 +90,7 @@ class DBLayer {
 	 * Obtenir un producteur spécifique par son nom 
 	 */
 	public static function getProducteur($nom) {
-		$results = DBLayer::query('SELECT * FROM producteur WHERE nomProducteur LIKE "' . $nom . '" LIMIT 0,1"');
+		$results = DBLayer::query('SELECT * FROM producteur WHERE nomProducteur LIKE "' . $nom . '" LIMIT 0,1');
 		if (!$results) { return null; }
 		else { return Producteur::fromResult($results[0]); }
 	}
@@ -242,7 +240,7 @@ class DBLayer {
 	}
 
 	/**
-	 * Obtenir toutes les certifications validées pour un producteur spécifique .
+	 * Obtenir toutes les certifications validées pour un producteur spécifique.
 	 */
 	public static function getCertificationsValidees(Producteur $p) {
 		$results = DBLayer::query('SELECT C.idCertification, C.libelleCertification, O.dateObtention, O.nomProducteur FROM certification C, obtient O WHERE O.idCertification = C.idCertification AND O.nomProducteur LIKE "' . $p->nom . '" ORDER BY libelleCertification ASC');
@@ -386,8 +384,8 @@ class DBLayer {
 	 */
 	public static function addProducteur(Producteur $p) {
 		if(!isset($p)) return false;
-		return DBLayer::preparedQuery("INSERT INTO producteur(nomProducteur,adresseProducteur,adherent,dateAdhesion,idUser) VALUES (?,?,?,?,?)",
-			"ssisi", $p->nom, $p->adresse, $p->adherent, $p->dateAdhesion, $p->idUser);
+		return DBLayer::preparedQuery("INSERT INTO producteur(nomProducteur,adresseProducteur,adherent,dateAdhesion) VALUES (?,?,?,?)",
+			"ssis", $p->nom, $p->adresse, $p->adherent, $p->dateAdhesion);
 	}
 	
 	/**
@@ -494,8 +492,8 @@ class DBLayer {
 	 */
 	public static function setProducteur($nom, Producteur $p) {
 		if(!isset($nom, $p)) return false;
-		return DBLayer::preparedQuery("UPDATE producteur SET `nomProducteur`=?,`adresseProducteur`=?,`adherent`=?,`dateAdhesion`=?,`idUser`=? WHERE `nomProducteur` LIKE ?",
-			"ssisis", $p->nom, $p->adresse, $p->adherent, $p->dateAdhesion, $p->idUser, $nom);
+		return DBLayer::preparedQuery("UPDATE producteur SET `nomProducteur`=?,`adresseProducteur`=?,`adherent`=?,`dateAdhesion`=? WHERE `nomProducteur` LIKE ?",
+			"ssiss", $p->nom, $p->adresse, $p->adherent, $p->dateAdhesion, $nom);
 	}
 	
 	/**
