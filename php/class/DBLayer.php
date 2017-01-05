@@ -272,8 +272,17 @@ class DBLayer {
 	/**
 	 * Obtenir un utilisateur par son pseudonyme.
 	 */
-	public static function getUtilisateur($pseudo) {
-		$results = DBLayer::query('SELECT id, name, admin FROM users WHERE name LIKE "' . $pseudo . '" LIMIT 0,1');
+	public static function getUtilisateurPseudo($pseudo) {
+		$results = DBLayer::query('SELECT id, name, admin, nomProducteur FROM users WHERE name LIKE "' . $pseudo . '" LIMIT 0,1');
+		if (!$results) { return null; }
+		else { return Utilisateur::fromResult($results[0]); }
+	}
+
+	/**
+	 * Obtenir un utilisateur par son pseudonyme.
+	 */
+	public static function getUtilisateurId($id) {
+		$results = DBLayer::query('SELECT id, name, admin, nomProducteur FROM users WHERE id="' . $id . '" LIMIT 0,1');
 		if (!$results) { return null; }
 		else { return Utilisateur::fromResult($results[0]); }
 	}
@@ -483,8 +492,8 @@ class DBLayer {
 	 */
 	public static function addUtilisateur(Utilisateur $u, $pass) {
 		if(!isset($u)) return false;
-		return DBLayer::preparedQuery("INSERT INTO utilisateur(id,name,pass,admin,nomProducteur) VALUES (?,?,?,?,?)",
-			"issis", $u->id, $u->nom, crypt($pass), $u->admin, $u->nomProducteur);
+		return DBLayer::preparedQuery("INSERT INTO users(name,pass,admin,nomProducteur) VALUES (?,?,?,?)",
+			"ssis", $u->nom, crypt($pass), $u->admin, $u->admin ? null : $u->nomProducteur);
 	}
 
 	/**
@@ -582,8 +591,8 @@ class DBLayer {
 	 */
 	public static function setUtilisateur(Utilisateur $u, $pass) {
 		if(!isset($u, $pass)) return false;
-		return DBLayer::preparedQuery("UPDATE utilisateur SET `name`=?, `pass`=?, `admin`=?, `nomProducteur`=? WHERE `id`=?",
-			"issis", $u->nom, crypt($pass), $u->admin, $u->nomProducteur, $u->id);
+		return DBLayer::preparedQuery("UPDATE users SET `name`=?, `pass`=?, `admin`=?, `nomProducteur`=? WHERE `id`=?",
+			"ssisi", $u->nom, crypt($pass), $u->admin, $u->admin ? null : $u->nomProducteur, $u->id);
 	}
 
 	/**
@@ -680,7 +689,7 @@ class DBLayer {
 	 */
 	public static function removeUtilisateur(Utilisateur $u) {
 		if(!isset($u)) return false;
-		return DBLayer::preparedQuery("DELETE FROM utilisateur WHERE `id`=?", "i", $u->id);
+		return DBLayer::preparedQuery("DELETE FROM users WHERE `id`=?", "i", $u->id);
 	}
 }
 ?>

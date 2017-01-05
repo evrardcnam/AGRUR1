@@ -7,7 +7,7 @@ class AuthManager {
      * Connexion avec un nom d'utilisateur et un mot de passe.
      */
     public static function login($name, $pass) {
-        $user = DBLayer::getUtilisateur($name);
+        $user = DBLayer::getUtilisateurPseudo($name);
         if(!$user) return false; // Utilisateur inconnu
         if(!$user->checkPassword($pass)) return false; // Mot de passe incorrect
         session_start();
