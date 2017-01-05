@@ -183,7 +183,7 @@ class DBLayer {
 	 * Obtenir toutes les livraisons 
 	 */
 	public static function getLivraisons() {
-		$results = DBLayer::query("SELECT l.idLivraison,l.dateLivraison,l.typeProduit,l.quantiteLivree,l.idVerger,count(o.codeLot) AS nbLots FROM livraison l, lot o WHERE l.idLivraison = o.idLivraison GROUP BY l.idLivraison ORDER BY l.idVerger ASC, l.dateLivraison DESC");
+		$results = DBLayer::query("SELECT l.idLivraison, l.dateLivraison, l.typeProduit, l.quantiteLivree, l.idVerger, count(o.codeLot) AS nbLots FROM livraison l LEFT OUTER JOIN lot o ON l.idLivraison = o.idLivraison GROUP BY l.idLivraison ORDER BY l.idVerger ASC, l.dateLivraison DESC");
 		if (!$results) { return $results; }
 		else {
 			$object_results = array();
@@ -192,6 +192,15 @@ class DBLayer {
 			}
 			return $object_results;
 		}
+	}
+
+	/**
+	 * Obtenir une livraison par son identifiant unique 
+	 */
+	public static function getLivraison($id) {
+		$results = DBLayer::query("SELECT l.idLivraison, l.dateLivraison, l.typeProduit, l.quantiteLivree, l.idVerger, count(o.codeLot) AS nbLots FROM livraison l LEFT OUTER JOIN lot o ON l.idLivraison = o.idLivraison GROUP BY l.idLivraison HAVING l.idLivraison = " . $id . " LIMIT 0,1");
+		if (!$results) { return null; }
+		else { return Livraison::fromResult($results[0]); }
 	}
 
 	/**
