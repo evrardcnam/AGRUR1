@@ -1,6 +1,6 @@
 <?php
 // Définit un producteur
-class Producteur {
+class Producteur implements JsonSerializable {
     //données privées de la classe
     private $_nomProducteur;
     private $_dateAdhesion;
@@ -73,6 +73,11 @@ class Producteur {
     // Conversion en chaînes de caractères
     public function __toString(){
         return $this->_nomProducteur;
+    }
+    
+    public function jsonSerialize() {
+        $arr = array('nom' => $this->_nomProducteur, 'adherent' => $this->_adherent, 'adresse' => $this->_adresseProducteur, 'idUser' => $this->_idUtilisateur);
+        if($this->_adherent) $arr["dateAdhesion"] = $this->_dateAdhesion;
     }
 }
 ?>

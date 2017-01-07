@@ -1,6 +1,6 @@
 <?php
 // Définit une certification obtenue par un producteur
-class CertObtenue extends Certification {
+class CertObtenue extends Certification implements JsonSerializable {
     //données privées de la classe
     private $_dateObtention;
     private $_nomProducteur;
@@ -55,6 +55,12 @@ class CertObtenue extends Certification {
     // Conversion en chaînes de caractères
     public function __toString(){
         return $super->__toString();
+    }
+
+    public function jsonSerialize() {
+        $a = parent::jsonSerialize();
+        $a['date'] = $this->_dateObtention;
+        $a['nomProducteur'] = $this->_nomProducteur;
     }
 }
 ?>

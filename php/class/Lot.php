@@ -1,6 +1,6 @@
 <?php
 // Définit un lot
-class Lot {
+class Lot implements JsonSerializable {
     //données privées de la classe
     private $_codeLot;
     private $_calibreLot;
@@ -61,6 +61,10 @@ class Lot {
     // Conversion en chaînes de caractères
     public function __toString(){
         return $this->_codeLot;
+    }
+    
+    public function jsonSerialize() {
+        return array('code' => $this->_codeLot, 'calibre' => $this->_calibreLot, 'idLivraison' => $this->_idLivraison, 'numCommande' => $this->_numCommande);
     }
 }
 ?>

@@ -1,6 +1,6 @@
 <?php
 // Définit une certification
-class Certification {
+class Certification implements JsonSerializable {
     //données privées de la classe
     private $_idCertification;
     private $_libelleCertification;
@@ -49,6 +49,10 @@ class Certification {
     // Conversion en chaînes de caractères
     public function __toString(){
         return $this->_libelleCertification;
+    }
+
+    public function jsonSerialize() {
+        return array('id' => $this->_idCertification, 'libelle' => $this->_libelleCertification);
     }
 }
 ?>

@@ -1,6 +1,6 @@
 <?php
 // Définit un conditionnement
-class Conditionnement {
+class Conditionnement implements JsonSerializable {
     //données privées de la classe
     private $_idConditionnement;
     private $_libelleConditionnement;
@@ -55,6 +55,10 @@ class Conditionnement {
     // Conversion en chaînes de caractères
     public function __toString(){
         return $this->_libelleConditionnement;
+    }
+    
+    public function jsonSerialize() {
+        return array('id' => $this->_idConditionnement, 'libelle' => $this->_libelleConditionnement, 'poids' => $this->_poids);
     }
 }
 ?>

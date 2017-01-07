@@ -1,6 +1,6 @@
 <?php
 // Définit une commande
-class Commande
+class Commande implements JsonSerializable
 {
     //données privées de la classe
     private $_numCommande;
@@ -82,5 +82,9 @@ class Commande
     public function __toString()
     {
         return $this->_numCommande;
+    }
+
+    public function jsonSerialize() {
+        return array('num' => $this->_numCommande, 'date' => $this->_dateEnvoie, 'nomClient' => $this->_nomClient, 'codeLot' => $this->_codeLot,'idCond' => $this->_idConditionnement);
     }
 }
