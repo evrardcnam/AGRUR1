@@ -133,6 +133,15 @@ class DBLayer {
 			return $object_results;
 		}
 	}
+
+	/**
+	 * Obtenir une certification par son identifiant unique
+	 */
+	public static function getCertification($id) {
+		$results = DBLayer::query('SELECT * FROM certification WHERE idCertification="' . $id . '" LIMIT 0,1');
+		if (!$results) { return null; }
+		else { return Certification::fromResult($results[0]); }
+	}
 	
 	/**
 	 * Obtenir toutes les commandes 
