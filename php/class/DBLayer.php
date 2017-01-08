@@ -68,7 +68,8 @@ class DBLayer {
 		$stmt->bind_param($types, ...$values);
 		$ret = $stmt->execute();
 		$stmt->close();
-		return $ret;
+		if(strpos($sql, 'INSERT' === false)) return $ret;
+		else return $db->insert_id;
 	}
 
 	/**
