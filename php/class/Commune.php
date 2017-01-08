@@ -1,6 +1,6 @@
 <?php
 // Définit une commune
-class Commune {
+class Commune implements JsonSerializable {
     //données privées de la classe
     private $_idCommune;
     private $_nomCommune;
@@ -56,6 +56,10 @@ class Commune {
     // Conversion en chaînes de caractères
     public function __toString(){
         return $this->_nomCommune;
+    }
+
+    public function jsonSerialize() {
+        return array('id' => $this->_idCommune, 'nom' => $this->_nomCommune, 'aoc' => $this->_communeAoc);
     }
 }
 ?>

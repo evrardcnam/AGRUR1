@@ -1,6 +1,6 @@
 <?php
 // Définit une livraison
-class Livraison {
+class Livraison implements JsonSerializable {
     //données privées de la classe
     private $_idLivraison;
     private $_dateLivraison;
@@ -78,6 +78,10 @@ class Livraison {
     // Conversion en chaînes de caractères
     public function __toString(){
         return $this->_idLivraison;
+    }
+    
+    public function jsonSerialize() {
+        return array('id' => $this->_idLivraison, 'date' => $this->_dateLivraison, 'type' => $this->_typeProduit, 'quantite' => $this->_quantiteLivree, 'nbLots' => $this->_nbLots, 'idVerger' => $this->_idVerger);
     }
 }
 ?>

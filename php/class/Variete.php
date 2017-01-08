@@ -1,6 +1,6 @@
 <?php
 // Définit une variété
-class Variete {
+class Variete implements JsonSerializable {
     //données privées de la classe
     private $_libelle;
     private $_varieteAoc;
@@ -50,6 +50,10 @@ class Variete {
     // Conversion en chaînes de caractères
     public function __toString(){
         return $this->_libelle;
+    }
+    
+    public function jsonSerialize() {
+        return array('libelle' => $this->_libelle, 'aoc' => $this->_varieteAoc);
     }
 }
 ?>

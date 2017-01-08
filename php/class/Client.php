@@ -1,6 +1,6 @@
 <?php
 // Définit un client
-class Client {
+class Client implements JsonSerializable {
     //données privées de la classe
     private $_nomClient;
     private $_adresseClient;
@@ -58,6 +58,10 @@ class Client {
     // Conversion en chaînes de caractères
     public function __toString(){
         return $this->_nomClient;
+    }
+
+    public function jsonSerialize() {
+        return array('nom' => $this->_nomClient, 'adresse' => $this->adresse, 'nomResAchats' => $this->_nomResAchats);
     }
 }
 ?>

@@ -2,7 +2,7 @@
 /**
  * Définit un utilisateur
  */
-class Utilisateur {
+class Utilisateur implements JsonSerializable {
     // Données privées de la classe
     private $_id;
     private $_name;
@@ -78,6 +78,12 @@ class Utilisateur {
      */
     public function __toString(){
         return $this->_name;
+    }
+    
+    public function jsonSerialize() {
+        $arr = array('id' => $this->_id, 'nom' => $this->_name, 'admin' => $this->_admin);
+        if(!$this->admin) $arr["nomProducteur"] = $this->_nomProducteur;
+        return $arr;
     }
 }
 ?>

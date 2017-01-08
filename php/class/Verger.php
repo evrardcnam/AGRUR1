@@ -1,6 +1,6 @@
 <?php
 // Définit un verger
-class Verger {
+class Verger implements JsonSerializable {
     //données privées de la classe
     private $_idVerger;
     private $_nomVerger;
@@ -87,6 +87,10 @@ class Verger {
     // Conversion en chaînes de caractères
     public function __toString(){
         return $this->_nomVerger;
+    }
+    
+    public function jsonSerialize() {
+        return array('id' => $this->_idVerger, 'nom' => $this->_nomVerger, 'superficie' => $this->_superficie, 'arbresParHectare' => $this->_arbresParHectare, 'nomProducteur' => $this->_nomProducteur, 'libelleVariete' => $this->_libelleVariete, 'idCommune' => $this->_idCommune);
     }
 }
 ?>
