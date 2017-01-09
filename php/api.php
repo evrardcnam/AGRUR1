@@ -3,8 +3,6 @@ require_once 'config.php';
 if(AuthManager::loginStatus() != U_ADMIN) exit(json_encode(array("status" => "403", "text" => "Forbidden")));
 $result = array("status" => "400", "text" => "Bad Request");
 $success = array("status" => "200", "text" => "OK");
-$notfound = array("status" => "404", "text" => "Not Found");
-// $conflict = array("status" => "409", "text" => "Conflict"); Non utilisé pour l'instant'
 
 $possible_requests = array(
     "post_client", "post_certification", "post_validation", "post_commande", "post_conditionnement", "post_lot", "post_variete", "post_commune",
@@ -73,10 +71,39 @@ if(isset($_GET["action"]) && in_array($_GET["action"], $possible_requests)) {
             if(!isset($_POST["id"], $_POST["nom"], $_POST["aoc"])) break;
             $id = DBLayer::setCommune(Commune::fromValues($_POST["id"], $_POST["nom"], $_POST["aoc"]));
             $result = $success; $result["id"] = $id; break;
+        case "delete_client":
+            if(!isset($_POST["name"])) break;
+            $c = DBLayer::getClient($_POST["name"]);
+            DBLayer::removeClient($c);
+            $result = $success; $result["del_id"] = $_POST["name"]; break;
         case "delete_certification":
             if(!isset($_POST["id"])) break;
             $c = DBLayer::getCertification($_POST["id"]);
             DBLayer::removeCertification($c);
+            $result = $success; $result["del_id"] = $_POST["id"]; break;
+        case "delete_validation":
+            if(!isset($_POST["id"], $_POST["name"])) break;
+            DBLayer::removeCertObtenue(CertObtenue::fromValues($_POST["id"], null, $_POST["name"], null));
+            $result = $success; $result["del_id"] = $_POST["id"]; break;
+        case "delete_commande":
+            if(!isset($_POST["id"])) break;
+            DBLayer::removeCommande(Commande::fromValues($_POST["id"], null, null, null, null));
+            $result = $success; $result["del_id"] = $_POST["id"]; break;
+        case "delete_conditionnement":
+            if(!isset($_POST["id"])) break;
+            DBLayer::removeConditionnement(Conditionnement::fromValues($_POST["id"], null, null));
+            $result = $success; $result["del_id"] = $_POST["id"]; break;
+        case "delete_lot":
+            if(!isset($_POST["id"])) break;
+            DBLayer::removeLot(Lot::fromValues($_POST["id"], null, null, null));
+            $result = $success; $result["del_id"] = $_POST["id"]; break;
+        case "delete_variete":
+            if(!isset($_POST["name"])) break;
+            DBLayer::removeVariete(Variete::fromValues($_POST["name"], null));
+            $result = $success; $result["del_id"] = $_POST["name"]; break;
+        case "delete_commune":
+            if(!isset($_POST["id"])) break;
+            DBLayer::removeCommune(Commune::fromValues($_POST["id"], null, null));
             $result = $success; $result["del_id"] = $_POST["id"]; break;
     }
 }
