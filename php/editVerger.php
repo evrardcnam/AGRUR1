@@ -47,17 +47,17 @@ if(isset($_GET['edit'])) {
         <div class="form-group">
             <label for="verVar" class="col-sm-2 control-label">Variété</label>
             <div class="col-sm-4">
-                <select id="verProd" class="form-control">
+                <select id="verVar" class="form-control">
                     <?php foreach (DBLayer::getVarietes() as $v) {
-                        echo '<option value="' . $v->libelle . ($v->libelle == $libelleVariete ? '" selected' : '"') . '>' . $v->nom . '</option>';
+                        echo '<option value="' . $v->libelle . ($v->libelle == $libelleVariete ? '" selected' : '"') . '>' . $v->libelle . '</option>';
                     } ?>
                 </select>
             </div>
             <label for="verCom" class="col-sm-2 control-label">Commune</label>
             <div class="col-sm-4">
-                <select id="verProd" class="form-control">
+                <select id="verCom" class="form-control">
                     <?php foreach (DBLayer::getCommunes() as $c) {
-                        echo '<option value="' . $c->nom . ($c->id == $idCommune ? '" selected' : '"') . '>' . $c->nom . '</option>';
+                        echo '<option value="' . $c->id . ($c->id == $idCommune ? '" selected' : '"') . '>' . $c->nom . '</option>';
                     } ?>
                 </select>
             </div>

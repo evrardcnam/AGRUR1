@@ -232,7 +232,7 @@ class DBLayer {
 	 * Obtenir un verger par son identifiant unique
 	 */
 	public static function getVerger($id) {
-		$results = DBLayer::query("SELECT * FROM verger WHERE idVerger=" + $id + " LIMIT 0,1");
+		$results = DBLayer::query("SELECT * FROM verger WHERE idVerger = " . $id . " LIMIT 0,1");
 		if (!$results) { return null; }
 		else { return Verger::fromResult($results[0]); }
 	}
@@ -376,7 +376,7 @@ class DBLayer {
 	 * Obtenir les vergers d'un producteur
 	 */
 	public static function getVergersProducteur(Producteur $p) {
-		$results = DBLayer::query("SELECT * FROM verger WHERE nomProducteur LIKE " + $p->nom);
+		$results = DBLayer::query("SELECT * FROM verger WHERE nomProducteur LIKE " . $p->nom);
 		if (!$results) { return $results; }
 		else {
 			$object_results = array();
@@ -393,7 +393,7 @@ class DBLayer {
 	public static function getVarieteVerger(Verger $v) {
 		$results = DBLayer::query("SELECT * FROM variete WHERE libelle = " . $v->libelleVariete . " LIMIT 0,1");
 		if (!$results) { return null; }
-		else { return Variet::fromResult($results[0]); }
+		else { return Variete::fromResult($results[0]); }
 	}
 
 	/**
@@ -535,7 +535,7 @@ class DBLayer {
 	 * Ajouter un utilisateur dans la base de données.
 	 */
 	public static function addUtilisateur(Utilisateur $u, $pass) {
-		if(!isset($u)) return false;
+		if(!isset($u) || empty($pass)) return false;
 		return DBLayer::preparedQuery("INSERT INTO users(name,pass,admin,nomProducteur) VALUES (?,?,?,?)",
 			"ssis", $u->nom, crypt($pass), $u->admin, $u->admin ? null : $u->nomProducteur);
 	}
@@ -636,7 +636,7 @@ class DBLayer {
 	public static function setUtilisateur(Utilisateur $u, $pass) {
 		if(!isset($u, $pass)) return false;
 		return DBLayer::preparedQuery("UPDATE users SET `name`=?, `pass`=?, `admin`=?, `nomProducteur`=? WHERE `id`=?",
-			"ssisi", $u->nom, crypt($pass), $u->admin, $u->admin ? null : $u->nomProducteur, $u->id);
+			"ssisi", $u->nom, empty($pass) ? null : crypt($pass), $u->admin, $u->admin ? null : $u->nomProducteur, $u->id);
 	}
 
 	/**

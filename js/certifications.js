@@ -32,7 +32,6 @@ function updateEditLinks() {
             id: id,
             libelle: $(row + ' .col-sm-10 input').val()
         }, function(data, status, xhr) {
-            console.log(data);
             if(data.status == "200") {
                 var row = '.row[data-id="' + data.id + '"]';
                 $(row + ' .col-sm-10').html($(row + ' .col-sm-10 input').val());
