@@ -1,7 +1,7 @@
 <?php require_once "config.php";
 if(isset($_GET["delete"])) DBLayer::removeProducteur(DBLayer::getProducteur(htmlspecialchars_decode($_GET["delete"])));
 else if(isset($_POST["nom"], $_POST["adresse"], $_POST["adherent"])) {
-    if(isset($_POST["edit"])) exit("edit : " . DBLayer::setProducteur($_POST["edit"], Producteur::fromValues($_POST["nom"], $_POST["adresse"], $_POST["adherent"] == "true", $_POST["dateAdhesion"], $_POST["idUser"]))); 
+    if(isset($_POST["edit"])) exit(DBLayer::setProducteur($_POST["edit"], Producteur::fromValues($_POST["nom"], $_POST["adresse"], $_POST["adherent"] == "true", $_POST["dateAdhesion"], $_POST["idUser"]))); 
     else exit(DBLayer::addProducteur(Producteur::fromValues($_POST["nom"], $_POST["adresse"], $_POST["adherent"] == "true", $_POST["dateAdhesion"], $_POST["idUser"])));
 }
 header('Content-Type: text/html; charset=utf-8'); ?>

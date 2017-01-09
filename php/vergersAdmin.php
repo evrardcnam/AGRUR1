@@ -1,5 +1,10 @@
 <?php require_once "config.php";
 if(AuthManager::loginStatus() != U_ADMIN) exit("Accès refusé");
+if(isset($_GET["delete"])) DBLayer::removeVerger(DBLayer::getVerger(htmlspecialchars_decode($_GET["delete"])));
+else if(isset($_POST["nom"], $_POST["superficie"], $_POST["arbresParHectare"], $_POST["nomProducteur"], $_POST["libelleVariete"], $_POST["idCommune"])) {
+    if(isset($_POST["edit"])) exit(DBLayer::setVerger($_POST["edit"], Verger::fromValues($_POST["edit"], $_POST["nom"], $_POST["superficie"], $_POST["arbresParHectare"], $_POST["nomProducteur"], $_POST["libelleVariete"], $_POST["idCommune"])));
+    else exit(DBLayer::addVerger(Verger::fromValues(null, $_POST["nom"], $_POST["superficie"], $_POST["arbresParHectare"], $_POST["nomProducteur"], $_POST["libelleVariete"], $_POST["idCommune"])));
+}
 header('Content-Type: text/html; charset=utf-8'); ?>
 <div class="container">
     <div class="row">

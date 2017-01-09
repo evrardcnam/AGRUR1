@@ -229,6 +229,16 @@ class DBLayer {
 	}
 
 	/**
+	 * Obtenir un verger par son identifiant unique
+	 */
+	public static function getVerger($id) {
+		$results = DBLayer::query("SELECT * FROM verger WHERE idVerger=" + $id + " LIMIT 0,1");
+		if (!$results) { return null; }
+		else { return Verger::fromResult($results[0]); }
+	}
+
+
+	/**
 	 * Obtenir toutes les variétés 
 	 */
 	public static function getVarietes() {
@@ -366,7 +376,7 @@ class DBLayer {
 	 * Obtenir les vergers d'un producteur
 	 */
 	public static function getVergersProducteur(Producteur $p) {
-		$results = DBLayer::query("SELECT * FROM verger WHERE nomProducteur LIKE " + $p->nom + " LIMIT 0,1");
+		$results = DBLayer::query("SELECT * FROM verger WHERE nomProducteur LIKE " + $p->nom);
 		if (!$results) { return $results; }
 		else {
 			$object_results = array();
