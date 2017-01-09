@@ -363,6 +363,21 @@ class DBLayer {
 	}
 
 	/**
+	 * Obtenir les vergers d'un producteur
+	 */
+	public static function getVergersProducteur(Producteur $p) {
+		$results = DBLayer::query("SELECT * FROM verger WHERE nomProducteur LIKE " + $p->nom + " LIMIT 0,1");
+		if (!$results) { return $results; }
+		else {
+			$object_results = array();
+			foreach ($results as $result){
+				$object_results[] = Verger::fromResult($result);
+			}
+			return $object_results;
+		}
+	}
+
+	/**
 	 * Obtenir la variété associée au verger
 	 */
 	public static function getVarieteVerger(Verger $v) {

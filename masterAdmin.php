@@ -22,7 +22,7 @@
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Production <span class="caret"></span></a>
 							<ul class="dropdown-menu">
 								<li><a class="slavePage" data-link="php/producteurs.php">Producteurs</a></li>
-								<li><a class="slavePage" data-link="php/vergers.php">Vergers</a></li>
+								<li><a class="slavePage" data-link="php/vergersAdmin.php">Vergers</a></li>
 								<li><a class="slavePage" data-link="php/varietes.php">Variétés</a></li>
 								<li><a class="slavePage" data-link="php/livraisons.php">Livraisons</a></li>
 								<li><a class="slavePage" data-link="php/lots.php">Lots</a></li>
