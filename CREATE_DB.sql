@@ -3,13 +3,11 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Dim 08 Janvier 2017 à 19:54
+-- Généré le :  Lun 09 Janvier 2017 à 22:05
 -- Version du serveur :  10.1.19-MariaDB
 -- Version de PHP :  5.6.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -64,6 +62,32 @@ CREATE TABLE `commande` (
   `nomClient` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Déclencheurs `commande`
+--
+DROP TRIGGER IF EXISTS `after_insert_commande`;
+DELIMITER $$
+CREATE TRIGGER `after_insert_commande` AFTER INSERT ON `commande` FOR EACH ROW BEGIN
+  UPDATE `lot` SET `numCommande` = NEW.numCommande WHERE `lot`.`codeLot` LIKE NEW.codeLot;
+END
+$$
+DELIMITER ;
+DROP TRIGGER IF EXISTS `after_update_commande`;
+DELIMITER $$
+CREATE TRIGGER `after_update_commande` AFTER UPDATE ON `commande` FOR EACH ROW BEGIN
+  IF (OLD.codeLot <> NEW.codeLot) THEN
+    UPDATE `lot` SET `numCommande` = NEW.numCommande WHERE `lot`.`codeLot` LIKE NEW.codeLot;
+    UPDATE `lot` SET `numCommande` = NULL WHERE `lot`.`codeLot` LIKE OLD.codeLot;
+  END IF;
+END
+$$
+DELIMITER ;
+DROP TRIGGER IF EXISTS `before_delete_commande`;
+DELIMITER $$
+CREATE TRIGGER `before_delete_commande` BEFORE DELETE ON `commande` FOR EACH ROW UPDATE `lot` SET `numCommande` = NULL WHERE `lot`.`codeLot` LIKE OLD.codeLot
+$$
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
@@ -114,7 +138,7 @@ CREATE TABLE `livraison` (
 DROP TABLE IF EXISTS `lot`;
 CREATE TABLE `lot` (
   `codeLot` varchar(255) NOT NULL,
-  `calibreLot` varchar(255) DEFAULT NULL,
+  `calibreLot` varchar(255) NOT NULL,
   `idLivraison` int(11) DEFAULT NULL,
   `numCommande` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -163,13 +187,6 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Contenu de la table `users`
---
-
-INSERT INTO `users` (`id`, `name`, `pass`, `admin`, `nomProducteur`) VALUES
-(2, 'vdev', '$2y$10$IJRaJ3p8YrleatqAaP.uJ.wkZ.zVG2hKwxk4YAJeLGV1ZQDRDTDlG', 1, NULL);
-
---
 -- Déclencheurs `users`
 --
 DROP TRIGGER IF EXISTS `after_insert_users`;
@@ -198,15 +215,6 @@ DELIMITER $$
 CREATE TRIGGER `before_delete_users` BEFORE DELETE ON `users` FOR EACH ROW BEGIN
   IF (OLD.admin = 0) THEN
     UPDATE `producteur` SET `idUser` = NULL WHERE `producteur`.`nomProducteur` LIKE OLD.nomProducteur;
-  END IF;
-END
-$$
-DELIMITER ;
-DROP TRIGGER IF EXISTS `before_update_users`;
-DELIMITER $$
-CREATE TRIGGER `before_update_users` BEFORE UPDATE ON `users` FOR EACH ROW BEGIN
-  IF (NEW.pass IS NULL OR NEW.pass = '') THEN 
-    SET NEW.pass = OLD.pass;
   END IF;
 END
 $$
@@ -337,7 +345,7 @@ ALTER TABLE `verger`
 -- AUTO_INCREMENT pour la table `certification`
 --
 ALTER TABLE `certification`
-  MODIFY `idCertification` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `idCertification` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT pour la table `commande`
 --
@@ -367,7 +375,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT pour la table `verger`
 --
 ALTER TABLE `verger`
-  MODIFY `idVerger` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idVerger` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- Contraintes pour les tables exportées
 --
@@ -419,7 +427,6 @@ ALTER TABLE `verger`
   ADD CONSTRAINT `FK_verger_idCommune` FOREIGN KEY (`idCommune`) REFERENCES `commune` (`idCommune`),
   ADD CONSTRAINT `FK_verger_libelle` FOREIGN KEY (`libelle`) REFERENCES `variete` (`libelle`),
   ADD CONSTRAINT `FK_verger_nomProducteur` FOREIGN KEY (`nomProducteur`) REFERENCES `producteur` (`nomProducteur`);
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
