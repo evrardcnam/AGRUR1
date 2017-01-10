@@ -45,6 +45,7 @@ if(isset($_GET['edit'])) {
         <div class="col-xs-12"><h2>Certifications validées</h2></div>
     </div>
     <?php if(isset($_GET['edit'])) { ?>
+    <script type="text/javascript" src="js/editCertObtenue.js"></script>
     <div class="rowtable">
         <div class="row">
             <div class="col-xs-12 col-sm-8">Nom</div>
