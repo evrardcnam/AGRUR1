@@ -1,13 +1,13 @@
 <?php require_once "config.php";
-$id = ""; $nom = ""; $superficie = 0; $arbresParHectare = 0; $nomProducteur = ""; $libelleVariete = ""; $idCommune = "";
+$id = ""; $nom = ""; $superficie = 0; $arbresParHectare = 0; $idProducteur = ""; $idVariete = ""; $idCommune = "";
 if(isset($_GET['edit'])) {
     $id = htmlspecialchars_decode($_GET['edit']);
     $v = DBLayer::getVerger($id);
     $nom = $v->nom;
     $superficie = $v->superficie;
     $arbresParHectare = $v->arbresParHectare;
-    $nomProducteur = $v->nomProducteur;
-    $libelleVariete = $v->libelleVariete;
+    $idProducteur = $v->idProducteur;
+    $idVariete = $v->idVariete;
     $idCommune = $v->idCommune;
 } ?>
 <script type="text/javascript" src="js/editVerger.js"></script>
@@ -23,7 +23,7 @@ if(isset($_GET['edit'])) {
             <div class="col-sm-10">
                 <select id="verProd" class="form-control">
                     <?php foreach (DBLayer::getProducteurs() as $p) {
-                        echo '<option value="' . $p->nom . ($p->nom == $nomProducteur ? '" selected' : '"') . '>' . $p->nom . '</option>';
+                        echo '<option value="' . $p->id . ($p->id == $idProducteur ? '" selected' : '"') . '>' . $p->nom . '</option>';
                     } ?>
                 </select>
             </div>
@@ -49,7 +49,7 @@ if(isset($_GET['edit'])) {
             <div class="col-sm-4">
                 <select id="verVar" class="form-control">
                     <?php foreach (DBLayer::getVarietes() as $v) {
-                        echo '<option value="' . $v->libelle . ($v->libelle == $libelleVariete ? '" selected' : '"') . '>' . $v->libelle . '</option>';
+                        echo '<option value="' . $v->id . ($v->id == $idVariete ? '" selected' : '"') . '>' . $v->libelle . '</option>';
                     } ?>
                 </select>
             </div>

@@ -4,7 +4,7 @@ $(function() {
             nom: $("#userName").val(),
             pass: $("#userPass").val(),
             admin: $("#userAdmin").is(":checked"),
-            nomProducteur: $("#userProd").val()
+            idProducteur: $("#userProd").val()
         }
         if($("#id").val() != "") sent.id = $("#id").val();
         $.post("php/utilisateurs.php", sent, function(data) {

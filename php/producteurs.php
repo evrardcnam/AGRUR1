@@ -1,7 +1,7 @@
 <?php require_once "config.php";
 if(isset($_GET["delete"])) DBLayer::removeProducteur(DBLayer::getProducteur(htmlspecialchars_decode($_GET["delete"])));
 else if(isset($_POST["nom"], $_POST["adresse"], $_POST["adherent"])) {
-    if(isset($_POST["edit"])) exit(DBLayer::setProducteur($_POST["edit"], Producteur::fromValues($_POST["nom"], $_POST["adresse"], $_POST["adherent"] == "true", $_POST["dateAdhesion"], $_POST["idUser"]))); 
+    if(isset($_POST["edit"])) exit(DBLayer::setProducteur(Producteur::fromValues($_POST["edit"], $_POST["nom"], $_POST["adresse"], $_POST["adherent"] == "true", $_POST["dateAdhesion"], $_POST["idUser"]))); 
     else exit(DBLayer::addProducteur(Producteur::fromValues($_POST["nom"], $_POST["adresse"], $_POST["adherent"] == "true", $_POST["dateAdhesion"], $_POST["idUser"])));
 }
 header('Content-Type: text/html; charset=utf-8'); ?>
@@ -22,8 +22,8 @@ header('Content-Type: text/html; charset=utf-8'); ?>
             <div class="col-xs-6 col-sm-5"><?php echo $p->adresse; ?></div>
             <div class="col-xs-6 col-sm-2 <?php echo $p->adherent ? "true" : "false"; ?>"><?php echo ($p->adherent ? $p->dateAdhesion : "Non"); ?></div>
             <div class="col-xs-6 col-sm-2">
-                <a data-link="php/editProd.php?edit=<?php echo htmlspecialchars($p->nom); ?>" class="slavePage">Modifier</a><br />
-                <a data-link="php/producteurs.php?delete=<?php echo htmlspecialchars($p->nom); ?>" class="slavePage danger">Supprimer</a>
+                <a data-link="php/editProd.php?edit=<?php echo htmlspecialchars($p->id); ?>" class="slavePage">Modifier</a><br />
+                <a data-link="php/producteurs.php?delete=<?php echo htmlspecialchars($p->id); ?>" class="slavePage danger">Supprimer</a>
             </div>
         </div><?php } ?>
     </div>

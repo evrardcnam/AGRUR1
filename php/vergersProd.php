@@ -13,7 +13,7 @@ header('Content-Type: text/html; charset=utf-8'); ?>
         </div>
         <?php foreach(DBLayer::getVergersProducteur(AuthManager::getUser()->producteur) as $v) { ?><div class="row">
             <div class="col-xs-12 col-sm-6"><?php echo $v->nom; ?></div>
-            <div class="col-xs-6 col-sm-3"><?php echo $v->libelleVariete; ?></div>
+            <div class="col-xs-6 col-sm-3"><?php echo $v->variete->libelle; ?></div>
             <div class="col-xs-6 col-sm-3"><?php echo $v->commune->nom; ?></div>
         </div><?php } ?>
     </div>

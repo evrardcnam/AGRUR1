@@ -22,7 +22,7 @@ class AuthManager {
      */
     public static function loginStatus() {
         session_start();
-        if(!($_SESSION['user'] instanceof Utilisateur)) return false;
+        if(!isset($_SESSION['user']) || !($_SESSION['user'] instanceof Utilisateur)) return false;
         else if ($_SESSION['user']->admin) return U_ADMIN;
         else return U_PRODUCTEUR; 
     }

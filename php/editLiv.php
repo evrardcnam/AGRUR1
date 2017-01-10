@@ -21,7 +21,7 @@ if(isset($_GET['edit'])) {
             <div class="col-sm-4">
                 <select id="livVerger" class="form-control">
                     <?php foreach (DBLayer::getVergers() as $v) {
-                        echo '<option value="' . $v->id . ($v->id == $idVerger ? '" selected' : '"') . '>' . $v->nom . " (" . $v->nomProducteur . ')</option>';
+                        echo '<option value="' . $v->id . ($v->id == $idVerger ? '" selected' : '"') . '>' . $v->nom . " (" . $v->producteur->nom . ')</option>';
                     } ?>
                 </select>
             </div>

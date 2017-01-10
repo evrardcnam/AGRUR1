@@ -3,15 +3,15 @@
 class CertObtenue extends Certification implements JsonSerializable {
     //données privées de la classe
     private $_dateObtention;
-    private $_nomProducteur;
+    private $_idProducteur;
 
     public function __construct() {
     }
     
     // Constructeur de la classe depuis l'extérieur
-    public static function fromValues($idCertification, $libelleCertification, $nomProducteur, $dateObtention) {
+    public static function fromValues($idCertification, $libelleCertification, $idProducteur, $dateObtention) {
         $instance = new self();
-        $instance->fillValues($idCertification, $libelleCertification, $nomProducteur, $dateObtention);
+        $instance->fillValues($idCertification, $libelleCertification, $idProducteur, $dateObtention);
         return $instance;
     }
 
@@ -22,16 +22,16 @@ class CertObtenue extends Certification implements JsonSerializable {
         return $instance;
     }
 
-    protected function fillValues($idCertification, $libelleCertification, $nomProducteur, $dateObtention) {
+    protected function fillValues($idCertification, $libelleCertification, $idProducteur, $dateObtention) {
         parent::fillValues($idCertification, $libelleCertification);
         $this->_dateObtention = $dateObtention;
-        $this->_nomProducteur = $nomProducteur;
+        $this->_idProducteur = $idProducteur;
     }
 
     protected function fillRow(DBQueryResult $row) {
         parent::fillRow($row);
         $this->_dateObtention = $row->dateObtention;
-        $this->_nomProducteur = $row->nomProducteur;
+        $this->_idProducteur = $row->idProducteur;
     }
 
     // Accesseur
@@ -41,11 +41,11 @@ class CertObtenue extends Certification implements JsonSerializable {
             case 'dateObtention':
                 return $this->_dateObtention;
                 break;
-            case 'nomProducteur':
-                return $this->_nomProducteur;
+            case 'idProducteur':
+                return $this->_idProducteur;
                 break;
             case 'producteur':
-                return DBLayer::getProducteur($this->_nomProducteur);
+                return DBLayer::getProducteur($this->_idProducteur);
                 break;
             default:
                 return parent::__get($var);
@@ -60,7 +60,8 @@ class CertObtenue extends Certification implements JsonSerializable {
     public function jsonSerialize() {
         $a = parent::jsonSerialize();
         $a['date'] = $this->_dateObtention;
-        $a['nomProducteur'] = $this->_nomProducteur;
+        $a['idProducteur'] = $this->_idProducteur;
+        return $a;
     }
 }
 ?>
