@@ -272,7 +272,7 @@ class DBLayer {
 	 * Obtenir toutes les certifications validées pour un producteur spécifique.
 	 */
 	public static function getCertificationsValidees(Producteur $p) {
-		$results = DBLayer::query('SELECT C.idCertification, C.libelleCertification, O.dateObtention, O.nomProducteur FROM certification C, obtient O WHERE O.idCertification = C.idCertification AND O.nomProducteur LIKE "' . $p->nom . '" ORDER BY libelleCertification ASC');
+		$results = DBLayer::query('SELECT C.idCertification, C.libelleCertification, O.dateObtention, O.nomProducteur FROM certification C INNER JOIN obtient O ON O.idCertification = C.idCertification WHERE O.nomProducteur LIKE "' . $p->nom . '" ORDER BY libelleCertification ASC');
 		if (!$results) { return $results; }
 		else {
 			$object_results = array();
@@ -329,7 +329,7 @@ class DBLayer {
 	 * Obtenir le conditionnement associé à une commande. 
 	 */
 	public static function getConditionnementCommande(Commande $c) {
-		$results = DBLayer::query("SELECT D.idConditionnement, D.libelleConditionnement, D.poids FROM conditionnement D, commande C WHERE C.idConditionnement = D.idConditionnement AND numCommande = " . $c->num . " LIMIT 0,1");
+		$results = DBLayer::query("SELECT idConditionnement, libelleConditionnement, poids FROM conditionnement WHERE idConditionnement = " . $c->idCond . " LIMIT 0,1");
 		if (!$results) { return null; }
 		else { return Conditionnement::fromResult($results[0]); }
 	}
