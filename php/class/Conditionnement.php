@@ -24,15 +24,15 @@ class Conditionnement implements JsonSerializable {
     }
     
     protected function fillValues($id, $libelle, $poids) {
-        $_idConditionnement = $id;
-        $_libelleConditionnement = $libelle;
-        $_poids = $poids;
+        $this->_idConditionnement = $id;
+        $this->_libelleConditionnement = $libelle;
+        $this->_poids = $poids;
     }
 
     protected function fillRow(DBQueryResult $row) {
-        $_idConditionnement = $row->idConditionnement;
-        $_libelleConditionnement = $row->libelleConditionnement;
-        $_poids = $row->poids;
+        $this->_idConditionnement = $row->idConditionnement;
+        $this->_libelleConditionnement = $row->libelleConditionnement;
+        $this->_poids = $row->poids;
     }
     
     // Accesseur

@@ -10,7 +10,7 @@ if(AuthManager::loginStatus() == U_PRODUCTEUR) {
     </div>
     <div class="row datarow">
         <div class="col-xs-12 col-sm-2 name">Adhérent</div>
-        <div class="col-xs-12 col-sm-10 value"><?php echo $p->adherent ? "Depuis le " + $p->dateAdhesion : "Non"; ?></div>
+        <div class="col-xs-12 col-sm-10 value"><?php echo $p->adherent ? "Depuis le " . $p->dateAdhesion : "Non"; ?></div>
     </div>
     <h2>Mes certifications</h2>
     <ul>

@@ -23,13 +23,13 @@ class Variete implements JsonSerializable {
     }
     
     protected function fillValues($libelle, $aoc) {
-        $_libelle = $libelle;
-        $_communeAoc = $aoc;
+        $this->_libelle = $libelle;
+        $this->_communeAoc = $aoc;
     }
 
     protected function fillRow(DBQueryResult $row) {
-        $_libelle = $row->libelle;
-        $_communeAoc = $row->varieteAoc;
+        $this->_libelle = $row->libelle;
+        $this->_communeAoc = $row->varieteAoc;
     }
     
     // Accesseur

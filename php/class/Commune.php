@@ -24,15 +24,15 @@ class Commune implements JsonSerializable {
     }
     
     protected function fillValues($id, $nom, $aoc) {
-        $_idCommune = $id;
-        $_nomCommune = $nom;
-        $_communeAoc = $aoc;
+        $this->_idCommune = $id;
+        $this->_nomCommune = $nom;
+        $this->_communeAoc = $aoc;
     }
 
     protected function fillRow(DBQueryResult $row) {
-        $_idCommune = $row->idCommune;
-        $_nomCommune = $row->nomCommune;
-        $_communeAoc = $row->communeAoc;
+        $this->_idCommune = $row->idCommune;
+        $this->_nomCommune = $row->nomCommune;
+        $this->_communeAoc = $row->communeAoc;
     }
     
     // Accesseur

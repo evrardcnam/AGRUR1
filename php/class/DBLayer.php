@@ -229,6 +229,16 @@ class DBLayer {
 	}
 
 	/**
+	 * Obtenir un verger par son identifiant unique
+	 */
+	public static function getVerger($id) {
+		$results = DBLayer::query("SELECT * FROM verger WHERE idVerger = " . $id . " LIMIT 0,1");
+		if (!$results) { return null; }
+		else { return Verger::fromResult($results[0]); }
+	}
+
+
+	/**
 	 * Obtenir toutes les variétés 
 	 */
 	public static function getVarietes() {
@@ -262,7 +272,7 @@ class DBLayer {
 	 * Obtenir toutes les certifications validées pour un producteur spécifique.
 	 */
 	public static function getCertificationsValidees(Producteur $p) {
-		$results = DBLayer::query('SELECT C.idCertification, C.libelleCertification, O.dateObtention, O.nomProducteur FROM certification C, obtient O WHERE O.idCertification = C.idCertification AND O.nomProducteur LIKE "' . $p->nom . '" ORDER BY libelleCertification ASC');
+		$results = DBLayer::query('SELECT C.idCertification, C.libelleCertification, O.dateObtention, O.nomProducteur FROM certification C INNER JOIN obtient O ON O.idCertification = C.idCertification WHERE O.nomProducteur LIKE "' . $p->nom . '" ORDER BY libelleCertification ASC');
 		if (!$results) { return $results; }
 		else {
 			$object_results = array();
@@ -319,7 +329,7 @@ class DBLayer {
 	 * Obtenir le conditionnement associé à une commande. 
 	 */
 	public static function getConditionnementCommande(Commande $c) {
-		$results = DBLayer::query("SELECT D.idConditionnement, D.libelleConditionnement, D.poids FROM conditionnement D, commande C WHERE C.idConditionnement = D.idConditionnement AND numCommande = " . $c->num . " LIMIT 0,1");
+		$results = DBLayer::query("SELECT idConditionnement, libelleConditionnement, poids FROM conditionnement WHERE idConditionnement = " . $c->idCond . " LIMIT 0,1");
 		if (!$results) { return null; }
 		else { return Conditionnement::fromResult($results[0]); }
 	}
@@ -363,12 +373,27 @@ class DBLayer {
 	}
 
 	/**
+	 * Obtenir les vergers d'un producteur
+	 */
+	public static function getVergersProducteur(Producteur $p) {
+		$results = DBLayer::query("SELECT * FROM verger WHERE nomProducteur LIKE " . $p->nom);
+		if (!$results) { return $results; }
+		else {
+			$object_results = array();
+			foreach ($results as $result){
+				$object_results[] = Verger::fromResult($result);
+			}
+			return $object_results;
+		}
+	}
+
+	/**
 	 * Obtenir la variété associée au verger
 	 */
 	public static function getVarieteVerger(Verger $v) {
 		$results = DBLayer::query("SELECT * FROM variete WHERE libelle = " . $v->libelleVariete . " LIMIT 0,1");
 		if (!$results) { return null; }
-		else { return Variet::fromResult($results[0]); }
+		else { return Variete::fromResult($results[0]); }
 	}
 
 	/**
@@ -510,7 +535,7 @@ class DBLayer {
 	 * Ajouter un utilisateur dans la base de données.
 	 */
 	public static function addUtilisateur(Utilisateur $u, $pass) {
-		if(!isset($u)) return false;
+		if(!isset($u) || empty($pass)) return false;
 		return DBLayer::preparedQuery("INSERT INTO users(name,pass,admin,nomProducteur) VALUES (?,?,?,?)",
 			"ssis", $u->nom, crypt($pass), $u->admin, $u->admin ? null : $u->nomProducteur);
 	}
@@ -611,7 +636,7 @@ class DBLayer {
 	public static function setUtilisateur(Utilisateur $u, $pass) {
 		if(!isset($u, $pass)) return false;
 		return DBLayer::preparedQuery("UPDATE users SET `name`=?, `pass`=?, `admin`=?, `nomProducteur`=? WHERE `id`=?",
-			"ssisi", $u->nom, crypt($pass), $u->admin, $u->admin ? null : $u->nomProducteur, $u->id);
+			"ssisi", $u->nom, empty($pass) ? null : crypt($pass), $u->admin, $u->admin ? null : $u->nomProducteur, $u->id);
 	}
 
 	/**
