@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Lun 09 Janvier 2017 à 22:05
+-- Généré le :  Mar 10 Janvier 2017 à 20:16
 -- Version du serveur :  10.1.19-MariaDB
 -- Version de PHP :  5.6.28
 
@@ -58,7 +58,7 @@ CREATE TABLE `commande` (
   `numCommande` int(11) NOT NULL,
   `dateEnvoie` date DEFAULT NULL,
   `idConditionnement` int(11) NOT NULL,
-  `codeLot` varchar(255) NOT NULL,
+  `idLot` int(11) NOT NULL,
   `nomClient` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -125,7 +125,6 @@ CREATE TABLE `livraison` (
   `idLivraison` int(11) NOT NULL,
   `dateLivraison` date DEFAULT NULL,
   `typeProduit` varchar(255) DEFAULT NULL,
-  `quantiteLivree` int(11) DEFAULT NULL,
   `idVerger` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -137,8 +136,10 @@ CREATE TABLE `livraison` (
 
 DROP TABLE IF EXISTS `lot`;
 CREATE TABLE `lot` (
+  `idLot` int(11) NOT NULL,
   `codeLot` varchar(255) NOT NULL,
   `calibreLot` varchar(255) NOT NULL,
+  `quantite` int(11) NOT NULL,
   `idLivraison` int(11) DEFAULT NULL,
   `numCommande` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -271,7 +272,7 @@ ALTER TABLE `client`
 ALTER TABLE `commande`
   ADD PRIMARY KEY (`numCommande`),
   ADD KEY `FK_commande_idConditionnement` (`idConditionnement`),
-  ADD KEY `FK_commande_lot_codelot` (`codeLot`),
+  ADD KEY `FK_commande_lot_codelot` (`idLot`),
   ADD KEY `FK_commande_nomClient` (`nomClient`);
 
 --
@@ -297,7 +298,7 @@ ALTER TABLE `livraison`
 -- Index pour la table `lot`
 --
 ALTER TABLE `lot`
-  ADD PRIMARY KEY (`codeLot`),
+  ADD PRIMARY KEY (`idLot`),
   ADD KEY `FK_lot_idLivraison` (`idLivraison`),
   ADD KEY `FK_lot_commande_numcommande` (`numCommande`);
 
@@ -367,6 +368,11 @@ ALTER TABLE `conditionnement`
 ALTER TABLE `livraison`
   MODIFY `idLivraison` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
+-- AUTO_INCREMENT pour la table `lot`
+--
+ALTER TABLE `lot`
+  MODIFY `idLot` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+--
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
@@ -375,7 +381,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT pour la table `verger`
 --
 ALTER TABLE `verger`
-  MODIFY `idVerger` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `idVerger` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- Contraintes pour les tables exportées
 --
@@ -385,7 +391,7 @@ ALTER TABLE `verger`
 --
 ALTER TABLE `commande`
   ADD CONSTRAINT `FK_commande_idConditionnement` FOREIGN KEY (`idConditionnement`) REFERENCES `conditionnement` (`idConditionnement`),
-  ADD CONSTRAINT `FK_commande_lot_codelot` FOREIGN KEY (`codeLot`) REFERENCES `lot` (`codeLot`),
+  ADD CONSTRAINT `FK_commande_lot_idLot` FOREIGN KEY (`idLot`) REFERENCES `lot` (`idLot`),
   ADD CONSTRAINT `FK_commande_nomClient` FOREIGN KEY (`nomClient`) REFERENCES `client` (`nomClient`);
 
 --
