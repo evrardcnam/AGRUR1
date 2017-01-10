@@ -47,6 +47,7 @@ if(isset($_GET['edit'])) {
         <div class="col-xs-12"><h2>Lots</h2></div>
     </div>
     <?php if(isset($_GET['edit'])) { ?>
+    <script type="text/javascript" src="js/editLot.js"></script>
     <div class="rowtable">
         <div class="row">
             <div class="col-xs-6 col-sm-4">Code</div>
@@ -58,6 +59,7 @@ if(isset($_GET['edit'])) {
             <div class="col-xs-6 col-sm-4"><?php echo $o->code; ?></div>
             <div class="col-xs-6 col-sm-6"><?php echo $o->calibre; ?></div>
             <div class="col-xs-6 col-sm-2 actions">
+                <a href="#" data-id="<?php echo htmlspecialchars($o->code); ?>" class="edit">Modifier</a>
                 <a href="#" data-id="<?php echo htmlspecialchars($o->code); ?>" class="delete danger">Supprimer</a>
             </div>
         </div>
