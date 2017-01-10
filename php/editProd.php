@@ -1,8 +1,9 @@
 <?php require_once "config.php";
-$nom = ""; $adresse = ""; $adherent = false; $dateAdh = ""; $idUser = "NULL";
+$id = ""; $nom = ""; $adresse = ""; $adherent = false; $dateAdh = ""; $idUser = "NULL";
 if(isset($_GET['edit'])) {
-    $nom = htmlspecialchars_decode($_GET['edit']);
-    $p = DBLayer::getProducteur($nom);
+    $id = htmlspecialchars_decode($_GET['edit']);
+    $p = DBLayer::getProducteur($id);
+    $nom = $p->nom;
     $adresse = $p->adresse;
     $adherent = $p->adherent;
     $dateAdh = $p->dateAdhesion;
@@ -15,7 +16,7 @@ if(isset($_GET['edit'])) {
         <div class="col-sm-2 rightlink"><a href="#">Enregistrer</a></div>
     </div>
     <form class="form-horizontal">
-        <input type="hidden" id="oldName" name="edit" value="<?php echo $nom; ?>" />
+        <input type="hidden" id="id" name="edit" value="<?php echo $id; ?>" />
         <input type="hidden" id="idUser" name="idUser" value="<?php echo $idUser; ?>" />
         <div class="form-group">
             <label for="prodName" class="col-sm-1 control-label">Nom</label>

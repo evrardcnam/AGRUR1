@@ -4,8 +4,8 @@ $(function() {
             nom: $("#verName").val(),
             superficie: $("#verSup").val(),
             arbresParHectare: $("#verArbres").val(),
-            nomProducteur: $("#verProd").val(),
-            libelleVariete: $("#verVar").val(),
+            idProducteur: $("#verProd").val(),
+            idVariete: $("#verVar").val(),
             idCommune: $("#verCom").val()
         }
         if($("#id").val() != "") sent.id = $("#id").val();

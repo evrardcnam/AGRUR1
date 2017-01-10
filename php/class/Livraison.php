@@ -5,7 +5,6 @@ class Livraison implements JsonSerializable {
     private $_idLivraison;
     private $_dateLivraison;
     private $_typeProduit;
-    private $_quantiteLivree;
     private $_nbLots;
     private $_idVerger;
 
@@ -13,9 +12,9 @@ class Livraison implements JsonSerializable {
     }
     
     // Constructeur de la classe depuis l'extérieur
-    public static function fromValues($id, $date, $type, $quantite, $nbLots, $idVerger) {
+    public static function fromValues($id, $date, $type, $nbLots, $idVerger) {
         $instance = new self();
-        $instance->fillValues($id, $date, $type, $quantite, $nbLots, $idVerger);
+        $instance->fillValues($id, $date, $type, $nbLots, $idVerger);
         return $instance;
     }
 
@@ -26,11 +25,10 @@ class Livraison implements JsonSerializable {
         return $instance;
     }
 
-    protected function fillValues($id, $date, $type, $quantite, $nbLots, $idVerger) {
+    protected function fillValues($id, $date, $type, $nbLots, $idVerger) {
         $this->_idLivraison = $id;
         $this->_dateLivraison = $date;
         $this->_typeProduit = $type;
-        $this->_quantiteLivree = $quantite;
         $this->_nbLots = $nbLots;
         $this->_idVerger = $idVerger;
     }
@@ -39,7 +37,6 @@ class Livraison implements JsonSerializable {
         $this->_idLivraison = $row->idLivraison;
         $this->_dateLivraison = $row->dateLivraison;
         $this->_typeProduit = $row->typeProduit;
-        $this->_quantiteLivree = $row->quantiteLivree;
         $this->_nbLots = $row->nbLots;
         $this->_idVerger = $row->idVerger;
     }
@@ -55,9 +52,6 @@ class Livraison implements JsonSerializable {
                 break;
             case 'type':
                 return $this->_typeProduit;
-                break;
-            case 'quantite':
-                return $this->_quantiteLivree;
                 break;
             case 'nbLots':
                 return $this->_nbLots;
@@ -81,7 +75,7 @@ class Livraison implements JsonSerializable {
     }
     
     public function jsonSerialize() {
-        return array('id' => $this->_idLivraison, 'date' => $this->_dateLivraison, 'type' => $this->_typeProduit, 'quantite' => $this->_quantiteLivree, 'nbLots' => $this->_nbLots, 'idVerger' => $this->_idVerger);
+        return array('id' => $this->_idLivraison, 'date' => $this->_dateLivraison, 'type' => $this->_typeProduit, 'nbLots' => $this->_nbLots, 'idVerger' => $this->_idVerger);
     }
 }
 ?>

@@ -3,8 +3,7 @@ $(function() {
         sent = {
             idVerger: $("#livVerger").val(),
             type: $("#livType").val(),
-            date: $("#livDate").val(),
-            quantite: $("#livQte").val()
+            date: $("#livDate").val()
         }
         if($("#id").val() != "") sent.id = $("#id").val();
         $.post("php/livraisons.php", sent, function(data) {

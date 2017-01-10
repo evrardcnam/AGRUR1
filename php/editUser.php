@@ -1,11 +1,11 @@
 <?php require_once "config.php";
-$id = ""; $nom = ""; $admin = false; $nomProd = "";
+$id = ""; $nom = ""; $admin = false; $idProd = "";
 if(isset($_GET['edit'])) {
     $id = htmlspecialchars_decode($_GET['edit']);
     $u = DBLayer::getUtilisateurId($id);
     $nom = $u->nom;
     $admin = $u->admin;
-    $nomProd = $u->nomProducteur;
+    $idProd = $u->idProducteur;
 } ?>
 <script type="text/javascript" src="js/editUser.js"></script>
 <div class="container">
@@ -37,7 +37,7 @@ if(isset($_GET['edit'])) {
             <div class="col-sm-4">
                 <select id="userProd" class="form-control" <?php if($admin) echo "disabled"; ?>>
                     <?php foreach (DBLayer::getProducteurs() as $p) {
-                        echo '<option value="' . $p->nom . ($p->nom == $nomProd ? '" selected' : '"') . '>' . $p->nom . '</option>';
+                        echo '<option value="' . $p->id . ($p->id == $idProd ? '" selected' : '"') . '>' . $p->nom . '</option>';
                     } ?>
                 </select>
             </div>

@@ -6,17 +6,17 @@ class Verger implements JsonSerializable {
     private $_nomVerger;
     private $_superficie;
     private $_arbresParHectare;
-    private $_nomProducteur;
-    private $_libelleVariete;
+    private $_idProducteur;
+    private $_idVariete;
     private $_idCommune;
 
     public function __construct() {
     }
     
     // Constructeur de la classe depuis l'extérieur
-    public static function fromValues($id, $nom, $superficie, $arbresParHectare, $nomProducteur, $libelleVariete, $idCommune) {
+    public static function fromValues($id, $nom, $superficie, $arbresParHectare, $idProducteur, $idVariete, $idCommune) {
         $instance = new self();
-        $instance->fillValues($id, $nom, $superficie, $arbresParHectare, $nomProducteur, $libelleVariete, $idCommune);
+        $instance->fillValues($id, $nom, $superficie, $arbresParHectare, $idProducteur, $idVariete, $idCommune);
         return $instance;
     }
 
@@ -27,13 +27,13 @@ class Verger implements JsonSerializable {
         return $instance;
     }
 
-    protected function fillValues($id, $nom, $superficie, $arbresParHectare, $nomProducteur, $libelleVariete, $idCommune) {
+    protected function fillValues($id, $nom, $superficie, $arbresParHectare, $idProducteur, $idVariete, $idCommune) {
         $this->_idVerger = $id;
         $this->_nomVerger = $nom;
         $this->_superficie = $superficie;
         $this->_arbresParHectare = $arbresParHectare;
-        $this->_nomProducteur = $nomProducteur;
-        $this->_libelleVariete = $libelleVariete;
+        $this->_idProducteur = $idProducteur;
+        $this->_idVariete = $idVariete;
         $this->_idCommune = $idCommune;
     }
 
@@ -42,8 +42,8 @@ class Verger implements JsonSerializable {
         $this->_nomVerger = $row->nomVerger;
         $this->_superficie = $row->superficie;
         $this->_arbresParHectare = $row->arbresParHectare;
-        $this->_nomProducteur = $row->nomProducteur;
-        $this->_libelleVariete = $row->libelle;
+        $this->_idProducteur = $row->idProducteur;
+        $this->_idVariete = $row->idVariete;
         $this->_idCommune = $row->idCommune;
     }
     // Accesseur
@@ -61,14 +61,14 @@ class Verger implements JsonSerializable {
             case 'arbresParHectare':
                 return $this->_arbresParHectare;
                 break;
-            case 'nomProducteur':
-                return $this->_nomProducteur;
+            case 'idProducteur':
+                return $this->_idProducteur;
                 break;
             case 'producteur':
                 return DBLayer::getProducteurVerger($this);
                 break;
-            case 'libelleVariete':
-                return $this->_libelleVariete;
+            case 'idVariete':
+                return $this->_idVariete;
                 break;
             case 'variete':
                 return DBLayer::getVarieteVerger($this);
@@ -90,7 +90,7 @@ class Verger implements JsonSerializable {
     }
     
     public function jsonSerialize() {
-        return array('id' => $this->_idVerger, 'nom' => $this->_nomVerger, 'superficie' => $this->_superficie, 'arbresParHectare' => $this->_arbresParHectare, 'nomProducteur' => $this->_nomProducteur, 'libelleVariete' => $this->_libelleVariete, 'idCommune' => $this->_idCommune);
+        return array('id' => $this->_idVerger, 'nom' => $this->_nomVerger, 'superficie' => $this->_superficie, 'arbresParHectare' => $this->_arbresParHectare, 'idProducteur' => $this->_idProducteur, 'idVariete' => $this->_idVariete, 'idCommune' => $this->_idCommune);
     }
 }
 ?>

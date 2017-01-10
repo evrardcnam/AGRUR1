@@ -24,7 +24,6 @@
 							<ul class="dropdown-menu">
 								<li><a class="slavePage" data-link="php/vergersProd.php">Vergers</a></li>
 								<li><a class="slavePage" data-link="php/livraisons.php">Livraisons</a></li>
-								<li><a class="slavePage" data-link="php/lots.php">Lots</a></li>
 							</ul>
 						</li>
 						<li class="dropdown">

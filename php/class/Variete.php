@@ -2,6 +2,7 @@
 // Définit une variété
 class Variete implements JsonSerializable {
     //données privées de la classe
+    private $_id;
     private $_libelle;
     private $_varieteAoc;
 
@@ -9,9 +10,9 @@ class Variete implements JsonSerializable {
     }
     
     // Constructeur de la classe depuis l'extérieur
-    public static function fromValues($libelle, $aoc) {
+    public static function fromValues($id, $libelle, $aoc) {
         $instance = new self();
-        $instance->fillValues($libelle, $aoc);
+        $instance->fillValues($id, $libelle, $aoc);
         return $instance;
     }
 
@@ -22,12 +23,14 @@ class Variete implements JsonSerializable {
         return $instance;
     }
     
-    protected function fillValues($libelle, $aoc) {
+    protected function fillValues($id, $libelle, $aoc) {
+        $this->_id = $id;
         $this->_libelle = $libelle;
         $this->_communeAoc = $aoc;
     }
 
     protected function fillRow(DBQueryResult $row) {
+        $this->_id = $row->idVariete;
         $this->_libelle = $row->libelle;
         $this->_communeAoc = $row->varieteAoc;
     }
@@ -35,6 +38,9 @@ class Variete implements JsonSerializable {
     // Accesseur
     public function __get($var){
         switch ($var){
+            case 'id':
+                return $this->_id;
+                break;
             case 'libelle':
                 return $this->_libelle;
                 break;
@@ -53,7 +59,7 @@ class Variete implements JsonSerializable {
     }
     
     public function jsonSerialize() {
-        return array('libelle' => $this->_libelle, 'aoc' => $this->_varieteAoc);
+        return array('id' => $this->_id, 'libelle' => $this->_libelle, 'aoc' => $this->_varieteAoc);
     }
 }
 ?>

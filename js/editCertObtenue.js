@@ -2,7 +2,7 @@ $(function() {
     updateEditLinks();
     $("a#add").click(function() {
         $.post('php/api.php?action=post_validation', {
-            nomProducteur: $("input#oldName").val(),
+            idProducteur: $("input#id").val(),
             idCertification: $("#valCert").val(),
             dateObtention: $("input#valDate").val()
         }, function(data, status, xhr) {

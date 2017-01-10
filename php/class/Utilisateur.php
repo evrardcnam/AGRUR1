@@ -7,15 +7,15 @@ class Utilisateur implements JsonSerializable {
     private $_id;
     private $_name;
     private $_admin;
-    private $_nomProducteur;
+    private $_idProducteur;
 
     public function __construct() {
     }
     
     // Constructeur de la classe depuis l'extérieur
-    public static function fromValues($id, $name, $admin, $nomProducteur) {
+    public static function fromValues($id, $name, $admin, $idProducteur) {
         $instance = new self();
-        $instance->fillValues($id, $name, $admin, $nomProducteur);
+        $instance->fillValues($id, $name, $admin, $idProducteur);
         return $instance;
     }
 
@@ -26,18 +26,18 @@ class Utilisateur implements JsonSerializable {
         return $instance;
     }
 
-    protected function fillValues($id, $name, $admin, $nomProducteur) {
+    protected function fillValues($id, $name, $admin, $idProducteur) {
         $this->_id = $id;
         $this->_name = $name;
         $this->_admin = $admin;
-        $this->_nomProducteur = $nomProducteur;
+        $this->_idProducteur = $idProducteur;
     }
 
     protected function fillRow(DBQueryResult $row) {
         $this->_id = $row->id;
         $this->_name = $row->name;
         $this->_admin = $row->admin;
-        $this->_nomProducteur = $row->nomProducteur;
+        $this->_idProducteur = $row->idProducteur;
     }
 
     /**
@@ -54,8 +54,8 @@ class Utilisateur implements JsonSerializable {
             case 'admin':
                 return $this->_admin;
                 break;
-            case 'nomProducteur':
-                return $this->_nomProducteur;
+            case 'idProducteur':
+                return $this->_idProducteur;
                 break;
             case 'producteur':
                 return DBLayer::getProducteurUtilisateur($this);
@@ -82,7 +82,7 @@ class Utilisateur implements JsonSerializable {
     
     public function jsonSerialize() {
         $arr = array('id' => $this->_id, 'nom' => $this->_name, 'admin' => $this->_admin);
-        if(!$this->admin) $arr["nomProducteur"] = $this->_nomProducteur;
+        if(!$this->admin) $arr["idProducteur"] = $this->_idProducteur;
         return $arr;
     }
 }

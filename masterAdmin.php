@@ -25,7 +25,6 @@
 								<li><a class="slavePage" data-link="php/vergersAdmin.php">Vergers</a></li>
 								<li><a class="slavePage" data-link="php/varietes.php">Variétés</a></li>
 								<li><a class="slavePage" data-link="php/livraisons.php">Livraisons</a></li>
-								<li><a class="slavePage" data-link="php/lots.php">Lots</a></li>
 								<li><a class="slavePage" data-link="php/conditionnements.php">Conditionnements</a></li>
 							</ul>
 						</li>
