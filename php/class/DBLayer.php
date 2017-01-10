@@ -193,7 +193,7 @@ class DBLayer {
 	 * Obtenir toutes les livraisons 
 	 */
 	public static function getLivraisons() {
-		$results = DBLayer::query("SELECT l.idLivraison, l.dateLivraison, l.typeProduit, l.quantiteLivree, l.idVerger, count(o.codeLot) AS nbLots FROM livraison l LEFT OUTER JOIN lot o ON l.idLivraison = o.idLivraison GROUP BY l.idLivraison ORDER BY l.idVerger ASC, l.dateLivraison DESC");
+		$results = DBLayer::query("SELECT l.idLivraison, l.dateLivraison, l.typeProduit, l.idVerger, count(o.idLot) AS nbLots FROM livraison l LEFT OUTER JOIN lot o ON l.idLivraison = o.idLivraison GROUP BY l.idLivraison ORDER BY l.idVerger ASC, l.dateLivraison DESC");
 		if (!$results) { return $results; }
 		else {
 			$object_results = array();
@@ -208,7 +208,7 @@ class DBLayer {
 	 * Obtenir une livraison par son identifiant unique 
 	 */
 	public static function getLivraison($id) {
-		$results = DBLayer::query("SELECT l.idLivraison, l.dateLivraison, l.typeProduit, l.quantiteLivree, l.idVerger, count(o.codeLot) AS nbLots FROM livraison l LEFT OUTER JOIN lot o ON l.idLivraison = o.idLivraison GROUP BY l.idLivraison HAVING l.idLivraison = " . $id . " LIMIT 0,1");
+		$results = DBLayer::query("SELECT l.idLivraison, l.dateLivraison, l.typeProduit, l.idVerger, count(o.codeLot) AS nbLots FROM livraison l LEFT OUTER JOIN lot o ON l.idLivraison = o.idLivraison GROUP BY l.idLivraison HAVING l.idLivraison = " . $id . " LIMIT 0,1");
 		if (!$results) { return null; }
 		else { return Livraison::fromResult($results[0]); }
 	}
@@ -482,8 +482,8 @@ class DBLayer {
 	 */
 	public static function addLot(Lot $l) {
 		if(!isset($l)) return false;
-		return DBLayer::preparedQuery("INSERT INTO lot(codeLot,calibreLot,idLivraison,numCommande) VALUES (?,?,?,?)",
-			"ssii", $l->code, $l->calibre, $l->idLivraison, $l->numCommande);
+		return DBLayer::preparedQuery("INSERT INTO lot(codeLot,calibreLot,quantite,idLivraison,numCommande) VALUES (?,?,?,?,?)",
+			"ssiii", $l->code, $l->calibre, $l->quantite, $l->idLivraison, $l->numCommande);
 	}
 
 	/**
@@ -491,8 +491,8 @@ class DBLayer {
 	 */
 	public static function addLivraison(Livraison $l) {
 		if(!isset($l)) return false;
-		return DBLayer::preparedQuery("INSERT INTO livraison(idLivraison,dateLivraison,typeProduit,quantiteLivree,idVerger) VALUES (?,?,?,?,?)",
-			"issii", $l->id, $l->date, $l->type, $l->quantite, $l->idVerger);
+		return DBLayer::preparedQuery("INSERT INTO livraison(idLivraison,dateLivraison,typeProduit,idVerger) VALUES (?,?,?,?)",
+			"issi", $l->id, $l->date, $l->type, $l->idVerger);
 	}
 
 	/**
@@ -588,10 +588,10 @@ class DBLayer {
 	/**
 	 * Mettre à jour un lot dans la base de données.
 	 */
-	public static function setLot($code, Lot $l) {
-		if(!isset($code, $l)) return false;
-		return DBLayer::preparedQuery("UPDATE lot SET `codeLot`=?, `calibreLot`=?, `idLivraison`=?, `numCommande`=? WHERE `codeLot` LIKE ?",
-			"ssiis", $l->code, $l->calibre, $l->idLivraison, $l->numCommande, $code);
+	public static function setLot(Lot $l) {
+		if(!isset($l)) return false;
+		return DBLayer::preparedQuery("UPDATE lot SET `codeLot`=?, `calibreLot`=?, `quantite`=?, `idLivraison`=? WHERE `idLot` LIKE ?",
+			"ssiii", $l->code, $l->calibre, $l->quantite, $l->idLivraison, $l->id);
 	}
 
 	/**
@@ -599,8 +599,8 @@ class DBLayer {
 	 */
 	public static function setLivraison(Livraison $l) {
 		if(!isset($l)) return false;
-		return DBLayer::preparedQuery("UPDATE livraison SET `dateLivraison`=?, `typeProduit`=?, `quantiteLivree`=?, `idVerger`=? WHERE `idLivraison`=?",
-			"ssiii", $l->date, $l->type, $l->quantite, $l->idVerger, $l->id);
+		return DBLayer::preparedQuery("UPDATE livraison SET `dateLivraison`=?, `typeProduit`=?, `idVerger`=? WHERE `idLivraison`=?",
+			"ssii", $l->date, $l->type, $l->idVerger, $l->id);
 	}
 
 	/**
@@ -684,7 +684,7 @@ class DBLayer {
 	 */
 	public static function removeLot(Lot $l) {
 		if(!isset($l)) return false;
-		return DBLayer::preparedQuery("DELETE FROM lot WHERE `codeLot` LIKE ?", "s", $l->code);
+		return DBLayer::preparedQuery("DELETE FROM lot WHERE `idLot` LIKE ?", "i", $l->id);
 	}
 
 	/**

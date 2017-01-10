@@ -32,9 +32,9 @@ if(isset($_GET["action"]) && in_array($_GET["action"], $possible_requests)) {
             $id = DBLayer::addConditionnement(Conditionnement::fromValues(null, $_POST["libelle"], $_POST["poids"]));
             $result = $success; $result["new_id"] = $id; break;
         case "post_lot":
-            if(!isset($_POST["code"], $_POST["calibre"], $_POST["idLivraison"])) break;
-            DBLayer::addLot(Lot::fromValues($_POST["code"], $_POST["calibre"], $_POST["idLivraison"], null));
-            $result = $success; $result["new_id"] = $_POST["code"]; break;
+            if(!isset($_POST["code"], $_POST["calibre"], $_POST["quantite"], $_POST["idLivraison"])) break;
+            $id = DBLayer::addLot(Lot::fromValues(null, $_POST["code"], $_POST["calibre"], $_POST["quantite"], $_POST["idLivraison"], null));
+            $result = $success; $result["new_id"] = $id; break;
         case "post_variete":
             if(!isset($_POST["libelle"], $_POST["aoc"])) break;
             DBLayer::addVariete(Variete::fromValues($_POST["libelle"], $_POST["varieteAoc"]));
@@ -60,9 +60,9 @@ if(isset($_GET["action"]) && in_array($_GET["action"], $possible_requests)) {
             DBLayer::setConditionnement(Conditionnement::fromValues($_POST["id"], $_POST["libelle"], $_POST["poids"]));
             $result = $success; $result["id"] = $id; break;
         case "put_lot":
-            if(!isset($_POST["code"], $_POST["calibre"], $_POST["idLivraison"])) break;
-            DBLayer::setLot(Lot::fromValues($_POST["code"], $_POST["calibre"], $_POST["idLivraison"], null));
-            $result = $success; $result["id"] = $_POST["code"]; break;
+            if(!isset($_POST["id"], $_POST["code"], $_POST["calibre"], $_POST["quantite"], $_POST["idLivraison"])) break;
+            DBLayer::setLot(Lot::fromValues($_POST["id"], $_POST["code"], $_POST["calibre"], $_POST["quantite"], $_POST["idLivraison"], null));
+            $result = $success; $result["id"] = $_POST["id"]; break;
         case "put_variete":
             if(!isset($_POST["libelle"], $_POST["aoc"])) break;
             DBLayer::setVariete(Variete::fromValues($_POST["libelle"], $_POST["varieteAoc"]));
@@ -95,7 +95,7 @@ if(isset($_GET["action"]) && in_array($_GET["action"], $possible_requests)) {
             $result = $success; $result["del_id"] = $_POST["id"]; break;
         case "delete_lot":
             if(!isset($_POST["id"])) break;
-            DBLayer::removeLot(Lot::fromValues($_POST["id"], null, null, null));
+            DBLayer::removeLot(Lot::fromValues($_POST["id"], null, null, null, null, null));
             $result = $success; $result["del_id"] = $_POST["id"]; break;
         case "delete_variete":
             if(!isset($_POST["name"])) break;
