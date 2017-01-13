@@ -7,8 +7,9 @@ $(function() {
             dateAdhesion: $("#prodAdhDate").val(),
             idUser: $("#idUser").val()
         }
-        if($("#oldName").val() != "") sent.edit = $("#oldName").val();
+        if($("#id").val() != "") sent.edit = $("#id").val();
         $.post("php/producteurs.php", sent, function(data) {
+            console.log(data);
             showPage('php/producteurs.php');
         }).fail(function() {
             alert("Une erreur s'est produite lors de l'enregistrement. Vérifiez les données saisies, réessayez ultérieurement ou contactez le support technique.");

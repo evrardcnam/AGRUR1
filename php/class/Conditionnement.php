@@ -4,15 +4,14 @@ class Conditionnement implements JsonSerializable {
     //données privées de la classe
     private $_idConditionnement;
     private $_libelleConditionnement;
-    private $_poids;
 
     public function __construct() {
     }
     
     // Constructeur de la classe depuis l'extérieur
-    public static function fromValues($id, $libelle, $poids) {
+    public static function fromValues($id, $libelle) {
         $instance = new self();
-        $instance->fillValues($id, $libelle, $poids);
+        $instance->fillValues($id, $libelle);
         return $instance;
     }
 
@@ -23,16 +22,14 @@ class Conditionnement implements JsonSerializable {
         return $instance;
     }
     
-    protected function fillValues($id, $libelle, $poids) {
+    protected function fillValues($id, $libelle) {
         $this->_idConditionnement = $id;
         $this->_libelleConditionnement = $libelle;
-        $this->_poids = $poids;
     }
 
     protected function fillRow(DBQueryResult $row) {
         $this->_idConditionnement = $row->idConditionnement;
         $this->_libelleConditionnement = $row->libelleConditionnement;
-        $this->_poids = $row->poids;
     }
     
     // Accesseur
@@ -43,9 +40,6 @@ class Conditionnement implements JsonSerializable {
                 break;
             case 'libelle':
                 return $this->_libelleConditionnement;
-                break;
-            case 'poids':
-                return $this->_poids;
                 break;
             default:
                 return null;
@@ -58,7 +52,7 @@ class Conditionnement implements JsonSerializable {
     }
     
     public function jsonSerialize() {
-        return array('id' => $this->_idConditionnement, 'libelle' => $this->_libelleConditionnement, 'poids' => $this->_poids);
+        return array('id' => $this->_idConditionnement, 'libelle' => $this->_libelleConditionnement);
     }
 }
 ?>

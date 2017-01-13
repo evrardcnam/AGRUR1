@@ -50,6 +50,7 @@ class Producteur implements JsonSerializable {
             case 'id':
             case 'idProducteur':
                 return $this->_idProducteur;
+                break;
             case 'nom':
                 return $this->_nomProducteur;
                 break;

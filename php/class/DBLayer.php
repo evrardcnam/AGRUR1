@@ -463,8 +463,8 @@ class DBLayer {
 	 */
 	public static function addCommande(Commande $c) {
 		if(!isset($c)) return false;
-		return DBLayer::preparedQuery("INSERT INTO commande(dateEnvoie,idConditionnement,idLot,idClient) VALUES (?,?,?,?)",
-			"sisi", $c->date, $c->idCond, $c->idLot, $c->idClient);
+		return DBLayer::preparedQuery("INSERT INTO commande(dateConditionnement,dateEnvoie,idConditionnement,idLot,idClient) VALUES (?,?,?,?)",
+			"ssisi", $c->dateCond, $c->dateEnvoi, $c->idCond, $c->idLot, $c->idClient);
 	}
 
 	/**
@@ -571,8 +571,8 @@ class DBLayer {
 	 */
 	public static function setCommande(Commande $c) {
 		if(!isset($c)) return false;
-		return DBLayer::preparedQuery("UPDATE commande SET `dateEnvoie`=?, `idConditionnement`=?, `idLot`=?, `idClient`=? WHERE `numCommande`=?",
-			"siiii", $c->date, $c->idCond, $c->idLot, $c->idClient, $c->num);
+		return DBLayer::preparedQuery("UPDATE commande SET `dateConditionnement`=?, `dateEnvoie`=?, `idConditionnement`=?, `idLot`=?, `idClient`=? WHERE `numCommande`=?",
+			"ssiiii", $c->dateCond, $c->dateEnvoi, $c->idCond, $c->idLot, $c->idClient, $c->num);
 	}
 
 	/**
