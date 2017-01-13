@@ -5,8 +5,9 @@ spl_autoload_register(function ($class_name) {
     include dirname(dirname(__FILE__)) . '/php/class/' . $class_name . '.php';
 });
 // Constantes d'identification pour la base de données
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASSWORD', '');
-define('DB_DB', 'agrur');
+// Les ###NOM### sont des éléments remplacés automatiquement par l'assistant d'installation.
+define('DB_HOST', '###HOST###');
+define('DB_USER', '###USER###');
+define('DB_PASSWORD', '###PASSWORD###');
+define('DB_DB', '###DB###');
 ?>

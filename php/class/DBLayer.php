@@ -158,6 +158,15 @@ class DBLayer {
 			return $object_results;
 		}
 	}
+	
+	/**
+	 * Obtenir toutes les commandes 
+	 */
+	public static function getCommande($id) {
+		$results = DBLayer::query("SELECT * FROM commande WHERE `numCommande`=" . $id . ' LIMIT 0,1');
+		if (!$results) { return null; }
+		else { return Commande::fromResult($results[0]); }
+	}
 
 	/**
 	 * Obtenir tous les conditionnements 
@@ -329,7 +338,7 @@ class DBLayer {
 	 * Obtenir le conditionnement associé à une commande. 
 	 */
 	public static function getConditionnementCommande(Commande $c) {
-		$results = DBLayer::query("SELECT idConditionnement, libelleConditionnement, poids FROM conditionnement WHERE idConditionnement = " . $c->idCond . " LIMIT 0,1");
+		$results = DBLayer::query("SELECT * FROM conditionnement WHERE idConditionnement = " . $c->idCond . " LIMIT 0,1");
 		if (!$results) { return null; }
 		else { return Conditionnement::fromResult($results[0]); }
 	}
@@ -463,8 +472,9 @@ class DBLayer {
 	 */
 	public static function addCommande(Commande $c) {
 		if(!isset($c)) return false;
-		return DBLayer::preparedQuery("INSERT INTO commande(dateEnvoie,idConditionnement,idLot,idClient) VALUES (?,?,?,?)",
-			"sisi", $c->date, $c->idCond, $c->idLot, $c->idClient);
+		var_dump($c);
+		return DBLayer::preparedQuery("INSERT INTO commande(dateConditionnement,dateEnvoie,idConditionnement,idLot,idClient) VALUES (?,?,?,?,?)",
+			"ssisi", $c->dateCond, $c->dateEnvoi, $c->idCond, $c->idLot, $c->idClient);
 	}
 
 	/**
@@ -472,8 +482,7 @@ class DBLayer {
 	 */
 	public static function addConditionnement(Conditionnement $c) {
 		if(!isset($c)) return false;
-		return DBLayer::preparedQuery("INSERT INTO conditionnement(libelleConditionnement,poids) VALUES (?,?)",
-			"isd", $c->libelle, $c->poids);
+		return DBLayer::preparedQuery("INSERT INTO conditionnement(libelleConditionnement) VALUES (?)", "s", $c->libelle);
 	}
 
 	/**
@@ -571,8 +580,8 @@ class DBLayer {
 	 */
 	public static function setCommande(Commande $c) {
 		if(!isset($c)) return false;
-		return DBLayer::preparedQuery("UPDATE commande SET `dateEnvoie`=?, `idConditionnement`=?, `idLot`=?, `idClient`=? WHERE `numCommande`=?",
-			"siiii", $c->date, $c->idCond, $c->idLot, $c->idClient, $c->num);
+		return DBLayer::preparedQuery("UPDATE commande SET `dateConditionnement`=?, `dateEnvoie`=?, `idConditionnement`=?, `idLot`=?, `idClient`=? WHERE `numCommande`=?",
+			"ssiiii", $c->dateCond, $c->dateEnvoi, $c->idCond, $c->idLot, $c->idClient, $c->num);
 	}
 
 	/**

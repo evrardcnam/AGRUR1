@@ -4,18 +4,19 @@ class Commande implements JsonSerializable
 {
     //données privées de la classe
     private $_numCommande;
+    private $_dateConditionnement;
     private $_dateEnvoie;
     private $_idClient;
-    private $_codeLot;
+    private $_idLot;
     private $_idConditionnement;
 
     public function __construct() {
     }
     
     // Constructeur de la classe depuis l'extérieur
-    public static function fromValues($num, $date, $idClient, $codeLot, $idCond) {
+    public static function fromValues($num, $dateCond, $dateEnvoi, $idClient, $idLot, $idCond) {
         $instance = new self();
-        $instance->fillValues($num, $date, $idClient, $codeLot, $idCond);
+        $instance->fillValues($num, $dateCond, $dateEnvoi, $idClient, $idLot, $idCond);
         return $instance;
     }
 
@@ -26,19 +27,21 @@ class Commande implements JsonSerializable
         return $instance;
     }
 
-    protected function fillValues($num, $date, $idClient, $codeLot, $idCond) {
+    protected function fillValues($num, $dateCond, $dateEnvoi, $idClient, $idLot, $idCond) {
         $this->_numCommande = $num;
-        $this->_dateEnvoie = $date;
+        $this->_dateConditionnement = $dateCond;
+        $this->_dateEnvoie = $dateEnvoi;
         $this->_idClient = $idClient;
-        $this->_codeLot = $codeLot;
+        $this->_idLot = $idLot;
         $this->_idConditionnement = $idCond;
     }
 
     protected function fillRow(DBQueryResult $row) {
         $this->_numCommande = $row->numCommande;
+        $this->_dateConditionnement = $row->dateConditionnement;
         $this->_dateEnvoie = $row->dateEnvoie;
         $this->_idClient = $row->idClient;
-        $this->_codeLot = $row->codeLot;
+        $this->_idLot = $row->idLot;
         $this->_idConditionnement = $row->idConditionnement;
     }
     
@@ -50,7 +53,11 @@ class Commande implements JsonSerializable
             case 'numCommande':
                 return $this->_numCommande;
                 break;
-            case 'date':
+            case 'dateCond':
+            case 'dateConditionnement':
+                return $this->_dateConditionnement;
+                break;
+            case 'dateEnvoi':
             case 'dateEnvoie':
                 return $this->_dateEnvoie;
                 break;
@@ -60,8 +67,8 @@ class Commande implements JsonSerializable
             case 'client':
                 return DBLayer::getClient($this->_idClient);
                 break;
-            case 'codeLot':
-                return $this->_codeLot;
+            case 'idLot':
+                return $this->_idLot;
                 break;
             case 'lot':
                 return DBLayer::getLotCommande($this);
@@ -73,6 +80,12 @@ class Commande implements JsonSerializable
             case 'cond':
             case 'conditionnement':
                 return DBLayer::getConditionnementCommande($this);
+            case 'conditioned':
+                return $this->_dateConditionnement != null && $this->_dateConditionnement != "" && $this->_dateConditionnement != "0000-00-00";
+                break;
+            case 'sent':
+                return $this->_dateEnvoie != null && $this->_dateEnvoie != "" && $this->_dateEnvoie != "0000-00-00";
+                break;
             default:
                 return null;
                 break;
@@ -85,6 +98,6 @@ class Commande implements JsonSerializable
     }
 
     public function jsonSerialize() {
-        return array('num' => $this->_numCommande, 'date' => $this->_dateEnvoie, 'idClient' => $this->_idClient, 'codeLot' => $this->_codeLot,'idCond' => $this->_idConditionnement);
+        return array('num' => $this->_numCommande, 'dateConditionnement' => $this->_dateConditionnement, 'dateEnvoi' => $this->_dateEnvoie, 'idClient' => $this->_idClient, 'idLot' => $this->_idLot,'idCond' => $this->_idConditionnement);
     }
 }

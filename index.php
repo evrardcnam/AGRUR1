@@ -16,9 +16,7 @@
 			header("refresh:5;url=index.php");
 			?>
 			<html><head><title>Erreur</title></head><body><h1>Connexion échouée</h1><p>Vos identifiants sont incorrects ou vous n'êtes pas encore inscrit. Si le problème persiste, contactez le webmestre.<br />Vous serez redirigé dans quelques instants, sinon, <a href="index.php">cliquez ici.</a></p></body></html>
-			<?php } }
-	else {
-?>
+		<?php exit(); } } ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -35,8 +33,8 @@
 	<form class="formulaire" method="post">
 	<p>
 		<img src="img/logo.png" alt="Logo Agrur" /><br />
-		<input type="text" class="compte" name="compte" id="compte" placeholder="Nom d'utilisateur" maxlength="10" /><br />
-		<input type="password" class="compte" name="motdepasse" id="motdepasse" placeholder="Mot de passe" maxlength="10" /><br /><br />
+		<input type="text" class="form-control compte" name="compte" id="compte" placeholder="Nom d'utilisateur" maxlength="10" />
+		<input type="password" class="form-control compte" name="motdepasse" id="motdepasse" placeholder="Mot de passe" maxlength="10" /><br />
 		<button class="btn">Connexion</button>
 	</p>
     </form>
@@ -48,4 +46,3 @@
 	</p>
 </footer>
 </html>
-	<?php } ?>

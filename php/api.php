@@ -5,9 +5,9 @@ $result = array("status" => "400", "text" => "Bad Request");
 $success = array("status" => "200", "text" => "OK");
 
 $possible_requests = array(
-    "post_client", "post_certification", "post_validation", "post_commande", "post_conditionnement", "post_lot", "post_variete", "post_commune",
-    "put_client", "put_certification", "put_commande", "put_conditionnement", "put_lot", "put_variete", "put_commune",
-    "delete_client", "delete_certification", "delete_validation", "delete_commande", "delete_conditionnement", "delete_lot", "delete_variete", "delete_commune");
+    "post_client", "post_certification", "post_validation", "post_conditionnement", "post_lot", "post_variete", "post_commune",
+    "put_client", "put_certification", "put_conditionnement", "put_lot", "put_variete", "put_commune",
+    "delete_client", "delete_certification", "delete_validation", "delete_conditionnement", "delete_lot", "delete_variete", "delete_commune");
 
 if(isset($_GET["action"]) && in_array($_GET["action"], $possible_requests)) {
     switch($_GET["action"]) {
@@ -23,10 +23,6 @@ if(isset($_GET["action"]) && in_array($_GET["action"], $possible_requests)) {
             if(!isset($_POST["idProducteur"], $_POST["idCertification"], $_POST["dateObtention"])) break;
             DBLayer::addCertObtenue(CertObtenue::fromValues($_POST["idCertification"], null, $_POST["idProducteur"], $_POST["dateObtention"]));
             $result = $success; $result["new_id"] = $_POST["idCertification"]; break;
-        case "post_commande":
-            if(!isset($_POST["dateEnvoie"], $_POST["idClient"], $_POST["codeLot"], $_POST["idConditionnement"])) break;
-            $id = DBLayer::addCommande(Commande::fromValues(null, $_POST["dateEnvoie"], $_POST["idClient"], $_POST["codeLot"], $_POST["idConditionnement"]));
-            $result = $success; $result["new_id"] = $id; break;
         case "post_conditionnement":
             if(!isset($_POST["libelle"], $_POST["poids"])) break;
             $id = DBLayer::addConditionnement(Conditionnement::fromValues(null, $_POST["libelle"], $_POST["poids"]));
@@ -51,10 +47,6 @@ if(isset($_GET["action"]) && in_array($_GET["action"], $possible_requests)) {
             if(!isset($_POST["id"], $_POST["libelle"])) break;
             DBLayer::setCertification(Certification::fromValues($_POST["id"], $_POST["libelle"]));
             $result = $success; $result["id"] = $_POST["id"]; break;
-        case "put_commande":
-            if(!isset($_POST["num"], $_POST["dateEnvoie"], $_POST["idClient"], $_POST["codeLot"], $_POST["idConditionnement"])) break;
-            DBLayer::setCommande(Commande::fromValues($_POST["num"], $_POST["dateEnvoie"], $_POST["idClient"], $_POST["codeLot"], $_POST["idConditionnement"]));
-            $result = $success; $result["id"] = $_POST["num"]; break;
         case "put_conditionnement":
             if(!isset($_POST["id"], $_POST["libelle"], $_POST["poids"])) break;
             DBLayer::setConditionnement(Conditionnement::fromValues($_POST["id"], $_POST["libelle"], $_POST["poids"]));
@@ -83,10 +75,6 @@ if(isset($_GET["action"]) && in_array($_GET["action"], $possible_requests)) {
         case "delete_validation":
             if(!isset($_POST["id"], $_POST["name"])) break;
             DBLayer::removeCertObtenue(CertObtenue::fromValues($_POST["id"], null, $_POST["name"], null));
-            $result = $success; $result["del_id"] = $_POST["id"]; break;
-        case "delete_commande":
-            if(!isset($_POST["id"])) break;
-            DBLayer::removeCommande(Commande::fromValues($_POST["id"], null, null, null, null));
             $result = $success; $result["del_id"] = $_POST["id"]; break;
         case "delete_conditionnement":
             if(!isset($_POST["id"])) break;

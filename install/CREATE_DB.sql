@@ -16,12 +16,6 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
---
--- Base de données :  `agrur`
---
-CREATE DATABASE IF NOT EXISTS `agrur` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `agrur`;
-
 -- --------------------------------------------------------
 
 --
@@ -57,6 +51,7 @@ CREATE TABLE `client` (
 DROP TABLE IF EXISTS `commande`;
 CREATE TABLE `commande` (
   `numCommande` int(11) NOT NULL,
+  `dateConditionnement` date DEFAULT NULL,
   `dateEnvoie` date DEFAULT NULL,
   `idConditionnement` int(11) NOT NULL,
   `idLot` int(11) NOT NULL,
@@ -111,8 +106,7 @@ CREATE TABLE `commune` (
 DROP TABLE IF EXISTS `conditionnement`;
 CREATE TABLE `conditionnement` (
   `idConditionnement` int(11) NOT NULL,
-  `libelleConditionnement` varchar(255) DEFAULT NULL,
-  `poids` varchar(255) DEFAULT NULL
+  `libelleConditionnement` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -370,17 +364,22 @@ ALTER TABLE `verger`
 -- AUTO_INCREMENT pour la table `certification`
 --
 ALTER TABLE `certification`
-  MODIFY `idCertification` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idCertification` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `commande`
 --
 ALTER TABLE `commande`
   MODIFY `numCommande` int(11) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT pour la table `client`
+--
+ALTER TABLE `client`
+  MODIFY `idClient` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT pour la table `commune`
 --
 ALTER TABLE `commune`
-  MODIFY `idCommune` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idCommune` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `conditionnement`
 --
@@ -390,22 +389,32 @@ ALTER TABLE `conditionnement`
 -- AUTO_INCREMENT pour la table `livraison`
 --
 ALTER TABLE `livraison`
-  MODIFY `idLivraison` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idLivraison` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `lot`
 --
 ALTER TABLE `lot`
-  MODIFY `idLot` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `idLot` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `producteur`
+--
+ALTER TABLE `producteur`
+  MODIFY `idProducteur` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `variete`
+--
+ALTER TABLE `variete`
+  MODIFY `idVariete` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `verger`
 --
 ALTER TABLE `verger`
-  MODIFY `idVerger` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idVerger` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Contraintes pour les tables exportées
 --
