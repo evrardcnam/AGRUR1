@@ -22,8 +22,8 @@ header('Content-Type: text/html; charset=utf-8'); ?>
             <div class="col-xs-6 col-sm-2"><?php echo $c->lot->code; ?></div>
             <div class="col-xs-6 col-sm-3"><?php echo $c->cond->libelle; ?></div>
             <div class="col-xs-12 col-sm-3"><?php echo $c->client->nom; ?></div>
-            <div class="col-xs-6 col-sm-2 <?php echo (isset($c->dateCond) ? (isset($c->dateEnvoi) ? 'major' : 'true') : 'false') ?>">
-                <?php echo (isset($c->dateCond) ? (isset($c->dateEnvoi) ? 'Expédié' : 'Conditionné') : 'En attente') ?>
+            <div class="col-xs-6 col-sm-2 <?php echo ($c->conditioned ? ($c->sent ? 'major' : 'true') : 'false') ?>">
+                <?php echo ($c->conditioned ? ($c->sent ? 'Expédié' : 'Conditionné') : 'En attente') ?>
             </div>
             <div class="col-xs-6 col-sm-2">
                 <a data-link="php/editCom.php?edit=<?php echo htmlspecialchars($c->num); ?>" class="slavePage">Modifier</a><br />

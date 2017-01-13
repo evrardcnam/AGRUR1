@@ -6,8 +6,8 @@ class Client implements JsonSerializable {
     private $_nomClient;
     private $_adresseClient;
     private $_nomResAchats;
-    // Constructeur de la classe depuis la couche d'accès aux données
-    public function __construct(DBQueryResult $result){
+    
+    public function __construct(){
     }
     
     // Constructeur de la classe depuis l'extérieur
