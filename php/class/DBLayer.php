@@ -329,7 +329,7 @@ class DBLayer {
 	 * Obtenir le lot associé à une commande. 
 	 */
 	public static function getLotCommande(Commande $c) {
-		$results = DBLayer::query("SELECT * FROM lot WHERE numCommande = " . $c->num . " LIMIT 0,1");
+		$results = DBLayer::query("SELECT * FROM lot WHERE idLot = " . $c->idLot . " LIMIT 0,1");
 		if (!$results) { return null; }
 		else { return Lot::fromResult($results[0]); }
 	}
