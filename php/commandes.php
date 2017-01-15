@@ -27,7 +27,7 @@ header('Content-Type: text/html; charset=utf-8'); ?>
             </div>
             <div class="col-xs-6 col-sm-2">
                 <a data-link="php/editCom.php?edit=<?php echo htmlspecialchars($c->num); ?>" class="slavePage">Modifier</a><br />
-                <a data-link="php/editCom.php?delete=<?php echo htmlspecialchars($c->num); ?>" class="slavePage danger">Supprimer</a>
+                <a data-link="php/commandes.php?delete=<?php echo htmlspecialchars($c->num); ?>" class="slavePage danger">Supprimer</a>
             </div>
         </div><?php } ?>
     </div>

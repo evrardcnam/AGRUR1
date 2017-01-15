@@ -16,6 +16,15 @@ class DBQueryResult {
 }
 
 /**
+ * Valide une date saisie selon un format donné.
+ */
+function validateDate($date, $format = 'Y-m-d H:i:s')
+{
+    $d = DateTime::createFromFormat($format, $date);
+    return $d && $d->format($format) == $date;
+}
+
+/**
  * Couche d'accès aux données
  */
 class DBLayer {
@@ -474,7 +483,7 @@ class DBLayer {
 		if(!isset($c)) return false;
 		var_dump($c);
 		return DBLayer::preparedQuery("INSERT INTO commande(dateConditionnement,dateEnvoie,idConditionnement,idLot,idClient) VALUES (?,?,?,?,?)",
-			"ssisi", $c->dateCond, $c->dateEnvoi, $c->idCond, $c->idLot, $c->idClient);
+			"ssisi", validateDate($c->dateCond, 'Y-m-d') ? $c->dateCond : null, validateDate($c->dateEnvoi, 'Y-m-d') ? $c->dateEnvoi : null, $c->idCond, $c->idLot, $c->idClient);
 	}
 
 	/**
