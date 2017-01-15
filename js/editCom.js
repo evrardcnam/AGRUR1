@@ -7,7 +7,7 @@ $(function() {
             idLot: $("#comLot").val(),
             idConditionnement: $("#comCond").val()
         }
-        if($("#id").val() != "") sent.id = $("#id").val();
+        if($("#id").val() != "") sent.num = $("#id").val();
         $.post("php/commandes.php", sent, function(data) {
             console.log(data);
             showPage('php/commandes.php');

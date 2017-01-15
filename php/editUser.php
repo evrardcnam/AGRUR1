@@ -1,10 +1,10 @@
 <?php require_once "config.php";
-$id = ""; $nom = ""; $admin = false; $idProd = "";
+$id = ""; $nom = ""; $role = ""; $idProd = "";
 if(isset($_GET['edit'])) {
     $id = htmlspecialchars_decode($_GET['edit']);
     $u = DBLayer::getUtilisateurId($id);
     $nom = $u->nom;
-    $admin = $u->admin;
+    $role = $u->role;
     $idProd = $u->idProducteur;
 } ?>
 <script type="text/javascript" src="js/editUser.js"></script>
@@ -28,16 +28,28 @@ if(isset($_GET['edit'])) {
             </div>
         </div>
         <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-3"><div class="checkbox">
-                <label>
-                    <input type="checkbox" id="userAdmin" <?php if($admin) echo "checked"; ?> /> Administrateur
-                </label>
-            </div></div>
+            <div class="col-sm-offset-2 col-sm-3"><div class="radio"><label>
+                <input type="radio" name="userRole" id="userIsAdmin" value="admin" <?php if($role == "" || $role == 'admin') echo "checked"; ?> /> Administrateur
+            </label></div><div class="radio"><label>
+                <input type="radio" name="userRole" id="userIsProd" value="producteur" <?php if($role == 'producteur') echo "checked"; ?> /> Producteur
+            </label></div><div class="radio"><label>
+                <input type="radio" name="userRole" id="userIsClient" value="client" <?php if($role == 'client') echo "checked"; ?> /> Client
+            </label></div></div>
+        </div>
+        <div class="form-group">
             <label for="userProd" class="col-sm-3 control-label">Producteur associé</label>
-            <div class="col-sm-4">
-                <select id="userProd" class="form-control" <?php if($admin) echo "disabled"; ?>>
+            <div class="col-sm-3">
+                <select id="userProd" class="form-control" <?php if($role != 'producteur') echo "disabled"; ?>>
                     <?php foreach (DBLayer::getProducteurs() as $p) {
                         echo '<option value="' . $p->id . ($p->id == $idProd ? '" selected' : '"') . '>' . $p->nom . '</option>';
+                    } ?>
+                </select>
+            </div>
+            <label for="userClient" class="col-sm-3 control-label">Client associé</label>
+            <div class="col-sm-3">
+                <select id="userClient" class="form-control" <?php if($role != 'client') echo "disabled"; ?>>
+                    <?php foreach (DBLayer::getClients() as $c) {
+                        echo '<option value="' . $c->id . ($c->id == $idClient ? '" selected' : '"') . '>' . $c->nom . '</option>';
                     } ?>
                 </select>
             </div>

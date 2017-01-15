@@ -3,8 +3,9 @@ $(function() {
         sent = {
             nom: $("#userName").val(),
             pass: $("#userPass").val(),
-            admin: $("#userAdmin").is(":checked"),
-            idProducteur: $("#userProd").val()
+            role: $('input[name="userRole"]:checked').val(),
+            idProducteur: $('input[name="userRole"]:checked').val() == 'producteur' ? $("#userProd").val() : null,
+            idClient: $('input[name="userRole"]:checked').val() == 'client' ? $("#userClient").val() : null
         }
         if($("#id").val() != "") sent.id = $("#id").val();
         $.post("php/utilisateurs.php", sent, function(data) {
@@ -13,7 +14,8 @@ $(function() {
             alert("Une erreur s'est produite lors de l'enregistrement. Vérifiez les données saisies, réessayez ultérieurement ou contactez le support technique.");
         });
     });
-    $("input#userAdmin").change(function() {
-        $("select#userProd").prop("disabled", $("input#userAdmin").is(":checked"));
+    $('input[name="userRole"]').change(function() {
+        $("select#userProd").prop("disabled", $('input[name="userRole"]:checked').val() != 'producteur');
+        $("select#userClient").prop("disabled", $('input[name="userRole"]:checked').val() != 'client');
     });
 });

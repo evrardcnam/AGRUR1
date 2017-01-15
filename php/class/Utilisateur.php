@@ -6,16 +6,17 @@ class Utilisateur implements JsonSerializable {
     // Données privées de la classe
     private $_id;
     private $_name;
-    private $_admin;
+    private $_role;
     private $_idProducteur;
+    private $_idClient;
 
     public function __construct() {
     }
     
     // Constructeur de la classe depuis l'extérieur
-    public static function fromValues($id, $name, $admin, $idProducteur) {
+    public static function fromValues($id, $name, $role, $idProducteur, $idClient) {
         $instance = new self();
-        $instance->fillValues($id, $name, $admin, $idProducteur);
+        $instance->fillValues($id, $name, $role, $idProducteur, $idClient);
         return $instance;
     }
 
@@ -26,18 +27,20 @@ class Utilisateur implements JsonSerializable {
         return $instance;
     }
 
-    protected function fillValues($id, $name, $admin, $idProducteur) {
+    protected function fillValues($id, $name, $role, $idProducteur, $idClient) {
         $this->_id = $id;
         $this->_name = $name;
-        $this->_admin = $admin;
+        $this->_role = $role;
         $this->_idProducteur = $idProducteur;
+        $this->_idClient = $idClient;
     }
 
     protected function fillRow(DBQueryResult $row) {
         $this->_id = $row->id;
         $this->_name = $row->name;
-        $this->_admin = $row->admin;
+        $this->_role = $row->role;
         $this->_idProducteur = $row->idProducteur;
+        $this->_idClient = $row->idClient;
     }
 
     /**
@@ -51,14 +54,20 @@ class Utilisateur implements JsonSerializable {
             case 'nom':
                 return $this->_name;
                 break;
-            case 'admin':
-                return $this->_admin;
+            case 'role':
+                return $this->_role;
                 break;
             case 'idProducteur':
                 return $this->_idProducteur;
                 break;
             case 'producteur':
                 return DBLayer::getProducteurUtilisateur($this);
+                break;
+            case 'idClient':
+                return $this->_idClient;
+                break;
+            case 'client':
+                return DBLayer::getClientUtilisateur($this);
                 break;
             default:
                 return null;
@@ -81,8 +90,9 @@ class Utilisateur implements JsonSerializable {
     }
     
     public function jsonSerialize() {
-        $arr = array('id' => $this->_id, 'nom' => $this->_name, 'admin' => $this->_admin);
-        if(!$this->admin) $arr["idProducteur"] = $this->_idProducteur;
+        $arr = array('id' => $this->_id, 'nom' => $this->_name, 'role' => $this->_role);
+        if(!$this->role == 'producteur') $arr["idProducteur"] = $this->_idProducteur;
+        else if(!$this->role == 'client') $arr["idClient"] = $this->_idClient;
         return $arr;
     }
 }
