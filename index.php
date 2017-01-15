@@ -8,6 +8,9 @@
 				case U_PRODUCTEUR:
 					header("Location: masterProd.php");
 					break;
+				case U_CLIENT:
+					header("Location: masterClient.php");
+					break;
 				default:
 					header("Location: index.php");
 					break;

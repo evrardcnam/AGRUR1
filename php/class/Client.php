@@ -6,14 +6,15 @@ class Client implements JsonSerializable {
     private $_nomClient;
     private $_adresseClient;
     private $_nomResAchats;
+    private $_idUser;
     
     public function __construct(){
     }
     
     // Constructeur de la classe depuis l'extérieur
-    public static function fromValues($id, $nom, $adresse, $nomRes) {
+    public static function fromValues($id, $nom, $adresse, $nomRes, $idUser) {
         $instance = new self();
-        $instance->fillValues($id, $nom, $adresse, $nomRes);
+        $instance->fillValues($id, $nom, $adresse, $nomRes, $idUser);
         return $instance;
     }
 
@@ -24,11 +25,12 @@ class Client implements JsonSerializable {
         return $instance;
     }
     
-    protected function fillValues($id, $nom, $adresse, $nomRes) {
+    protected function fillValues($id, $nom, $adresse, $nomRes, $idUser) {
         $this->_idClient = $id;
         $this->_nomClient = $nom;
         $this->_adresseClient = $adresse;
         $this->_nomRes = $nomRes;
+        $this->_idUser = $idUser;
     }
 
     protected function fillRow(DBQueryResult $row) {
@@ -36,7 +38,7 @@ class Client implements JsonSerializable {
         $this->_nomClient = $row->nomClient;
         $this->_adresseClient = $row->adresseClient;
         $this->_nomResAchats = $row->nomResAchats;
-        
+        $this->_idUser = $row->idUser;
     }
     
     // Accesseur
@@ -57,6 +59,14 @@ class Client implements JsonSerializable {
             case 'nomResAchats':
                 return $this->_nomResAchats;
                 break;
+            case 'idUser':
+            case 'idUtilisateur':
+                return $this->_idUser;
+                break;
+            case 'user':
+            case 'utilisateur':
+                return DBLayer::getUtilisateurClient($this);
+                break;
             default:
                 return null;
                 break;
@@ -68,7 +78,7 @@ class Client implements JsonSerializable {
     }
 
     public function jsonSerialize() {
-        return array('id' => $this->_idClient, 'nom' => $this->_nomClient, 'adresse' => $this->adresse, 'nomResAchats' => $this->_nomResAchats);
+        return array('id' => $this->_idClient, 'nom' => $this->_nomClient, 'adresse' => $this->adresse, 'nomResAchats' => $this->_nomResAchats, 'idUser' => $this->_idUser);
     }
 }
 ?>

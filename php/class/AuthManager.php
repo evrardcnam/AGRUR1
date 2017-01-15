@@ -18,13 +18,15 @@ class AuthManager {
     /**
      * Obtient l'état de connexion d'un utilisateur.
      * false si aucun utilisateur n'est connecté pour la session active, sinon retourne le rôle de l'utilisateur.
-     * Le rôle de l'utilisateur est U_ADMIN s'il est administrateur ou U_PRODUCTEUR s'il est producteur.
+     * Le rôle de l'utilisateur est U_ADMIN s'il est administrateur, U_PRODUCTEUR s'il est producteur ou U_CLIENT s'il est client.
      */
     public static function loginStatus() {
         session_start();
         if(!isset($_SESSION['user']) || !($_SESSION['user'] instanceof Utilisateur)) return false;
-        else if ($_SESSION['user']->admin) return U_ADMIN;
-        else return U_PRODUCTEUR; 
+        else if ($_SESSION['user']->role == 'admin') return U_ADMIN;
+        else if ($_SESSION['user']->role == 'producteur') return U_PRODUCTEUR;
+        else if ($_SESSION['user']->role == 'client') return U_CLIENT;
+        else return false;
     }
 
     /**
@@ -47,4 +49,5 @@ class AuthManager {
 
 define("U_PRODUCTEUR", 1);
 define("U_ADMIN", 2);
+define("U_CLIENT", 3);
 ?>
