@@ -24,8 +24,8 @@ if(isset($_GET["action"]) && in_array($_GET["action"], $possible_requests)) {
             DBLayer::addCertObtenue(CertObtenue::fromValues($_POST["idCertification"], null, $_POST["idProducteur"], $_POST["dateObtention"]));
             $result = $success; $result["new_id"] = $_POST["idCertification"]; break;
         case "post_conditionnement":
-            if(!isset($_POST["libelle"], $_POST["poids"])) break;
-            $id = DBLayer::addConditionnement(Conditionnement::fromValues(null, $_POST["libelle"], $_POST["poids"]));
+            if(!isset($_POST["libelle"])) break;
+            $id = DBLayer::addConditionnement(Conditionnement::fromValues(null, $_POST["libelle"]));
             $result = $success; $result["new_id"] = $id; break;
         case "post_lot":
             if(!isset($_POST["code"], $_POST["calibre"], $_POST["quantite"], $_POST["idLivraison"])) break;
@@ -48,8 +48,8 @@ if(isset($_GET["action"]) && in_array($_GET["action"], $possible_requests)) {
             DBLayer::setCertification(Certification::fromValues($_POST["id"], $_POST["libelle"]));
             $result = $success; $result["id"] = $_POST["id"]; break;
         case "put_conditionnement":
-            if(!isset($_POST["id"], $_POST["libelle"], $_POST["poids"])) break;
-            DBLayer::setConditionnement(Conditionnement::fromValues($_POST["id"], $_POST["libelle"], $_POST["poids"]));
+            if(!isset($_POST["id"], $_POST["libelle"])) break;
+            DBLayer::setConditionnement(Conditionnement::fromValues($_POST["id"], $_POST["libelle"]));
             $result = $success; $result["id"] = $id; break;
         case "put_lot":
             if(!isset($_POST["id"], $_POST["code"], $_POST["calibre"], $_POST["quantite"], $_POST["idLivraison"])) break;

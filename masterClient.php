@@ -17,14 +17,18 @@
 					<div class="navbar-header">
 						<a class="navbar-brand" href="#">AGRUR </a>
 					</div>
+					<ul class="nav navbar-nav">
+						<li><a id="home" class="slavePage" data-link="php/client/accueil.php">Accueil</a></li>
+						<li><a class="slavePage" data-link="php/client/lots.php">Lots</a></li>
+						<li><a class="slavePage" data-link="php/client/commandes.php">Commandes</a></li>
+					</ul>
 					<ul class="nav navbar-nav pull-right">
 						<li><a href="javascript:logout();"><span class="glyphicon glyphicon-off"></span></a></li>
 					</ul>
 				</div>
 			</nav>
 			<div id="content">
-				<h1>Interface non disponible</h1>
-				<p>La connexion en tant que client à l'intranet AGRUR n'est pas implémentée pour le moment.</p>
+			</div>
 		</div>
 	</body>
 </html>

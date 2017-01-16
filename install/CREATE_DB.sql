@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.2
+-- version 4.5.1
 -- http://www.phpmyadmin.net
 --
--- Client :  localhost
--- Généré le :  Mar 10 Janvier 2017 à 22:15
+-- Client :  127.0.0.1
+-- Généré le :  Lun 16 Janvier 2017 à 13:21
 -- Version du serveur :  10.1.19-MariaDB
 -- Version de PHP :  5.6.28
 
@@ -16,13 +16,16 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
+--
+-- Base de données :  `agrur`
+--
+
 -- --------------------------------------------------------
 
 --
 -- Structure de la table `certification`
 --
 
-DROP TABLE IF EXISTS `certification`;
 CREATE TABLE `certification` (
   `idCertification` int(11) NOT NULL,
   `libelleCertification` varchar(255) DEFAULT NULL
@@ -34,12 +37,12 @@ CREATE TABLE `certification` (
 -- Structure de la table `client`
 --
 
-DROP TABLE IF EXISTS `client`;
 CREATE TABLE `client` (
   `idClient` int(11) NOT NULL,
   `nomClient` varchar(255) NOT NULL,
   `adresseClient` varchar(255) DEFAULT NULL,
-  `nomResAchats` varchar(255) DEFAULT NULL
+  `nomResAchats` varchar(255) DEFAULT NULL,
+  `idUser` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -48,7 +51,6 @@ CREATE TABLE `client` (
 -- Structure de la table `commande`
 --
 
-DROP TABLE IF EXISTS `commande`;
 CREATE TABLE `commande` (
   `numCommande` int(11) NOT NULL,
   `dateConditionnement` date DEFAULT NULL,
@@ -61,14 +63,12 @@ CREATE TABLE `commande` (
 --
 -- Déclencheurs `commande`
 --
-DROP TRIGGER IF EXISTS `after_insert_commande`;
 DELIMITER $$
 CREATE TRIGGER `after_insert_commande` AFTER INSERT ON `commande` FOR EACH ROW BEGIN
   UPDATE `lot` SET `numCommande` = NEW.numCommande WHERE `lot`.`idLot` LIKE NEW.idLot;
 END
 $$
 DELIMITER ;
-DROP TRIGGER IF EXISTS `after_update_commande`;
 DELIMITER $$
 CREATE TRIGGER `after_update_commande` AFTER UPDATE ON `commande` FOR EACH ROW BEGIN
   IF (OLD.idLot <> NEW.idLot) THEN
@@ -78,7 +78,6 @@ CREATE TRIGGER `after_update_commande` AFTER UPDATE ON `commande` FOR EACH ROW B
 END
 $$
 DELIMITER ;
-DROP TRIGGER IF EXISTS `before_delete_commande`;
 DELIMITER $$
 CREATE TRIGGER `before_delete_commande` BEFORE DELETE ON `commande` FOR EACH ROW UPDATE `lot` SET `numCommande` = NULL WHERE `lot`.`idLot` LIKE OLD.idLot
 $$
@@ -90,7 +89,6 @@ DELIMITER ;
 -- Structure de la table `commune`
 --
 
-DROP TABLE IF EXISTS `commune`;
 CREATE TABLE `commune` (
   `idCommune` int(11) NOT NULL,
   `nomCommune` varchar(255) DEFAULT NULL,
@@ -103,7 +101,6 @@ CREATE TABLE `commune` (
 -- Structure de la table `conditionnement`
 --
 
-DROP TABLE IF EXISTS `conditionnement`;
 CREATE TABLE `conditionnement` (
   `idConditionnement` int(11) NOT NULL,
   `libelleConditionnement` varchar(255) DEFAULT NULL
@@ -115,7 +112,6 @@ CREATE TABLE `conditionnement` (
 -- Structure de la table `livraison`
 --
 
-DROP TABLE IF EXISTS `livraison`;
 CREATE TABLE `livraison` (
   `idLivraison` int(11) NOT NULL,
   `dateLivraison` date DEFAULT NULL,
@@ -129,7 +125,6 @@ CREATE TABLE `livraison` (
 -- Structure de la table `lot`
 --
 
-DROP TABLE IF EXISTS `lot`;
 CREATE TABLE `lot` (
   `idLot` int(11) NOT NULL,
   `codeLot` varchar(255) NOT NULL,
@@ -145,7 +140,6 @@ CREATE TABLE `lot` (
 -- Structure de la table `obtient`
 --
 
-DROP TABLE IF EXISTS `obtient`;
 CREATE TABLE `obtient` (
   `idCertification` int(11) NOT NULL,
   `idProducteur` int(11) NOT NULL,
@@ -158,7 +152,6 @@ CREATE TABLE `obtient` (
 -- Structure de la table `producteur`
 --
 
-DROP TABLE IF EXISTS `producteur`;
 CREATE TABLE `producteur` (
   `idProducteur` int(11) NOT NULL,
   `nomProducteur` varchar(255) NOT NULL,
@@ -171,60 +164,45 @@ CREATE TABLE `producteur` (
 -- --------------------------------------------------------
 
 --
--- Doublure de structure pour la vue `Produit`
---
-DROP VIEW IF EXISTS `Produit`;
-CREATE TABLE `Produit` (
-`type` varchar(255)
-,`variete` varchar(255)
-,`calibre` varchar(255)
-);
-
--- --------------------------------------------------------
-
---
 -- Structure de la table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `pass` varchar(255) DEFAULT NULL,
-  `admin` tinyint(1) DEFAULT NULL,
-  `idProducteur` int(11) DEFAULT NULL
+  `name` varchar(255) NOT NULL,
+  `pass` varchar(255) NOT NULL,
+  `role` enum('admin','producteur','client','') NOT NULL DEFAULT 'admin',
+  `idProducteur` int(11) DEFAULT NULL,
+  `idClient` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déclencheurs `users`
 --
-DROP TRIGGER IF EXISTS `after_insert_users`;
 DELIMITER $$
 CREATE TRIGGER `after_insert_users` AFTER INSERT ON `users` FOR EACH ROW BEGIN
-  IF (NEW.admin = 0) THEN
-  	UPDATE `producteur` SET `idUser` = NEW.id WHERE `producteur`.`idProducteur` LIKE NEW.idProducteur;
-  END IF;
+  CASE NEW.role
+  	WHEN 'producteur' THEN UPDATE `producteur` SET `idUser` = NEW.id WHERE `producteur`.`idProducteur` = NEW.idProducteur;
+    WHEN 'client' THEN UPDATE `client` SET `idUser` = NEW.id WHERE `client`.`idClient` = NEW.idClient;
+  END CASE;
 END
 $$
 DELIMITER ;
-DROP TRIGGER IF EXISTS `after_update_users`;
 DELIMITER $$
 CREATE TRIGGER `after_update_users` AFTER UPDATE ON `users` FOR EACH ROW BEGIN
-  IF (NEW.admin = 0) THEN
-  	UPDATE `producteur` SET `idUser` = NEW.id WHERE `producteur`.`idProducteur` LIKE NEW.idProducteur;
-  END IF;
-  IF (OLD.admin = 0 AND NEW.admin = 1) THEN
-    UPDATE `producteur` SET `idUser` = NULL WHERE `producteur`.`idProducteur` LIKE OLD.idProducteur;
-  END IF;
+  UPDATE `producteur` SET `idUser` = NULL WHERE `producteur`.`idProducteur` = OLD.idProducteur;
+  UPDATE `client` SET `idUser` = NULL WHERE `client`.`idClient` = OLD.idClient;
+  CASE NEW.role
+  	WHEN 'producteur' THEN UPDATE `producteur` SET `idUser` = NEW.id WHERE `producteur`.`idProducteur` = NEW.idProducteur;
+    WHEN 'client' THEN UPDATE `client` SET `idUser` = NEW.id WHERE `client`.`idClient` = NEW.idClient;
+  END CASE;
 END
 $$
 DELIMITER ;
-DROP TRIGGER IF EXISTS `before_delete_users`;
 DELIMITER $$
 CREATE TRIGGER `before_delete_users` BEFORE DELETE ON `users` FOR EACH ROW BEGIN
-  IF (OLD.admin = 0) THEN
-    UPDATE `producteur` SET `idUser` = NULL WHERE `producteur`.`idProducteur` LIKE OLD.idProducteur;
-  END IF;
+  UPDATE `producteur` SET `idUser` = NULL WHERE `producteur`.`idProducteur` = OLD.idProducteur;
+  UPDATE `client` SET `idUser` = NULL WHERE `client`.`idClient` = OLD.idClient;
 END
 $$
 DELIMITER ;
@@ -235,7 +213,6 @@ DELIMITER ;
 -- Structure de la table `variete`
 --
 
-DROP TABLE IF EXISTS `variete`;
 CREATE TABLE `variete` (
   `idVariete` int(11) NOT NULL,
   `libelle` varchar(255) NOT NULL,
@@ -248,7 +225,6 @@ CREATE TABLE `variete` (
 -- Structure de la table `verger`
 --
 
-DROP TABLE IF EXISTS `verger`;
 CREATE TABLE `verger` (
   `idVerger` int(11) NOT NULL,
   `nomVerger` varchar(255) DEFAULT NULL,
@@ -258,15 +234,6 @@ CREATE TABLE `verger` (
   `idCommune` int(11) DEFAULT NULL,
   `idProducteur` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la vue `Produit`
---
-DROP TABLE IF EXISTS `Produit`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `Produit`  AS  select distinct `livraison`.`typeProduit` AS `type`,`variete`.`libelle` AS `variete`,`lot`.`calibreLot` AS `calibre` from (((`lot` join `livraison` on((`lot`.`idLivraison` = `livraison`.`idLivraison`))) join `verger` on((`livraison`.`idVerger` = `verger`.`idVerger`))) join `variete` on((`verger`.`idVariete` like `variete`.`idVariete`))) ;
 
 --
 -- Index pour les tables exportées
@@ -282,7 +249,8 @@ ALTER TABLE `certification`
 -- Index pour la table `client`
 --
 ALTER TABLE `client`
-  ADD PRIMARY KEY (`idClient`);
+  ADD PRIMARY KEY (`idClient`),
+  ADD UNIQUE KEY `FK_client_users_idUser` (`idUser`);
 
 --
 -- Index pour la table `commande`
@@ -339,7 +307,8 @@ ALTER TABLE `producteur`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_users_producteur_nomproducteur` (`idProducteur`);
+  ADD UNIQUE KEY `FK_users_producteur_nomproducteur` (`idProducteur`) USING BTREE,
+  ADD UNIQUE KEY `FK_users_client_idClient` (`idClient`);
 
 --
 -- Index pour la table `variete`
@@ -366,15 +335,15 @@ ALTER TABLE `verger`
 ALTER TABLE `certification`
   MODIFY `idCertification` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT pour la table `commande`
---
-ALTER TABLE `commande`
-  MODIFY `numCommande` int(11) NOT NULL AUTO_INCREMENT;
---
 -- AUTO_INCREMENT pour la table `client`
 --
 ALTER TABLE `client`
   MODIFY `idClient` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `commande`
+--
+ALTER TABLE `commande`
+  MODIFY `numCommande` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `commune`
 --
@@ -420,6 +389,12 @@ ALTER TABLE `verger`
 --
 
 --
+-- Contraintes pour la table `client`
+--
+ALTER TABLE `client`
+  ADD CONSTRAINT `FK_client_users_idUser` FOREIGN KEY (`idUser`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Contraintes pour la table `commande`
 --
 ALTER TABLE `commande`
@@ -457,6 +432,7 @@ ALTER TABLE `producteur`
 -- Contraintes pour la table `users`
 --
 ALTER TABLE `users`
+  ADD CONSTRAINT `FK_users_client_idClient` FOREIGN KEY (`idClient`) REFERENCES `client` (`idClient`),
   ADD CONSTRAINT `FK_users_producteur_idProducteur` FOREIGN KEY (`idProducteur`) REFERENCES `producteur` (`idProducteur`);
 
 --

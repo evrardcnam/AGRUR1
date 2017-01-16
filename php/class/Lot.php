@@ -61,9 +61,14 @@ class Lot implements JsonSerializable {
             case 'idLivraison':
                 return $this->_idLivraison;
                 break;
+            case 'livraison':
+                return DBLayer::getLivraison($this->_idLivraison);
+                break;
             case 'numCommande':
                 return $this->_numCommande;
                 break;
+            case 'commande':
+                return DBLayer::getCommande($this->_numCommande);
             default:
                 return null;
                 break;

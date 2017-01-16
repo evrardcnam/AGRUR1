@@ -19,4 +19,4 @@ if(AuthManager::loginStatus() == U_PRODUCTEUR) {
         <?php } ?>
     </ul>
 </div>
-<?php } ?>
+<?php } else { echo 'Accès refusé'; } ?>

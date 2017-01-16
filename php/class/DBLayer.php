@@ -169,7 +169,7 @@ class DBLayer {
 	}
 	
 	/**
-	 * Obtenir toutes les commandes 
+	 * Obtenir une commande par son identifiant unique
 	 */
 	public static function getCommande($id) {
 		$results = DBLayer::query("SELECT * FROM commande WHERE `numCommande`=" . $id . ' LIMIT 0,1');
@@ -205,6 +205,28 @@ class DBLayer {
 			}
 			return $object_results;
 		}
+	}
+
+	/**
+	 * Obtenir tous les lots n'ayant pas été commandés
+	 */
+	public static function getLotsStock() {
+		$results = DBLayer::query("SELECT * FROM lot WHERE numCommande IS NULL ORDER BY codeLot ASC");
+		if (!$results) { return $results; }
+		else {
+			$object_results = array();
+			foreach ($results as $result){
+				$object_results[] = Lot::fromResult($result);
+			}
+			return $object_results;
+		}
+	}/**
+	 * Obtenir un lot par son identifiant unique
+	 */
+	public static function getLot($id) {
+		$results = DBLayer::query("SELECT * FROM lot WHERE idLot = " . $id . " LIMIT 0,1");
+		if (!$results) { return null; }
+		else { return Lot::fromResult($results[0]); }
 	}
 
 	/**
@@ -457,6 +479,36 @@ class DBLayer {
 		$results = DBLayer::query("SELECT * FROM client WHERE idUser = " . $u->id . " LIMIT 0,1");
 		if (!$results) { return null; }
 		else { return Client::fromResult($results[0]); }
+	}
+
+	/**
+	 * Obtenir toutes les commandes d'un client
+	 */
+	public static function getCommandesClient(Client $c) {
+		$results = DBLayer::query("SELECT * FROM commande WHERE idClient = " . $c->id);
+		if (!$results) { return $results; }
+		else {
+			$object_results = array();
+			foreach ($results as $result){
+				$object_results[] = Commande::fromResult($result);
+			}
+			return $object_results;
+		}
+	}
+
+	/**
+	 * Obtenir toutes les commandes non expédiées d'un client
+	 */
+	public static function getCommandesUnsentClient(Client $c) {
+		$results = DBLayer::query("SELECT * FROM commande WHERE idClient = " . $c->id . " AND dateEnvoie IS NULL ORDER BY dateConditionnement DESC");
+		if (!$results) { return $results; }
+		else {
+			$object_results = array();
+			foreach ($results as $result){
+				$object_results[] = Commande::fromResult($result);
+			}
+			return $object_results;
+		}
 	}
 
 	/**
