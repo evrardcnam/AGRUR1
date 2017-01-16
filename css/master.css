@@ -22,15 +22,14 @@ h1,h2,h3,h4,h5,h6 {
 	border-radius: 0px !important;
 	border-color: transparent !important;
 }
-.navbar-brand, .navbar-nav a { color: #FD9E16 !important; }
+.navbar-brand, .navbar-nav a, .dropdown-menu>.active>a { color: #FD9E16 !important; }
 
-.navbar-nav>.open>a, .navbar-nav>.active>a { color:white !important; }
+.navbar-nav>.open>a, .navbar-nav>.active>a, .dropdown-menu a:hover { color:white !important; }
 
 .dropdown-menu a { color : #622C09 !important; }
 
-.dropdown-menu :hover {
+.dropdown-menu :hover, .dropdown-menu>.active>a {
 	background-image: linear-gradient(to bottom,#7f3300 0,#311400 100%) !important;
-	color: white !important;
 }
 
 .container {
