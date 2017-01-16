@@ -624,7 +624,7 @@ class DBLayer {
 	public static function addUtilisateur(Utilisateur $u, $pass) {
 		if(!isset($u) || empty($pass)) return false;
 		return DBLayer::preparedQuery("INSERT INTO users(name,pass,role,idProducteur,idClient) VALUES (?,?,?,?,?)",
-			"sssii", $u->nom, crypt($pass), $u->role, $u->role == 'producteur' ? $u->idProducteur : null, $u->role == 'client' ? $u->idClient : null);
+			"sssii", $u->nom, crypt($pass, ""), $u->role, $u->role == 'producteur' ? $u->idProducteur : null, $u->role == 'client' ? $u->idClient : null);
 	}
 
 	/**
@@ -723,7 +723,7 @@ class DBLayer {
 	public static function setUtilisateur(Utilisateur $u, $pass) {
 		if(!isset($u, $pass)) return false;
 		return DBLayer::preparedQuery("UPDATE users SET `name`=?, `pass`=?, `role`=?, `idProducteur`=?, `idClient`=? WHERE `id`=?",
-			"sssiii", $u->nom, empty($pass) ? null : crypt($pass), $u->role, $u->role == 'producteur' ? $u->idProducteur : null, $u->role == 'client' ? $u->idClient : null, $u->id);
+			"sssiii", $u->nom, empty($pass) ? null : crypt($pass, ""), $u->role, $u->role == 'producteur' ? $u->idProducteur : null, $u->role == 'client' ? $u->idClient : null, $u->id);
 	}
 
 	/**

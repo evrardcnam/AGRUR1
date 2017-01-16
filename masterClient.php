@@ -23,7 +23,15 @@
 						<li><a class="slavePage" data-link="php/client/commandes.php">Commandes</a></li>
 					</ul>
 					<ul class="nav navbar-nav pull-right">
-						<li><a href="javascript:logout();"><span class="glyphicon glyphicon-off"></span></a></li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-cog"></span></a>
+							<ul class="dropdown-menu dropdown-menu-right">
+								<li><a class="slavePage" data-link="about.html">À propos de</a></li>
+								<li role="separator" class="divider"></li>
+								<li><a class="slavePage" data-link="php/resetPassword.php">Changer de mot de passe</a></li>
+								<li><a href="javascript:logout();">Déconnexion</a></li>
+							</ul>
+						</li>
 					</ul>
 				</div>
 			</nav>
