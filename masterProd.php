@@ -18,7 +18,7 @@
 						<a class="navbar-brand" href="#">AGRUR </a>
 					</div>
 					<ul class="nav navbar-nav">
-						<li><a id="home" class="slavePage" data-link="php/me.php">Accueil</a></li>
+						<li><a id="home" class="slavePage" data-link="php/accueilProd.php">Accueil</a></li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Production <span class="caret"></span></a>
 							<ul class="dropdown-menu">
