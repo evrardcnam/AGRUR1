@@ -1,4 +1,8 @@
 <?php require_once('php/config.php'); $err = false;
+	if(isset($_GET["logout"])) {
+		AuthManager::logout();
+		header("Location: index.php");
+	}
 	if(isset($_POST["compte"], $_POST["motdepasse"])) {
 		if(AuthManager::login($_POST["compte"], $_POST["motdepasse"])) {
 			switch(AuthManager::loginStatus()) {

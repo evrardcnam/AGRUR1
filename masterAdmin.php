@@ -51,7 +51,7 @@
 								<li><a class="slavePage" data-link="about.html">À propos de</a></li>
 								<li role="separator" class="divider"></li>
 								<li><a class="slavePage" data-link="php/resetPassword.php">Changer de mot de passe</a></li>
-								<li><a href="javascript:logout();">Déconnexion</a></li>
+								<li><a href="index.php?logout">Déconnexion</a></li>
 							</ul>
 						</li>
 					</ul>
