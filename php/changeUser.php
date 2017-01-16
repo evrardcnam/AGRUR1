@@ -10,6 +10,7 @@ if(isset($_GET["user"])) {
         exit();
     }
 }
+if(AuthManager::loginStatus() != U_ADMIN) exit("Accès refusé");
 header('Content-Type: text/html; charset=utf-8'); ?>
 <div class="container">
     <div class="row">

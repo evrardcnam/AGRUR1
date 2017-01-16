@@ -88,6 +88,13 @@ div.rowtable > .row > .major {
 	text-align:center;
 }
 
+a.user { text-align:right; }
+
+a.user span.username {
+	font-size: 120%;
+	font-weight:bold;
+}
+
 #content a {
 	color: #FD9E16;
 	text-decoration: underline;

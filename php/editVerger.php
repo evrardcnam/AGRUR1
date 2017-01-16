@@ -1,4 +1,5 @@
 <?php require_once "config.php";
+if(AuthManager::loginStatus() != U_ADMIN) exit("Accès refusé");
 $id = ""; $nom = ""; $superficie = 0; $arbresParHectare = 0; $idProducteur = ""; $idVariete = ""; $idCommune = "";
 if(isset($_GET['edit'])) {
     $id = htmlspecialchars_decode($_GET['edit']);

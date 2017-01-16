@@ -1,4 +1,5 @@
 <?php require_once "config.php";
+if(AuthManager::loginStatus() != U_ADMIN) exit("Accès refusé");
 $id = ""; $idVerger = null; $typeProduit = ""; $dateLiv = ""; $qteLivree = 0;
 if(isset($_GET['edit'])) {
     $id = htmlspecialchars_decode($_GET['edit']);
