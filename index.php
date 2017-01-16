@@ -1,4 +1,8 @@
 <?php require_once('php/config.php'); $err = false;
+	if(isset($_GET["logout"])) {
+		AuthManager::logout();
+		header("Location: index.php");
+	}
 	if(isset($_POST["compte"], $_POST["motdepasse"])) {
 		if(AuthManager::login($_POST["compte"], $_POST["motdepasse"])) {
 			switch(AuthManager::loginStatus()) {
@@ -24,7 +28,7 @@
 <html lang="fr">
 <head>
 	<meta charset="utf-8">
-	<title>Site Agrur</title>
+	<title>AGRUR &mdash; Connexion</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 	<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
@@ -36,8 +40,8 @@
 	<form class="formulaire" method="post">
 	<p>
 		<img src="img/logo.png" alt="Logo Agrur" /><br />
-		<input type="text" class="form-control compte" name="compte" id="compte" placeholder="Nom d'utilisateur" maxlength="10" />
-		<input type="password" class="form-control compte" name="motdepasse" id="motdepasse" placeholder="Mot de passe" maxlength="10" /><br />
+		<input type="text" class="form-control compte" name="compte" id="compte" placeholder="Nom d'utilisateur" />
+		<input type="password" class="form-control compte" name="motdepasse" id="motdepasse" placeholder="Mot de passe" /><br />
 		<button class="btn">Connexion</button>
 	</p>
     </form>

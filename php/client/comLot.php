@@ -1,10 +1,10 @@
 <?php require_once("..\config.php"); header('Content-Type: text/html; charset=utf-8');
-if(AuthManager::loginStatus() == U_CLIENT) {
-    if(isset($_POST["idLot"], $_POST["idConditionnement"]))
-        exit(DBLayer::addCommande(Commande::fromValues(null, null, null, AuthManager::getUser()->client->id, $_POST["idLot"], $_POST["idConditionnement"])));
-    else if(!isset($_GET["id"])) exit("Paramètre manquant");
-    $l = DBLayer::getLot($_GET["id"]);
-    $v = $l->livraison->verger;
+if(AuthManager::loginStatus() != U_CLIENT) exit('Accès refusé');
+if(isset($_POST["idLot"], $_POST["idConditionnement"]))
+    exit(DBLayer::addCommande(Commande::fromValues(null, null, null, AuthManager::getUser()->client->id, $_POST["idLot"], $_POST["idConditionnement"])));
+else if(!isset($_GET["id"])) exit("Paramètre manquant");
+$l = DBLayer::getLot($_GET["id"]);
+$v = $l->livraison->verger;
 ?>
 <script type="text/javascript" src="js/comLot.js"></script>
 <div class="container">
@@ -60,4 +60,3 @@ if(AuthManager::loginStatus() == U_CLIENT) {
         </div>
     </form>
 </div>
-<?php } else { echo 'Accès refusé'; } ?>

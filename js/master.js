@@ -26,6 +26,13 @@ function updateLinks() {
 
 $(function() { // Code exécuté une fois la page chargée
     // Affichage éventuel d'une page d'accueil
-    if($("a.slavePage#home").length) { showPage($("a.slavePage#home").attr("data-link")); }
-    updateLinks();
+    if($("a.slavePage#home").length) {
+        showPage($("a.slavePage#home").attr("data-link"));
+        $("a.slavePage#home").parent().addClass("active");
+    }
+    $("a.slavePage").click(function() {
+        $("li.active").removeClass("active");
+        $(this).parent().addClass("active");
+        showPage($(this).attr("data-link"));
+    }).attr("href","#").removeClass("slavePage");
 })

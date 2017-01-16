@@ -1,6 +1,6 @@
 <?php require_once("..\config.php"); header('Content-Type: text/html; charset=utf-8');
-if(AuthManager::loginStatus() == U_CLIENT) {
-    $c = AuthManager::getUser()->client;
+if(AuthManager::loginStatus() != U_CLIENT) exit('Accès refusé');
+$c = AuthManager::getUser()->client;
 ?>
 <div class="container">
     <h1><?php echo $c->nom; ?></h1>
@@ -31,4 +31,3 @@ if(AuthManager::loginStatus() == U_CLIENT) {
         </div><?php } ?>
     </div>
 </div>
-<?php } else { echo 'Accès refusé'; } ?>

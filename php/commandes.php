@@ -1,4 +1,5 @@
 <?php require_once "config.php";
+if(AuthManager::loginStatus() != U_ADMIN) exit("Accès refusé");
 if(isset($_GET["delete"])) DBLayer::removeCommande(Commande::fromValues($_GET["delete"], null, null, null, null, null));
 else if(isset($_POST["dateConditionnement"], $_POST["dateEnvoi"], $_POST["idClient"], $_POST["idLot"], $_POST["idConditionnement"])) {
     if(isset($_POST["num"])) exit(DBLayer::setCommande(Commande::fromValues($_POST["num"], $_POST["dateConditionnement"], $_POST["dateEnvoi"], $_POST["idClient"], $_POST["idLot"], $_POST["idConditionnement"])));

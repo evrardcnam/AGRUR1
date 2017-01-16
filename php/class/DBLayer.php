@@ -380,6 +380,15 @@ class DBLayer {
 	public static function getClientCommande(Commande $c) {
 		return getClient($c->idClient);
 	}
+	
+	/**
+	 * Obtenir la commande associée au lot
+	 */
+	public static function getCommandeLot(Lot $l) {
+		$results = DBLayer::query("SELECT * FROM commande WHERE `idLot`=" . $l->id . ' LIMIT 0,1');
+		if (!$results) { return null; }
+		else { return Commande::fromResult($results[0]); }
+	}
 
 	/**
 	 * Obtenir tous les lots associés à une livraison. 
@@ -491,6 +500,36 @@ class DBLayer {
 			$object_results = array();
 			foreach ($results as $result){
 				$object_results[] = Commande::fromResult($result);
+			}
+			return $object_results;
+		}
+	}
+
+	/**
+	 * Obtenir toutes les commandes de lots provenant de vergers d'un producteur
+	 */
+	public static function getCommandesProducteur(Producteur $p) {
+		$results = DBLayer::query("SELECT * FROM commande LEFT JOIN lot ON commande.idLot = lot.idLot LEFT JOIN livraison ON lot.idLivraison = livraison.idLivraison LEFT JOIN verger ON livraison.idVerger = verger.idVerger WHERE verger.idProducteur = " . $p->id);
+		if (!$results) { return $results; }
+		else {
+			$object_results = array();
+			foreach ($results as $result){
+				$object_results[] = Commande::fromResult($result);
+			}
+			return $object_results;
+		}
+	}
+
+	/**
+	 * Obtenir toutes les livraisons provenant de vergers d'un producteur
+	 */
+	public static function getLivraisonsProducteur(Producteur $p) {
+		$results = DBLayer::query("SELECT l.idLivraison, l.dateLivraison, l.typeProduit, l.idVerger, count(o.idLot) AS nbLots FROM livraison l LEFT OUTER JOIN lot o ON l.idLivraison = o.idLivraison LEFT JOIN verger ON l.idVerger = verger.idVerger WHERE verger.idProducteur = " . $p->id . " GROUP BY l.idLivraison ORDER BY l.idVerger ASC, l.dateLivraison DESC");
+		if (!$results) { return $results; }
+		else {
+			$object_results = array();
+			foreach ($results as $result){
+				$object_results[] = Livraison::fromResult($result);
 			}
 			return $object_results;
 		}
@@ -624,7 +663,7 @@ class DBLayer {
 	public static function addUtilisateur(Utilisateur $u, $pass) {
 		if(!isset($u) || empty($pass)) return false;
 		return DBLayer::preparedQuery("INSERT INTO users(name,pass,role,idProducteur,idClient) VALUES (?,?,?,?,?)",
-			"sssii", $u->nom, crypt($pass), $u->role, $u->role == 'producteur' ? $u->idProducteur : null, $u->role == 'client' ? $u->idClient : null);
+			"sssii", $u->nom, crypt($pass, ""), $u->role, $u->role == 'producteur' ? $u->idProducteur : null, $u->role == 'client' ? $u->idClient : null);
 	}
 
 	/**
@@ -723,7 +762,7 @@ class DBLayer {
 	public static function setUtilisateur(Utilisateur $u, $pass) {
 		if(!isset($u, $pass)) return false;
 		return DBLayer::preparedQuery("UPDATE users SET `name`=?, `pass`=?, `role`=?, `idProducteur`=?, `idClient`=? WHERE `id`=?",
-			"sssiii", $u->nom, empty($pass) ? null : crypt($pass), $u->role, $u->role == 'producteur' ? $u->idProducteur : null, $u->role == 'client' ? $u->idClient : null, $u->id);
+			"sssiii", $u->nom, empty($pass) ? null : crypt($pass, ""), $u->role, $u->role == 'producteur' ? $u->idProducteur : null, $u->role == 'client' ? $u->idClient : null, $u->id);
 	}
 
 	/**

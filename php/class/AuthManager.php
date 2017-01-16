@@ -16,6 +16,15 @@ class AuthManager {
     }
 
     /**
+     * Connexion forcée à un utilisateur.
+     */
+    public static function forceLogin(Utilisateur $user) {
+        session_start();
+        $_SESSION['user'] = $user;
+        return true;
+    }
+
+    /**
      * Obtient l'état de connexion d'un utilisateur.
      * false si aucun utilisateur n'est connecté pour la session active, sinon retourne le rôle de l'utilisateur.
      * Le rôle de l'utilisateur est U_ADMIN s'il est administrateur, U_PRODUCTEUR s'il est producteur ou U_CLIENT s'il est client.

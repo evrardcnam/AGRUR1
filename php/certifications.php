@@ -1,4 +1,5 @@
-<?php require_once "config.php"; ?>
+<?php require_once "config.php";
+if(AuthManager::loginStatus() != U_ADMIN) exit("Accès refusé"); ?>
 <script type="text/javascript" src="js/certifications.js"></script>
 <div class="container">
     <div class="row">

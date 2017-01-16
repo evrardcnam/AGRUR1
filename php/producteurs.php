@@ -1,4 +1,5 @@
 <?php require_once "config.php";
+if(AuthManager::loginStatus() != U_ADMIN) exit("Accès refusé");
 if(isset($_GET["delete"])) DBLayer::removeProducteur(DBLayer::getProducteur(htmlspecialchars_decode($_GET["delete"])));
 else if(isset($_POST["nom"], $_POST["adresse"], $_POST["adherent"])) {
     if(isset($_POST["edit"])) exit(DBLayer::setProducteur(Producteur::fromValues($_POST["edit"], $_POST["nom"], $_POST["adresse"], $_POST["adherent"] == "true", $_POST["dateAdhesion"], $_POST["idUser"]))); 

@@ -1,4 +1,4 @@
-<?php require_once "config.php";
+<?php require_once "../config.php";
 if(AuthManager::loginStatus() != U_PRODUCTEUR) exit("Accès refusé");
 header('Content-Type: text/html; charset=utf-8'); ?>
 <div class="container">
