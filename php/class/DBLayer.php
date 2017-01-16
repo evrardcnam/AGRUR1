@@ -208,6 +208,28 @@ class DBLayer {
 	}
 
 	/**
+	 * Obtenir tous les lots n'ayant pas été commandés
+	 */
+	public static function getLotsStock() {
+		$results = DBLayer::query("SELECT * FROM lot WHERE numCommande IS NULL ORDER BY codeLot ASC");
+		if (!$results) { return $results; }
+		else {
+			$object_results = array();
+			foreach ($results as $result){
+				$object_results[] = Lot::fromResult($result);
+			}
+			return $object_results;
+		}
+	}/**
+	 * Obtenir un lot par son identifiant unique
+	 */
+	public static function getLot($id) {
+		$results = DBLayer::query("SELECT * FROM lot WHERE idLot = " . $id . " LIMIT 0,1");
+		if (!$results) { return null; }
+		else { return Lot::fromResult($results[0]); }
+	}
+
+	/**
 	 * Obtenir toutes les livraisons 
 	 */
 	public static function getLivraisons() {

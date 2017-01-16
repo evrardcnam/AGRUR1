@@ -1,11 +1,12 @@
 <?php require_once "config.php";
-$id = ""; $nom = ""; $role = ""; $idProd = "";
+$id = ""; $nom = ""; $role = ""; $idProd = ""; $idClient = "";
 if(isset($_GET['edit'])) {
     $id = htmlspecialchars_decode($_GET['edit']);
     $u = DBLayer::getUtilisateurId($id);
     $nom = $u->nom;
     $role = $u->role;
     $idProd = $u->idProducteur;
+    $idClient = $u->idClient;
 } ?>
 <script type="text/javascript" src="js/editUser.js"></script>
 <div class="container">
