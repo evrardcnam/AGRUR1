@@ -73,8 +73,8 @@ if(isset($_GET["action"]) && in_array($_GET["action"], $possible_requests)) {
             DBLayer::removeCertification($c);
             $result = $success; $result["del_id"] = $_POST["id"]; break;
         case "delete_validation":
-            if(!isset($_POST["id"], $_POST["name"])) break;
-            DBLayer::removeCertObtenue(CertObtenue::fromValues($_POST["id"], null, $_POST["name"], null));
+            if(!isset($_POST["id"], $_POST["id2"])) break;
+            DBLayer::removeCertObtenue(CertObtenue::fromValues($_POST["id"], null, $_POST["id2"], null));
             $result = $success; $result["del_id"] = $_POST["id"]; break;
         case "delete_conditionnement":
             if(!isset($_POST["id"])) break;

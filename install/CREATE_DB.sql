@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Lun 16 Janvier 2017 à 13:21
+-- Généré le :  Mar 17 Janvier 2017 à 23:41
 -- Version du serveur :  10.1.19-MariaDB
 -- Version de PHP :  5.6.28
 
@@ -184,6 +184,9 @@ CREATE TRIGGER `after_insert_users` AFTER INSERT ON `users` FOR EACH ROW BEGIN
   CASE NEW.role
   	WHEN 'producteur' THEN UPDATE `producteur` SET `idUser` = NEW.id WHERE `producteur`.`idProducteur` = NEW.idProducteur;
     WHEN 'client' THEN UPDATE `client` SET `idUser` = NEW.id WHERE `client`.`idClient` = NEW.idClient;
+    ELSE
+      BEGIN
+      END;
   END CASE;
 END
 $$

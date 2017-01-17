@@ -13,11 +13,9 @@ $(function() {
                     '" class="delete danger">Supprimer</a></div></div>');
                 $("input#newLabel").val('');
                 updateEditLinks();
-            } else if(data.status == "403") {
-                if(confirm("La connexion à l'interface d'administration a été perdue. Voulez-vous être redirigé vers la page de connexion ?"))
-                    window.location.replace('/index.php');
-            } else {
-                alert("Une erreur s'est produite lors de l'insertion : '" + data.text + "'\nContactez le support de VDEV.");
+            } else if(data.status == "403") window.location.replace('/index.php');
+            else {
+                showMessage("Erreur","Une erreur s'est produite lors de l'insertion : <code>" + data.text + "</code><br />Contactez le support de VDEV.","Retour");
                 console.log(data);
             }
         }, 'json');
@@ -37,11 +35,9 @@ function updateEditLinks() {
                 $(row + ' .col-sm-10').html($(row + ' .col-sm-10 input').val());
                 $(row + ' .actions').html('<a href="#" data-id="' + data.id + '" class="edit">Modifier</a><br /><a href="#" data-id="' + data.id + '" class="delete danger">Supprimer</a>');
                 updateEditLinks();
-            } else if(data.status == "403") {
-                if(confirm("La connexion à l'interface d'administration a été perdue. Voulez-vous être redirigé vers la page de connexion ?"))
-                    window.location.replace('/index.php');
-            } else {
-                alert("Une erreur s'est produite lors de la modification : '" + data.text + "'\nContactez le support de VDEV.");
+            } else if(data.status == "403") window.location.replace('/index.php');
+            else {
+                showMessage("Erreur","Une erreur s'est produite lors de l'insertion : <code>" + data.text + "</code><br />Contactez le support de VDEV.","Retour");
                 console.log(data);
             }
         }, 'json');
@@ -55,20 +51,25 @@ function updateEditLinks() {
         updateEditLinks();
     });
     $("a.delete").click(function() { // Confirmer la suppression
-        if(!confirm("Voulez-vous vraiment supprimer cet élément ?\nCette action est irréversible.")) return;
-        $.post('php/api.php?action=delete_certification', {
-            id: $(this).attr('data-id')
-        }, function(data, status, xhr) {
-            if(data.status == "200") {
-                $('.row[data-id="' + data.del_id + '"]').remove();
-                updateEditLinks();
-            } else if(data.status == "403") {
-                if(confirm("La connexion à l'interface d'administration a été perdue. Voulez-vous être redirigé vers la page de connexion ?"))
-                    window.location.replace('/index.php');
-            } else {
-                alert("Une erreur s'est produite lors de la suppression : '" + data.text + "'\nContactez le support de VDEV.");
-                console.log(data);
-            }
-        }, 'json');
+        $this = $(this);
+        showConfirm({
+            title: 'Attention',
+            message: 'Voulez-vous vraiment supprimer cet élément ?<br />Cette opération est irréversible.',
+            buttons: [ {type: 'danger', label: 'Supprimer', value: 'confirm'}, {type:'primary', label:'Annuler', value:'cancel'} ]
+        }, function(value) {
+            if(value != 'confirm') return;
+            $.post('php/api.php?action=delete_certification', {
+                id: $this.attr('data-id')
+            }, function(data, status, xhr) {
+                if(data.status == "200") {
+                    $('.row[data-id="' + data.del_id + '"]').remove();
+                    updateEditLinks();
+                } else if(data.status == "403") window.location.replace('/index.php');
+                else {
+                    showMessage("Erreur","Une erreur s'est produite lors de la suppression : <code>" + data.text + "</code><br />Contactez le support de VDEV.","Retour");
+                    console.log(data);
+                }
+            }, 'json');
+        });
     });
 }
