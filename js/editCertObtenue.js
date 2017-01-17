@@ -35,7 +35,7 @@ function updateEditLinks() {
             if(value != 'confirm') return;
             $.post('php/api.php?action=delete_validation', {
                 id: $this.attr('data-id'),
-            name: $("input#oldName").val()
+                id2: $("input#id").val()
             }, function(data, status, xhr) {
                 if(data.status == "200") {
                     $('.row[data-id="' + data.del_id + '"]').remove();
