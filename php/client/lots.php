@@ -25,4 +25,3 @@ if(!AuthManager::loginStatus()) exit('Accès refusé'); ?>
         </div><?php } ?>
     </div>
 </div>
-<?php } else { echo 'Accès refusé'; } ?>

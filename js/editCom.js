@@ -9,10 +9,9 @@ $(function() {
         }
         if($("#id").val() != "") sent.num = $("#id").val();
         $.post("php/commandes.php", sent, function(data) {
-            console.log(data);
             showPage('php/commandes.php');
         }).fail(function() {
-            alert("Une erreur s'est produite lors de l'enregistrement. Vérifiez les données saisies, réessayez ultérieurement ou contactez le support technique.");
+            showMessage("Erreur" ,"Une erreur s'est produite lors de l'enregistrement. Vérifiez les données saisies, réessayez ultérieurement ou contactez le support technique.", "Retour");
         });
     });
     $("input#comSent").change(function() {

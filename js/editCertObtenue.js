@@ -15,11 +15,9 @@ $(function() {
                     '" class="delete danger">Supprimer</a></div></div>');
                 $("input#newLabel").val('');
                 updateEditLinks();
-            } else if(data.status == "403") {
-                if(confirm("La connexion à l'interface d'administration a été perdue. Voulez-vous être redirigé vers la page de connexion ?"))
-                    window.location.replace('/index.php');
-            } else {
-                alert("Une erreur s'est produite lors de l'insertion : '" + data.text + "'\nContactez le support de VDEV.");
+            } else if(data.status == "403") window.location.replace('/index.php');
+            else {
+                showMessage("Erreur" ,"Une erreur s'est produite lors de l'insertion : <code>" + data.text + "</code><br />Contactez le support de VDEV.", "Retour");
                 console.log(data);
             }
         }, 'json');
@@ -28,21 +26,26 @@ $(function() {
 
 function updateEditLinks() {
     $("a.delete").click(function() { // Confirmer la suppression
-        if(!confirm("Voulez-vous vraiment supprimer cet élément ?\nCette action est irréversible.")) return;
-        $.post('php/api.php?action=delete_validation', {
-            id: $(this).attr('data-id'),
+        $this = $(this);
+        showConfirm({
+            title: 'Attention',
+            message: 'Voulez-vous vraiment supprimer cet élément ?<br />Cette opération est irréversible.',
+            buttons: [ {type: 'danger', label: 'Supprimer', value: 'confirm'}, {type:'primary', label:'Annuler', value:'cancel'} ]
+        }, function(value) {
+            if(value != 'confirm') return;
+            $.post('php/api.php?action=delete_validation', {
+                id: $this.attr('data-id'),
             name: $("input#oldName").val()
-        }, function(data, status, xhr) {
-            if(data.status == "200") {
-                $('.row[data-id="' + data.del_id + '"]').remove();
-                updateEditLinks();
-            } else if(data.status == "403") {
-                if(confirm("La connexion à l'interface d'administration a été perdue. Voulez-vous être redirigé vers la page de connexion ?"))
-                    window.location.replace('/index.php');
-            } else {
-                alert("Une erreur s'est produite lors de la suppression : '" + data.text + "'\nContactez le support de VDEV.");
-                console.log(data);
-            }
-        }, 'json');
+            }, function(data, status, xhr) {
+                if(data.status == "200") {
+                    $('.row[data-id="' + data.del_id + '"]').remove();
+                    updateEditLinks();
+                } else if(data.status == "403") window.location.replace('/index.php');
+                else {
+                    showMessage("Erreur","Une erreur s'est produite lors de la suppression : <code>" + data.text + "</code><br />Contactez le support de VDEV.","Retour");
+                    console.log(data);
+                }
+            }, 'json');
+        });
     });
 }
