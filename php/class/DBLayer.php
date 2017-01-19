@@ -663,7 +663,7 @@ class DBLayer {
 	public static function addUtilisateur(Utilisateur $u, $pass) {
 		if(!isset($u) || empty($pass)) return false;
 		return DBLayer::preparedQuery("INSERT INTO users(name,pass,role,idProducteur,idClient) VALUES (?,?,?,?,?)",
-			"sssii", $u->nom, crypt($pass, ""), $u->role, $u->role == 'producteur' ? $u->idProducteur : null, $u->role == 'client' ? $u->idClient : null);
+			"sssii", $u->nom, DBLayer::generate_hash($pass, 11), $u->role, $u->role == 'producteur' ? $u->idProducteur : null, $u->role == 'client' ? $u->idClient : null);
 	}
 
 	/**
@@ -762,7 +762,7 @@ class DBLayer {
 	public static function setUtilisateur(Utilisateur $u, $pass) {
 		if(!isset($u, $pass)) return false;
 		return DBLayer::preparedQuery("UPDATE users SET `name`=?, `pass`=?, `role`=?, `idProducteur`=?, `idClient`=? WHERE `id`=?",
-			"sssiii", $u->nom, empty($pass) ? null : crypt($pass, ""), $u->role, $u->role == 'producteur' ? $u->idProducteur : null, $u->role == 'client' ? $u->idClient : null, $u->id);
+			"sssiii", $u->nom, empty($pass) ? null : DBLayer::generate_hash($pass, 11), $u->role, $u->role == 'producteur' ? $u->idProducteur : null, $u->role == 'client' ? $u->idClient : null, $u->id);
 	}
 
 	/**
@@ -860,6 +860,38 @@ class DBLayer {
 	public static function removeUtilisateur(Utilisateur $u) {
 		if(!isset($u)) return false;
 		return DBLayer::preparedQuery("DELETE FROM users WHERE `id`=?", "i", $u->id);
+	}
+
+	/*
+	* Generate a secure hash for a given password. The cost is passed
+	* to the blowfish algorithm. Check the PHP manual page for crypt to
+	* find more information about this setting.
+	*/
+	private static function generate_hash($password, $cost=11){
+		/* To generate the salt, first generate enough random bytes. Because
+			* base64 returns one character for each 6 bits, the we should generate
+			* at least 22*6/8=16.5 bytes, so we generate 17. Then we get the first
+			* 22 base64 characters
+			*/
+		$salt=substr(base64_encode(openssl_random_pseudo_bytes(17)),0,22);
+		/* As blowfish takes a salt with the alphabet ./A-Za-z0-9 we have to
+			* replace any '+' in the base64 string with '.'. We don't have to do
+			* anything about the '=', as this only occurs when the b64 string is
+			* padded, which is always after the first 22 characters.
+			*/
+		$salt=str_replace("+",".",$salt);
+		/* Next, create a string that will be passed to crypt, containing all
+			* of the settings, separated by dollar signs
+			*/
+		$param='$'.implode('$',array(
+				"2a", //select the less secure version of blowfish (<PHP 5.3.7)
+				// chosen to help compatibility with jBCrypt
+				str_pad($cost,2,"0",STR_PAD_LEFT), //add the cost in two digits
+				$salt //add the salt
+		));
+		var_dump($param);
+		//now do the actual hashing
+		return crypt($password,$param);
 	}
 }
 ?>
