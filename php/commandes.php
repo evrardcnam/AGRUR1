@@ -9,7 +9,7 @@ header('Content-Type: text/html; charset=utf-8'); ?>
 <div class="container">
     <div class="row">
         <div class="col-sm-10"><h1>Commandes</h1></div>
-        <div class="col-sm-2 rightlink"><a data-link="php/editCom.php" class="slavePage">Ajouter</a></div>
+        <div class="col-sm-2 rightlink"><a data-link="php/editCom.php" class="sliderPage">Ajouter</a></div>
     </div>
     <div class="rowtable">
         <div class="row">
@@ -27,7 +27,7 @@ header('Content-Type: text/html; charset=utf-8'); ?>
                 <?php echo ($c->conditioned ? ($c->sent ? 'Expédié' : 'Conditionné') : 'En attente') ?>
             </div>
             <div class="col-xs-6 col-sm-2">
-                <a data-link="php/editCom.php?edit=<?php echo htmlspecialchars($c->num); ?>" class="slavePage">Modifier</a><br />
+                <a data-link="php/editCom.php?edit=<?php echo htmlspecialchars($c->num); ?>" class="sliderPage">Modifier</a><br />
                 <a data-link="php/commandes.php?delete=<?php echo htmlspecialchars($c->num); ?>" class="slavePage danger">Supprimer</a>
             </div>
         </div><?php } ?>

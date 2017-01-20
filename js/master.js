@@ -30,6 +30,9 @@ function updateLinks() {
             });
         } else showPage($(this).attr("data-link"));
     }).attr("href","#").removeClass("slavePage");
+    $("a.sliderPage").click(function() {
+        showSlider($(this).attr("data-link"));
+    }).attr("href","#").removeClass("sliderPage");
 }
 
 // Affichage d'un message
@@ -47,6 +50,25 @@ function showConfirm(data, callback) {
     $("#modal").show();
 }
 
+// Affichage d'une page sous la forme d'un slider
+function showSlider(href) {
+    $.ajax({
+        type: "GET",
+        url: href,
+        dataType: 'html',
+        contentType: "text/html",
+        crossDomain:'true',
+        success: function (data) {
+            $("#global").append('<div id="slider"><div id="slider-content">' + data + '</div></div>');
+            $("#slider").click(function(event) { if(event.target == this) $(this).remove(); }).show();
+            updateLinks();
+        },
+        error: function(xhr, err, httperr) {
+            showMessage("Erreur" ,"Une erreur s'est produite : <code>" + err + "</code><br />Contactez le support VDEV en décrivant cette erreur et le parcours effectué pour l'atteindre.", "Retour");
+        }
+    });
+}
+
 $(function() { // Code exécuté une fois la page chargée
     // Affichage éventuel d'une page d'accueil
     if($("a.slavePage#home").length) {
@@ -54,8 +76,11 @@ $(function() { // Code exécuté une fois la page chargée
         $("a.slavePage#home").parent().addClass("active");
     }
     $("a.slavePage").click(function() {
-        $("li.active").removeClass("active");
-        $(this).parent().addClass("active");
+        if(!$(this).hasClass("no-active")) { $("li.active").removeClass("active"); $(this).parent().addClass("active"); }
         showPage($(this).attr("data-link"));
     }).attr("href","#").removeClass("slavePage");
+    $("a.sliderPage").click(function() {
+        if(!$(this).hasClass("no-active")) { $("li.active").removeClass("active"); $(this).parent().addClass("active"); }
+        showSlider($(this).attr("data-link"));
+    }).attr("href","#").removeClass("sliderPage");
 })

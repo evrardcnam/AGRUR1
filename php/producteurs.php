@@ -9,7 +9,7 @@ header('Content-Type: text/html; charset=utf-8'); ?>
 <div class="container">
     <div class="row">
         <div class="col-sm-10"><h1>Producteurs</h1></div>
-        <div class="col-sm-2 rightlink"><a data-link="php/editProd.php" class="slavePage">Ajouter</a></div>
+        <div class="col-sm-2 rightlink"><a data-link="php/editProd.php" class="sliderPage">Ajouter</a></div>
     </div>
     <div class="rowtable">
         <div class="row">

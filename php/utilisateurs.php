@@ -9,7 +9,7 @@ header('Content-Type: text/html; charset=utf-8'); ?>
 <div class="container">
     <div class="row">
         <div class="col-sm-10"><h1>Utilisateurs</h1></div>
-        <div class="col-sm-2 rightlink"><a data-link="php/editUser.php" class="slavePage">Ajouter</a></div>
+        <div class="col-sm-2 rightlink"><a data-link="php/editUser.php" class="sliderPage">Ajouter</a></div>
     </div>
     <div class="rowtable">
         <div class="row">
@@ -27,7 +27,7 @@ header('Content-Type: text/html; charset=utf-8'); ?>
                     default: echo 'Aucun'; break;
                 } ?>
             </div><div class="col-xs-6 col-sm-2">
-                <a data-link="php/editUser.php?edit=<?php echo htmlspecialchars($u->id); ?>" class="slavePage">Modifier</a><br />
+                <a data-link="php/editUser.php?edit=<?php echo htmlspecialchars($u->id); ?>" class="sliderPage">Modifier</a><br />
                 <a data-link="php/utilisateurs.php?delete=<?php echo htmlspecialchars($u->id); ?>" class="slavePage danger">Supprimer</a>
             </div>
         </div><?php } ?>

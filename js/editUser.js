@@ -1,5 +1,5 @@
 $(function() {
-    $(".rightlink a").on('click', function() {
+    $("#slider .rightlink a").on('click', function() {
         if(!$("#userName").val()) { showMessage("Erreur de saisie", "Aucun nom d'utilisateur n'a été défini.", "Retour"); return; }
         if(!$('input[name="userRole"]:checked').length) { showMessage("Erreur de saisie", "Aucun rôle n'a été défini à l'utilisateur.", "Retour"); return; }
         if($('input[name="userRole"]:checked').val() == 'producteur' && !$("#userProd").val()) { showMessage("Erreur de saisie", "Aucun producteur n'a été associé à l'utilisateur, alors qu'il a le rôle Producteur.<br />Un producteur doit être créé avant de pouvoir créer l'utilisateur qui lui est associé.", "Retour"); return; }
@@ -15,6 +15,7 @@ $(function() {
         if($("#id").val() != "") sent.id = $("#id").val();
         $.post("php/utilisateurs.php", sent, function(data) {
             showPage('php/utilisateurs.php');
+            $("#slider").remove();
         }).fail(function() {
             showMessage("Erreur" ,"Une erreur s'est produite lors de l'enregistrement. Vérifiez les données saisies, réessayez ultérieurement ou contactez le support technique.", "Retour");
         });

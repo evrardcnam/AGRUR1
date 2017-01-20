@@ -21,7 +21,7 @@ if(!AuthManager::loginStatus()) exit('Accès refusé'); ?>
             <div class="col-xs-4 col-sm-2"><?php echo $l->quantite; ?></div>
             <div class="col-xs-4 col-sm-2"><?php echo $v->variete->libelle; ?></div>
             <div class="col-xs-4 col-sm-2"><?php echo $v->commune->nom; ?></div>
-            <div class="col-xs-4 col-sm-2"><a class="slavePage" data-link="php/client/comLot.php?id=<?php echo $l->id; ?>"><button type="button" class="btn btn-warning">Commander</button></a></div>
+            <div class="col-xs-4 col-sm-2"><a class="sliderPage" data-link="php/client/comLot.php?id=<?php echo $l->id; ?>"><button type="button" class="btn btn-warning">Commander</button></a></div>
         </div><?php } ?>
     </div>
 </div>

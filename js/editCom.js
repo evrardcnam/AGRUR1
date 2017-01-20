@@ -1,5 +1,5 @@
 $(function() {
-    $(".rightlink a").on('click', function() {
+    $("#slider .rightlink a").on('click', function() {
         if(!$("#comClient").val()) { showMessage("Erreur de saisie", "Aucun client n'a été sélectionné pour la commande.", "Retour"); return; }
         if(!$("#comLot").val()) { showMessage("Erreur de saisie", "Aucun lot n'a été sélectionné pour la commande.", "Retour"); return; }
         if(!$("#comCond").val()) { showMessage("Erreur de saisie", "Aucun conditionnement n'a été sélectionné pour la commande.", "Retour"); return; }
@@ -14,6 +14,7 @@ $(function() {
         }
         if($("#id").val() != "") sent.num = $("#id").val();
         $.post("php/commandes.php", sent, function(data) {
+            $("#slider").remove();
             showPage('php/commandes.php');
         }).fail(function() {
             showMessage("Erreur" ,"Une erreur s'est produite lors de l'enregistrement. Vérifiez les données saisies, réessayez ultérieurement ou contactez le support technique.", "Retour");
