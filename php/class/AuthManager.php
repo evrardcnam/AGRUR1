@@ -6,21 +6,33 @@ class AuthManager {
     /**
      * Connexion avec un nom d'utilisateur et un mot de passe.
      */
-    public static function login($name, $pass) {
+    public static function login($name, $pass, $cookie) {
         $user = DBLayer::getUtilisateurPseudo($name);
         if(!$user) return false; // Utilisateur inconnu
         if(!$user->checkPassword($pass)) return false; // Mot de passe incorrect
         session_start();
         $_SESSION['user'] = $user;
+        if($cookie) setcookie("user", $user, 0, "/", "", false, true);
         return true;
+    }
+    
+    /**
+     * Tentative de connexion avec des identifiants stockés en tant que cookie.
+     */
+    public static function fromCookie() {
+        if(isset($_COOKIE['user'])) {
+            $_SESSION['user'] = $_COOKIE['user'];
+            return true;
+        } else return false;
     }
 
     /**
      * Connexion forcée à un utilisateur.
      */
-    public static function forceLogin(Utilisateur $user) {
+    public static function forceLogin(Utilisateur $user, $cookie=false) {
         session_start();
         $_SESSION['user'] = $user;
+        if($cookie) setcookie("user", $user, 0, "/", "", false, true);
         return true;
     }
 
@@ -41,8 +53,9 @@ class AuthManager {
     /**
      * Déconnecte l'utilisateur.
      */
-    public static function logout() {
+    public static function logout($cookie=true) {
         $_SESSION['user'] = null;
+        if($cookie) setcookie("user", false, 0, "/", "", false, true);
     }
 
     /**
