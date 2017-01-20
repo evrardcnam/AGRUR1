@@ -889,7 +889,6 @@ class DBLayer {
 				str_pad($cost,2,"0",STR_PAD_LEFT), //add the cost in two digits
 				$salt //add the salt
 		));
-		var_dump($param);
 		//now do the actual hashing
 		return crypt($password,$param);
 	}

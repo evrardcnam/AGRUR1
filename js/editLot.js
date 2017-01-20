@@ -1,6 +1,9 @@
 $(function() {
     updateEditLinks();
     $("a#add").click(function() {
+        if(!$("#lotCode").val()) { showMessage("Erreur de saisie", "Aucun code n'a été saisi pour le lot à insérer.", "Retour"); return; }
+        if(!$("#lotCalibre").val()) { showMessage("Erreur de saisie", "Aucun calibre n'a été saisi pour le lot à insérer.", "Retour"); return; }
+        if(!$("#lotQuantite").val()) { showMessage("Erreur de saisie", "Aucune quantité n'a été saisie pour le lot à insérer.", "Retour"); return; }
         $.post('php/api.php?action=post_lot', {
             code: $("input#lotCode").val(),
             calibre: $("input#lotCalibre").val(),
@@ -31,6 +34,9 @@ function updateEditLinks() {
     $("a.save").click(function() { // Enregistrement d'une modification en cours
         var id = $(this).attr('data-id');
         var row = '.row[data-id="' + id + '"]';
+        if(!$(row + " .col-sm-4 input").val()) { showMessage("Erreur de saisie", "Aucun code n'a été saisi pour le lot à modifier.", "Retour"); return; }
+        if(!$(row + " .col-sm-3:first input").val()) { showMessage("Erreur de saisie", "Aucun calibre n'a été saisi pour le lot à modifier.", "Retour"); return; }
+        if(!$(row + " .col-sm-3:last input").val()) { showMessage("Erreur de saisie", "Aucune quantité n'a été saisie pour le lot à modifier.", "Retour"); return; }
         $.post('php/api.php?action=put_lot', {
             id: id,
             code: $(row + " .col-sm-4 input").val(),
