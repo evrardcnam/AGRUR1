@@ -193,6 +193,15 @@ class DBLayer {
 	}
 
 	/**
+	 * Obtenir un conditionnement par son identifiant unique
+	 */
+	public static function getConditionnement($id) {
+		$results = DBLayer::query("SELECT * FROM conditionnement WHERE `idConditionnement`=" . $id . ' LIMIT 0,1');
+		if (!$results) { return null; }
+		else { return Conditionnement::fromResult($results[0]); }
+	}
+
+	/**
 	 * Obtenir tous les lots 
 	 */
 	public static function getLots() {

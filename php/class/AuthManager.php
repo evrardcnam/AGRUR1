@@ -11,8 +11,9 @@ class AuthManager {
         if(!$user) return false; // Utilisateur inconnu
         if(!$user->checkPassword($pass)) return false; // Mot de passe incorrect
         session_start();
+        session_regenerate_id(true);
         $_SESSION['user'] = $user;
-        if($cookie) setcookie("user", $user, 0, "/", "", false, true);
+        if($cookie) setcookie("user", $user, strtotime('+30 days'), "/", "", false, true);
         return true;
     }
     
@@ -31,8 +32,9 @@ class AuthManager {
      */
     public static function forceLogin(Utilisateur $user, $cookie=false) {
         session_start();
+        session_regenerate_id(true);
         $_SESSION['user'] = $user;
-        if($cookie) setcookie("user", $user, 0, "/", "", false, true);
+        if($cookie) setcookie("user", $user, strtotime('+30 days'), "/", "", false, true);
         return true;
     }
 
@@ -54,8 +56,12 @@ class AuthManager {
      * Déconnecte l'utilisateur.
      */
     public static function logout($cookie=true) {
-        $_SESSION['user'] = null;
-        if($cookie) setcookie("user", false, 0, "/", "", false, true);
+        $_SESSION = array();
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000, $params["path"], $params["domain"], $params["secure"], $params["httponly"]);
+        }
+        if($cookie) setcookie("user", false, 1, "/", "", false, true);
     }
 
     /**

@@ -25,7 +25,7 @@ $nom = AuthManager::getUser()->nom; ?>
 						<li><a class="slavePage" data-link="php/client/commandes.php"><span class="glyphicon glyphicon-gift"></span> Commandes</a></li>
 					</ul>
 					<ul class="nav navbar-nav pull-right">
-						<li><a class="sliderPage" data-link="php/client/panier.php"><span class="glyphicon glyphicon-shopping-cart"></span> Panier <span class="badge">0</span></a></li>
+						<li><a class="sliderPage no-active" data-link="php/client/panier.php"><span class="glyphicon glyphicon-shopping-cart"></span> Panier</a></li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-cog"></span></a>
 							<ul class="dropdown-menu dropdown-menu-right">

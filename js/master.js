@@ -7,6 +7,7 @@ function showPage(href) {
         contentType: "text/html",
         crossDomain:'true',
         success: function (data) {
+            $("#slider").remove();
             $("#content").html(data);
             updateLinks();
         },
@@ -37,6 +38,7 @@ function updateLinks() {
 
 // Affichage d'un message
 function showMessage(title, message, button) {
+    $("#modal").remove();
     $("#content").append('<div id="modal"><div id="modal-content"><h1>' + title + '</h1><p>' + message + '</p><button type="button" class="btn btn-warning">' + button + '</button></div></div>');
     $("#modal button").click(function() { $("#modal").remove() });
     $("#modal").show();
@@ -44,6 +46,7 @@ function showMessage(title, message, button) {
 
 // Affichage d'une boîte de dialogue de confirmation
 function showConfirm(data, callback) {
+    $("#modal").remove();
     $("#content").append('<div id="modal"><div id="modal-content"><h1>' + data.title + '</h1><p>' + data.message + '</p></div></div>');
     $(data.buttons).each(function(i, button) { $("#modal-content").append('<button type="button" class="btn btn-' + button.type + '" value="' + button.value + '">' + button.label + '</button>') });
     $("#modal button").click(function() { callback($(this).val()); $("#modal").remove(); });
@@ -59,6 +62,7 @@ function showSlider(href) {
         contentType: "text/html",
         crossDomain:'true',
         success: function (data) {
+            $("#slider").remove();
             $("#global").append('<div id="slider"><div id="slider-content">' + data + '</div></div>');
             $("#slider").click(function(event) { if(event.target == this) $(this).remove(); }).show();
             updateLinks();
