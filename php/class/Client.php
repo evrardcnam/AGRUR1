@@ -1,5 +1,8 @@
 <?php
-// Définit un client
+/**
+ * @class Client
+ * @brief Décrit un client.
+ */
 class Client implements JsonSerializable {
     //données privées de la classe
     private $_idClient;
@@ -11,20 +14,53 @@ class Client implements JsonSerializable {
     public function __construct(){
     }
     
-    // Constructeur de la classe depuis l'extérieur
+    /**
+     * @brief Instancier la classe depuis des valeurs données
+     * @param int $id
+     *   Identifiant unique du client dans la base de données.
+     * @param string $nom
+     *   Nom du client.
+     * @param string $adresse
+     *   Adresse du client.
+     * @param string $nomRes
+     *   Nom du responsable des achats du client.
+     * @param int $idUser
+     *   Identifiant unique de l'utilisateur associé au client.
+     * @return Client
+     *   Nouvelle instance initialisée avec les valeurs indiquées.
+     */
     public static function fromValues($id, $nom, $adresse, $nomRes, $idUser) {
         $instance = new self();
         $instance->fillValues($id, $nom, $adresse, $nomRes, $idUser);
         return $instance;
     }
 
-    // Constructeur de la classe depuis la couche d'accès aux données
-    public static function fromResult(DBQueryResult $result) {
+    /**
+     * @brief Instancier la classe depuis un résultat de requête SELECT
+     * @param DBQueryResult $row
+     *   Résultat de requête SELECT compatible avec un client.
+     * @return Client
+     *   Nouvelle instance initialisée avec le résultat de requête.
+     */
+    public static function fromResult(DBQueryResult $row) {
         $instance = new self();
-        $instance->fillRow($result);
+        $instance->fillRow($row);
         return $instance;
     }
     
+    /**
+     * @brief Constructeur de la classe depuis des valeurs données
+     * @param int $id
+     *   Identifiant unique du client dans la base de données.
+     * @param string $nom
+     *   Nom du client.
+     * @param string $adresse
+     *   Adresse du client.
+     * @param string $nomRes
+     *   Nom du responsable des achats du client.
+     * @param int $idUser
+     *   Identifiant unique de l'utilisateur associé au client.
+     */
     protected function fillValues($id, $nom, $adresse, $nomRes, $idUser) {
         $this->_idClient = $id;
         $this->_nomClient = $nom;
@@ -33,6 +69,11 @@ class Client implements JsonSerializable {
         $this->_idUser = $idUser;
     }
 
+    /**
+     * @brief Constructeur de la classe depuis un résultat de requête SELECT
+     * @param DBQueryResult $row
+     *   Résultat de requête SELECT compatible avec un client.
+     */
     protected function fillRow(DBQueryResult $row) {
         $this->_idClient = $row->idClient;
         $this->_nomClient = $row->nomClient;
@@ -41,7 +82,11 @@ class Client implements JsonSerializable {
         $this->_idUser = $row->idUser;
     }
     
-    // Accesseur
+    /**
+     * @brief Obtenir une variable de la classe.
+     * @param string $var Variable à obtenir.
+     * @return mixed Valeur de la variable choisie.
+     */
     public function __get($var){
         switch ($var){
             case 'id':
@@ -72,11 +117,19 @@ class Client implements JsonSerializable {
                 break;
         }
     }
-    // Conversion en chaînes de caractères
+    
+    /**
+     * @brief Conversion en chaîne de caractères
+     * @return string Instance sous forme de chaîne de caractères.
+     */
     public function __toString(){
         return $this->_nomClient;
     }
 
+    /**
+     * @brief Sérialisation de la classe au format JSON.
+     * @return string Instance sérialisée au format JSON.
+     */
     public function jsonSerialize() {
         return array('id' => $this->_idClient, 'nom' => $this->_nomClient, 'adresse' => $this->adresse, 'nomResAchats' => $this->_nomResAchats, 'idUser' => $this->_idUser);
     }

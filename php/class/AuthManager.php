@@ -1,10 +1,23 @@
 <?php
 /**
- * Gestionnaire de connexion à l'intranet
+ * @file AuthManager.php
+ * @brief Gestionnaire de connexion à l'intranet
+ * @author Lucidiot
+ */
+/*! @class AuthManager
+ * @brief Gestionnaire de connexion à l'intranet
  */
 class AuthManager {
     /**
-     * Connexion avec un nom d'utilisateur et un mot de passe.
+     * @brief Connexion avec un nom d'utilisateur et un mot de passe.
+     * @param string $name
+     *   Pseudonyme saisi.
+     * @param string $pass
+     *   Mot de passe en clair saisi.
+     * @param bool $cookie
+     *   Enregistrement comme cookie pour une connexion automatique (option "Se souvenir de moi")
+     * @return bool
+     *   État de réussite de la connexion.
      */
     public static function login($name, $pass, $cookie) {
         $user = DBLayer::getUtilisateurPseudo($name);
@@ -18,7 +31,9 @@ class AuthManager {
     }
     
     /**
-     * Tentative de connexion avec des identifiants stockés en tant que cookie.
+     * @brief Tentative de connexion avec des identifiants stockés en tant que cookie.
+     * @return bool
+     *   État de réussite de la connexion.
      */
     public static function fromCookie() {
         if(isset($_COOKIE['user'])) {
@@ -28,7 +43,9 @@ class AuthManager {
     }
 
     /**
-     * Connexion forcée à un utilisateur.
+     * @brief Connexion forcée à un utilisateur.
+     * @return bool
+     *   État de réussite de la connexion.
      */
     public static function forceLogin(Utilisateur $user, $cookie=false) {
         session_start();
@@ -39,9 +56,10 @@ class AuthManager {
     }
 
     /**
-     * Obtient l'état de connexion d'un utilisateur.
-     * false si aucun utilisateur n'est connecté pour la session active, sinon retourne le rôle de l'utilisateur.
-     * Le rôle de l'utilisateur est U_ADMIN s'il est administrateur, U_PRODUCTEUR s'il est producteur ou U_CLIENT s'il est client.
+     * @brief Obtient l'état de connexion d'un utilisateur.
+     * @return mixed
+     *   false si aucun utilisateur n'est connecté pour la session active, sinon retourne le rôle de l'utilisateur.
+     *   Le rôle de l'utilisateur est U_ADMIN s'il est administrateur, U_PRODUCTEUR s'il est producteur ou U_CLIENT s'il est client.
      */
     public static function loginStatus() {
         session_start();
@@ -53,7 +71,9 @@ class AuthManager {
     }
 
     /**
-     * Déconnecte l'utilisateur.
+     * @brief Déconnecte l'utilisateur.
+     * @param bool $cookie
+     *    Supprime ou non la connexion automatique enregistrée en cookie.
      */
     public static function logout($cookie=true) {
         $_SESSION = array();
@@ -65,8 +85,9 @@ class AuthManager {
     }
 
     /**
-     * Obtient l'objet Utilisateur correspondant à l'utilisateur actuellement connecté.
-     * Retourne NULL s'il n'y a pas d'utilisateur connecté.
+     * @brief Obtient l'utilisateur actuellement connecté.
+     * @return Utilisateur
+     *   Utilisateur actuellement connecté.
      */
     public static function getUser() {
         return $_SESSION['user'];
@@ -75,7 +96,19 @@ class AuthManager {
     
 }
 
+/**
+ * @brief Rôle d'utilisateur "producteur".
+ * Accorde l'accès aux informations liées au producteur associé à l'utilisateur.
+ */
 define("U_PRODUCTEUR", 1);
+/**
+ * @brief Rôle d'utilisateur "administrateur".
+ * Accorde l'accès à l'intégralité des données et donne tous les droits.
+ */
 define("U_ADMIN", 2);
+/**
+ * @brief Rôle d'utilisateur "client".
+ * Accorde l'accès aux informations liées au client associé à l'utilisateur ainsi qu'aux fonctionnalités de commande de lot.
+ */
 define("U_CLIENT", 3);
 ?>
