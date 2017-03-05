@@ -1,6 +1,8 @@
 $(function() {
     updateEditLinks();
     $("a#add").click(function() {
+        if(!$("#valCert").val()) { showMessage("Erreur de saisie", "Aucune certification n'a été sélectionnée pour la validation.", "Retour"); return; }
+        if(!$("#valDate").val()) { showMessage("Erreur de saisie", "Aucune date d'obtention n'a été sélectionnée pour la validation.", "Retour"); return; }
         $.post('php/api.php?action=post_validation', {
             idProducteur: $("input#id").val(),
             idCertification: $("#valCert").val(),

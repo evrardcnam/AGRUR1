@@ -1,5 +1,8 @@
 <?php
-// Définit une commande
+/**
+ * @class Commande
+ * @brief Définit une commande d'un lot par un client.
+ */
 class Commande implements JsonSerializable
 {
     //données privées de la classe
@@ -13,20 +16,57 @@ class Commande implements JsonSerializable
     public function __construct() {
     }
     
-    // Constructeur de la classe depuis l'extérieur
+    /**
+     * @brief Instancier la classe depuis des valeurs données
+     * @param int $num
+     *   Numéro de commande, utilisé comme identifiant unique dans la base de données.
+     * @param string|null $dateCond
+     *   Date de conditionnement de la commande. NULL si non conditionné.
+     * @param string|null $dateEnvoi
+     *   Date d'envoi de la commande. NULL si non expédié.
+     * @param int $idClient
+     *   Identifiant unique du client ayant passé la commande.
+     * @param int $idLot
+     *   Identifiant unique du lot concerné par la commande.
+     * @param int $idCond
+     *   Identifiant unique du mode de conditionnement de la commande.
+     * @return Commande
+     *   Nouvelle instance initialisée avec les valeurs indiquées.
+     */
     public static function fromValues($num, $dateCond, $dateEnvoi, $idClient, $idLot, $idCond) {
         $instance = new self();
         $instance->fillValues($num, $dateCond, $dateEnvoi, $idClient, $idLot, $idCond);
         return $instance;
     }
 
-    // Constructeur de la classe depuis la couche d'accès aux données
-    public static function fromResult(DBQueryResult $result) {
+    /**
+     * @brief Instancier la classe depuis un résultat de requête SELECT
+     * @param DBQueryResult $row
+     *   Résultat de requête SELECT compatible avec une commande.
+     * @return Commande
+     *   Nouvelle instance initialisée avec le résultat de requête.
+     */
+    public static function fromResult(DBQueryResult $row) {
         $instance = new self();
-        $instance->fillRow($result);
+        $instance->fillRow($row);
         return $instance;
     }
 
+    /**
+     * @brief Constructeur de la classe depuis des valeurs données
+     * @param int $num
+     *   Numéro de commande, utilisé comme identifiant unique dans la base de données.
+     * @param string|null $dateCond
+     *   Date de conditionnement de la commande. NULL si non conditionné.
+     * @param string|null $dateEnvoi
+     *   Date d'envoi de la commande. NULL si non expédié.
+     * @param int $idClient
+     *   Identifiant unique du client ayant passé la commande.
+     * @param int $idLot
+     *   Identifiant unique du lot concerné par la commande.
+     * @param int $idCond
+     *   Identifiant unique du mode de conditionnement de la commande.
+     */
     protected function fillValues($num, $dateCond, $dateEnvoi, $idClient, $idLot, $idCond) {
         $this->_numCommande = $num;
         $this->_dateConditionnement = $dateCond;
@@ -36,6 +76,11 @@ class Commande implements JsonSerializable
         $this->_idConditionnement = $idCond;
     }
 
+    /**
+     * @brief Constructeur de la classe depuis un résultat de requête SELECT
+     * @param DBQueryResult $row
+     *   Résultat de requête SELECT compatible avec une commande.
+     */
     protected function fillRow(DBQueryResult $row) {
         $this->_numCommande = $row->numCommande;
         $this->_dateConditionnement = $row->dateConditionnement;
@@ -45,7 +90,11 @@ class Commande implements JsonSerializable
         $this->_idConditionnement = $row->idConditionnement;
     }
     
-    // Accesseur
+    /**
+     * @brief Obtenir une variable de la classe.
+     * @param string $var Variable à obtenir.
+     * @return mixed Valeur de la variable choisie.
+     */
     public function __get($var)
     {
         switch ($var) {
@@ -91,12 +140,20 @@ class Commande implements JsonSerializable
                 break;
         }
     }
-    // Conversion en chaînes de caractères
+    
+    /**
+     * @brief Conversion en chaîne de caractères
+     * @return string Instance sous forme de chaîne de caractères.
+     */
     public function __toString()
     {
         return $this->_numCommande;
     }
 
+    /**
+     * @brief Sérialisation de la classe au format JSON.
+     * @return string Instance sérialisée au format JSON.
+     */
     public function jsonSerialize() {
         return array('num' => $this->_numCommande, 'dateConditionnement' => $this->_dateConditionnement, 'dateEnvoi' => $this->_dateEnvoie, 'idClient' => $this->_idClient, 'idLot' => $this->_idLot,'idCond' => $this->_idConditionnement);
     }

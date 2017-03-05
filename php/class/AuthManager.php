@@ -1,33 +1,65 @@
 <?php
 /**
- * Gestionnaire de connexion à l'intranet
+ * @file AuthManager.php
+ * @brief Gestionnaire de connexion à l'intranet
+ * @author Lucidiot
+ */
+/*! @class AuthManager
+ * @brief Gestionnaire de connexion à l'intranet
  */
 class AuthManager {
     /**
-     * Connexion avec un nom d'utilisateur et un mot de passe.
+     * @brief Connexion avec un nom d'utilisateur et un mot de passe.
+     * @param string $name
+     *   Pseudonyme saisi.
+     * @param string $pass
+     *   Mot de passe en clair saisi.
+     * @param bool $cookie
+     *   Enregistrement comme cookie pour une connexion automatique (option "Se souvenir de moi")
+     * @return bool
+     *   État de réussite de la connexion.
      */
-    public static function login($name, $pass) {
+    public static function login($name, $pass, $cookie) {
         $user = DBLayer::getUtilisateurPseudo($name);
         if(!$user) return false; // Utilisateur inconnu
         if(!$user->checkPassword($pass)) return false; // Mot de passe incorrect
         session_start();
+        session_regenerate_id(true);
         $_SESSION['user'] = $user;
+        if($cookie) setcookie("user", $user, strtotime('+30 days'), "/", "", false, true);
         return true;
     }
-
+    
     /**
-     * Connexion forcée à un utilisateur.
+     * @brief Tentative de connexion avec des identifiants stockés en tant que cookie.
+     * @return bool
+     *   État de réussite de la connexion.
      */
-    public static function forceLogin(Utilisateur $user) {
+    public static function fromCookie() {
+        if(isset($_COOKIE['user'])) {
+            $_SESSION['user'] = $_COOKIE['user'];
+            return true;
+        } else return false;
+    }
+
+    /**
+     * @brief Connexion forcée à un utilisateur.
+     * @return bool
+     *   État de réussite de la connexion.
+     */
+    public static function forceLogin(Utilisateur $user, $cookie=false) {
         session_start();
+        session_regenerate_id(true);
         $_SESSION['user'] = $user;
+        if($cookie) setcookie("user", $user, strtotime('+30 days'), "/", "", false, true);
         return true;
     }
 
     /**
-     * Obtient l'état de connexion d'un utilisateur.
-     * false si aucun utilisateur n'est connecté pour la session active, sinon retourne le rôle de l'utilisateur.
-     * Le rôle de l'utilisateur est U_ADMIN s'il est administrateur, U_PRODUCTEUR s'il est producteur ou U_CLIENT s'il est client.
+     * @brief Obtient l'état de connexion d'un utilisateur.
+     * @return mixed
+     *   false si aucun utilisateur n'est connecté pour la session active, sinon retourne le rôle de l'utilisateur.
+     *   Le rôle de l'utilisateur est U_ADMIN s'il est administrateur, U_PRODUCTEUR s'il est producteur ou U_CLIENT s'il est client.
      */
     public static function loginStatus() {
         session_start();
@@ -39,15 +71,23 @@ class AuthManager {
     }
 
     /**
-     * Déconnecte l'utilisateur.
+     * @brief Déconnecte l'utilisateur.
+     * @param bool $cookie
+     *    Supprime ou non la connexion automatique enregistrée en cookie.
      */
-    public static function logout() {
-        $_SESSION['user'] = null;
+    public static function logout($cookie=true) {
+        $_SESSION = array();
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000, $params["path"], $params["domain"], $params["secure"], $params["httponly"]);
+        }
+        if($cookie) setcookie("user", false, 1, "/", "", false, true);
     }
 
     /**
-     * Obtient l'objet Utilisateur correspondant à l'utilisateur actuellement connecté.
-     * Retourne NULL s'il n'y a pas d'utilisateur connecté.
+     * @brief Obtient l'utilisateur actuellement connecté.
+     * @return Utilisateur
+     *   Utilisateur actuellement connecté.
      */
     public static function getUser() {
         return $_SESSION['user'];
@@ -56,7 +96,19 @@ class AuthManager {
     
 }
 
+/**
+ * @brief Rôle d'utilisateur "producteur".
+ * Accorde l'accès aux informations liées au producteur associé à l'utilisateur.
+ */
 define("U_PRODUCTEUR", 1);
+/**
+ * @brief Rôle d'utilisateur "administrateur".
+ * Accorde l'accès à l'intégralité des données et donne tous les droits.
+ */
 define("U_ADMIN", 2);
+/**
+ * @brief Rôle d'utilisateur "client".
+ * Accorde l'accès aux informations liées au client associé à l'utilisateur ainsi qu'aux fonctionnalités de commande de lot.
+ */
 define("U_CLIENT", 3);
 ?>

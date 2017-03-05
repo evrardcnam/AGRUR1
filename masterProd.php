@@ -20,21 +20,21 @@ $nom = AuthManager::getUser()->nom; ?>
 						<a class="navbar-brand" href="#">AGRUR </a>
 					</div>
 					<ul class="nav navbar-nav">
-						<li><a id="home" class="slavePage" data-link="php/prod/accueil.php">Accueil</a></li>
-						<li><a class="slavePage" data-link="php/prod/vergers.php">Vergers</a></li>
-						<li><a class="slavePage" data-link="php/prod/livraisons.php">Livraisons</a></li>
-						<li><a class="slavePage" data-link="php/prod/clients.php">Clients</a></li>
-						<li><a class="slavePage" data-link="php/prod/commandes.php">Commandes</a></li>
+						<li><a id="home" class="slavePage" data-link="php/prod/accueil.php"><span class="glyphicon glyphicon-home"></span> Accueil</a></li>
+						<li><a class="slavePage" data-link="php/prod/vergers.php"><span class="glyphicon glyphicon-tree-deciduous"></span> Vergers</a></li>
+						<li><a class="slavePage" data-link="php/prod/livraisons.php"><span class="glyphicon glyphicon-gift"></span> Livraisons</a></li>
+						<li><a class="slavePage" data-link="php/prod/clients.php"><span class="glyphicon glyphicon-briefcase"></span> Clients</a></li>
+						<li><a class="slavePage" data-link="php/prod/commandes.php"><span class="glyphicon glyphicon-shopping-cart"></span> Commandes</a></li>
 					</ul>
 					<ul class="nav navbar-nav pull-right">
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-cog"></span></a>
 							<ul class="dropdown-menu dropdown-menu-right">
-								<li><a class="slavePage" data-link="about.html">À propos de</a></li>
+								<li><a class="slavePage" data-link="about.html"><span class="glyphicon glyphicon-info-sign"></span> À propos de</a></li>
 								<li role="separator" class="divider"></li>
 								<li><a class="user"><span class="username"><?php echo $nom; ?></span> &nbsp; <span class="glyphicon glyphicon-user"></span></a></li>
-								<li><a class="slavePage" data-link="php/resetPassword.php">Changer de mot de passe</a></li>
-								<li><a href="index.php?logout">Déconnexion</a></li>
+								<li><a class="sliderPage no-active" data-link="php/resetPassword.php"><span class="glyphicon glyphicon-pencil"></span> Changer de mot de passe</a></li>
+								<li><a href="index.php?logout"><span class="glyphicon glyphicon-log-out"></span> Déconnexion</a></li>
 							</ul>
 						</li>
 					</ul>

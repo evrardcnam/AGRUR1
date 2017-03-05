@@ -1,5 +1,8 @@
 <?php
-// Définit une livraison
+/**
+ * @class Livraison
+ * @brief Décrit une livraison de noix par un producteur.
+ */
 class Livraison implements JsonSerializable {
     //données privées de la classe
     private $_idLivraison;
@@ -11,20 +14,53 @@ class Livraison implements JsonSerializable {
     public function __construct() {
     }
     
-    // Constructeur de la classe depuis l'extérieur
+    /**
+     * @brief Instancier la classe depuis des valeurs données
+     * @param int $id
+     *   Identifiant unique de la livraison dans la base de données.
+     * @param string $date
+     *   Date de la livraison.
+     * @param string $type
+     *   Type de produit livré.
+     * @param int $nbLots
+     *   Nombre total de lots livrés.
+     * @param int $idVerger
+     *   Identifiant unique du verger de provenance de la livraison.
+     * @return Livraison
+     *   Nouvelle instance initialisée avec les valeurs indiquées.
+     */
     public static function fromValues($id, $date, $type, $nbLots, $idVerger) {
         $instance = new self();
         $instance->fillValues($id, $date, $type, $nbLots, $idVerger);
         return $instance;
     }
 
-    // Constructeur de la classe depuis la couche d'accès aux données
-    public static function fromResult(DBQueryResult $result) {
+    /**
+     * @brief Instancier la classe depuis un résultat de requête SELECT
+     * @param DBQueryResult $row
+     *   Résultat de requête SELECT compatible avec une livraison.
+     * @return Livraison
+     *   Nouvelle instance initialisée avec le résultat de requête.
+     */
+    public static function fromResult(DBQueryResult $row) {
         $instance = new self();
-        $instance->fillRow($result);
+        $instance->fillRow($row);
         return $instance;
     }
 
+    /**
+     * @brief Constructeur de la classe depuis des valeurs données
+     * @param int $id
+     *   Identifiant unique de la livraison dans la base de données.
+     * @param string $date
+     *   Date de la livraison.
+     * @param string $type
+     *   Type de produit livré.
+     * @param int $nbLots
+     *   Nombre total de lots livrés.
+     * @param int $idVerger
+     *   Identifiant unique du verger de provenance de la livraison.
+     */
     protected function fillValues($id, $date, $type, $nbLots, $idVerger) {
         $this->_idLivraison = $id;
         $this->_dateLivraison = $date;
@@ -33,6 +69,11 @@ class Livraison implements JsonSerializable {
         $this->_idVerger = $idVerger;
     }
 
+    /**
+     * @brief Constructeur de la classe depuis un résultat de requête SELECT
+     * @param DBQueryResult $row
+     *   Résultat de requête SELECT compatible avec une livraison.
+     */
     protected function fillRow(DBQueryResult $row) {
         $this->_idLivraison = $row->idLivraison;
         $this->_dateLivraison = $row->dateLivraison;
@@ -41,7 +82,11 @@ class Livraison implements JsonSerializable {
         $this->_idVerger = $row->idVerger;
     }
 
-    // Accesseur
+    /**
+     * @brief Obtenir une variable de la classe.
+     * @param string $var Variable à obtenir.
+     * @return mixed Valeur de la variable choisie.
+     */
     public function __get($var){
         switch ($var){
             case 'id':
@@ -69,11 +114,19 @@ class Livraison implements JsonSerializable {
                 break;
         }
     }
-    // Conversion en chaînes de caractères
+    
+    /**
+     * @brief Conversion en chaîne de caractères
+     * @return string Instance sous forme de chaîne de caractères.
+     */
     public function __toString(){
         return $this->_idLivraison;
     }
     
+    /**
+     * @brief Sérialisation de la classe au format JSON.
+     * @return string Instance sérialisée au format JSON.
+     */
     public function jsonSerialize() {
         return array('id' => $this->_idLivraison, 'date' => $this->_dateLivraison, 'type' => $this->_typeProduit, 'nbLots' => $this->_nbLots, 'idVerger' => $this->_idVerger);
     }

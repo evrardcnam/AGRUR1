@@ -1,9 +1,9 @@
 <?php require_once "config.php";
 if(AuthManager::loginStatus() == false) exit('Accès refusé');
 if(isset($_POST['oldPass'], $_POST['newPass'])) {
-    if(!AuthManager::getUser()->checkPassword($_POST['oldPass'])) exit('Le mot de passe actuel saisi est incorrect. <a class="slavePage" data-link="resetPassword.php">Réessayer</a>');
+    if(!AuthManager::getUser()->checkPassword($_POST['oldPass'])) { echo "<script type=\"text/javascript\">$(function() { showMessage(\"Erreur de saisie\", \"Le mot de passe actuel saisi est incorrect.\", \"Retour\"); });</script>"; return; }
     DBLayer::setUtilisateur(AuthManager::getUser(), $_POST["newPass"]);
-    exit('Mot de passe modifié avec succès.');
+    echo "<script type=\"text/javascript\">$(function() { showMessage(\"Réussite\", \"Votre mot de passe a été modifié.\", \"Retour\"); });</script>";
 } ?>
 <script type="text/javascript" src="js/resetPassword.js"></script>
 <div class="container">

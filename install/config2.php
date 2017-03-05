@@ -108,6 +108,7 @@ if(!isset($_POST["server"], $_POST["user"], $_POST["pass"], $_POST["db"])) heade
                         </ol>
                         <a href="index.php"><button type="button" class="btn btn-danger">Recommencer l'installation</button></a>
                     <?php exit(); } try {
+                        set_time_limit(120);
                         mysqli_multi_query_file($database, 'CREATE_DB.sql');
                     } catch (Exception $e) { ?>
                         <h1>Erreur lors de la préparation de la base</h1>

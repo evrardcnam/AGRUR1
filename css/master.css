@@ -9,6 +9,7 @@ body {
 	background: url(../img/back.jpg) no-repeat center fixed; 
   	-webkit-background-size: cover;
   	background-size: cover;
+	overflow-y: scroll;
 }
 h1,h2,h3,h4,h5,h6 {
 	font-family: 'Ubuntu Light', Ubuntu, 'Segoe UI Semilight', 'Segoe UI Light', 'Segoe UI', 'Trebuchet MS', Tahoma, Arial, sans-serif;
@@ -34,6 +35,11 @@ h1,h2,h3,h4,h5,h6 {
 
 .container {
 	width:100% !important;
+}
+
+.navbar-inverse span.badge {
+	background-color: #FD9E16 !important;
+	color: #622C09 !important;
 }
 
 /* Custom classes ************************************************************/
@@ -95,33 +101,33 @@ a.user span.username {
 	font-weight:bold;
 }
 
-#content a {
+#content a, #slider a {
 	color: #FD9E16;
 	text-decoration: underline;
 }
 
-#content a.danger {
+#content a.danger, #slider a.danger {
 	color:red;
 }
 
-#content .row div.rightlink {
+#content .row div.rightlink, #slider .row div.rightlink {
 	padding-top: 2em;
 	text-align:right;
 	font-weight:bold;
 }
 
-#content .row.datarow {
+#content .row.datarow, #slider .row.datarow {
 	margin-bottom: 1em;
 }
 
-#content .row.datarow > div.name {
+#content .row.datarow > div.name, #slider .row.datarow > div.name {
 	color: #FD9E16;
 	text-align:right;
 	font-weight:bold;
 	padding-top:0.5em;
 }
 
-#content .row.datarow > div.value {
+#content .row.datarow > div.value, #slider .row.datarow > div.value {
 	background-color: white;
 	color: black;
 	min-height:3em;
@@ -132,7 +138,7 @@ a.user span.username {
 #modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    z-index: 2; /* Sit on top */
     padding-top: 100px; /* Location of the box */
     left: 0;
     top: 0;
@@ -148,7 +154,7 @@ a.user span.username {
     position: relative;
     background-color: #fefefe;
     margin: auto;
-    padding: 1em 3em 2em;
+    padding: 1em 3em 1em;
     border: 1px solid #888;
     width: 80%;
 	max-width: 600px;
@@ -162,6 +168,7 @@ a.user span.username {
 
 #modal-content button {
 	margin-right: 1em;
+	margin-bottom: 1em;
 }
 
 /* Add Animation */
@@ -173,4 +180,63 @@ a.user span.username {
 @keyframes animatetop {
     from {top:-300px; opacity:0}
     to {top:0; opacity:1}
+}
+
+/* Slider, d'après http://www.w3schools.com/howto/howto_css_modals.asp */
+
+/* The Slider (background) */
+#slider {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+	margin: 0 auto;
+	width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    -webkit-animation-name: fadeIn; /* Fade in the background */
+    -webkit-animation-duration: 0.4s;
+    animation-name: fadeIn;
+    animation-duration: 0.4s
+}
+
+/* Slider Content */
+#slider-content {
+    position: fixed;
+	left: 0;
+	right: 0;
+    bottom: 0;
+    background-color: #fefefe;
+    max-width: 900px;
+	margin: 0 auto;
+    -webkit-animation-name: slideIn;
+    -webkit-animation-duration: 0.4s;
+    animation-name: slideIn;
+    animation-duration: 0.4s;
+	padding: 2px 16px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+/* Add Animation */
+@-webkit-keyframes slideIn {
+    from {bottom: -300px; opacity: 0} 
+    to {bottom: 0; opacity: 1}
+}
+
+@keyframes slideIn {
+    from {bottom: -300px; opacity: 0}
+    to {bottom: 0; opacity: 1}
+}
+
+@-webkit-keyframes fadeIn {
+    from {opacity: 0} 
+    to {opacity: 1}
+}
+
+@keyframes fadeIn {
+    from {opacity: 0} 
+    to {opacity: 1}
 }

@@ -13,7 +13,7 @@ if(isset($_GET["action"]) && in_array($_GET["action"], $possible_requests)) {
     switch($_GET["action"]) {
         case "post_client":
             if(!isset($_POST["nom"], $_POST["adresse"], $_POST["nomResAchats"])) break;
-            $id = DBLayer::addClient(Client::fromValues(null, $_POST["nom"], $_POST["adresse"], $_POST["nomResAchats"]));
+            $id = DBLayer::addClient(Client::fromValues(null, $_POST["nom"], $_POST["adresse"], $_POST["nomResAchats"], null));
             $result = $success; $result["new_id"] = $id; break;
         case "post_certification":
             if(!isset($_POST["libelle"])) break;
@@ -33,7 +33,7 @@ if(isset($_GET["action"]) && in_array($_GET["action"], $possible_requests)) {
             $result = $success; $result["new_id"] = $id; break;
         case "post_variete":
             if(!isset($_POST["libelle"], $_POST["aoc"])) break;
-            $îd = DBLayer::addVariete(Variete::fromValues(null, $_POST["libelle"], $_POST["varieteAoc"]));
+            $id = DBLayer::addVariete(Variete::fromValues(null, $_POST["libelle"], $_POST["aoc"]));
             $result = $success; $result["new_id"] = $id; break;
         case "post_commune":
             if(!isset($_POST["nom"], $_POST["aoc"])) break;
@@ -41,7 +41,7 @@ if(isset($_GET["action"]) && in_array($_GET["action"], $possible_requests)) {
             $result = $success; $result["new_id"] = $id; break;
         case "put_client":
             if(!isset($_POST["id"], $_POST["nom"], $_POST["adresse"], $_POST["nomResAchats"])) break;
-            DBLayer::setClient(Client::fromValues($_POST["id"], $_POST["nom"], $_POST["adresse"], $_POST["nomResAchats"]));
+            DBLayer::setClient(Client::fromValues($_POST["id"], $_POST["nom"], $_POST["adresse"], $_POST["nomResAchats"], null));
             $result = $success; $result["id"] = $_POST["id"]; break;
         case "put_certification":
             if(!isset($_POST["id"], $_POST["libelle"])) break;
@@ -50,22 +50,22 @@ if(isset($_GET["action"]) && in_array($_GET["action"], $possible_requests)) {
         case "put_conditionnement":
             if(!isset($_POST["id"], $_POST["libelle"])) break;
             DBLayer::setConditionnement(Conditionnement::fromValues($_POST["id"], $_POST["libelle"]));
-            $result = $success; $result["id"] = $id; break;
+            $result = $success; $result["id"] = $_POST["id"]; break;
         case "put_lot":
             if(!isset($_POST["id"], $_POST["code"], $_POST["calibre"], $_POST["quantite"], $_POST["idLivraison"])) break;
             DBLayer::setLot(Lot::fromValues($_POST["id"], $_POST["code"], $_POST["calibre"], $_POST["quantite"], $_POST["idLivraison"], null));
             $result = $success; $result["id"] = $_POST["id"]; break;
         case "put_variete":
             if(!isset($_POST["id"], $_POST["libelle"], $_POST["aoc"])) break;
-            DBLayer::setVariete(Variete::fromValues($_POST["id"], $_POST["libelle"], $_POST["varieteAoc"]));
+            DBLayer::setVariete(Variete::fromValues($_POST["id"], $_POST["libelle"], $_POST["aoc"]));
             $result = $success; $result["id"] = $_POST["id"]; break;
         case "put_commune":
             if(!isset($_POST["id"], $_POST["nom"], $_POST["aoc"])) break;
-            $id = DBLayer::setCommune(Commune::fromValues($_POST["id"], $_POST["nom"], $_POST["aoc"]));
-            $result = $success; $result["id"] = $id; break;
+            DBLayer::setCommune(Commune::fromValues($_POST["id"], $_POST["nom"], $_POST["aoc"]));
+            $result = $success; $result["id"] = $_POST["id"]; break;
         case "delete_client":
             if(!isset($_POST["id"])) break;
-            DBLayer::removeClient(Client::fromValues($_POST["id"], null, null, null));
+            DBLayer::removeClient(Client::fromValues($_POST["id"], null, null, null, null));
             $result = $success; $result["del_id"] = $_POST["id"]; break;
         case "delete_certification":
             if(!isset($_POST["id"])) break;

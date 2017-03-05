@@ -1,6 +1,7 @@
 <?php
 /**
- * Définit un utilisateur
+ * @class Utilisateur
+ * @brief Définit un utilisateur de l'application.
  */
 class Utilisateur implements JsonSerializable {
     // Données privées de la classe
@@ -13,20 +14,53 @@ class Utilisateur implements JsonSerializable {
     public function __construct() {
     }
     
-    // Constructeur de la classe depuis l'extérieur
+    /**
+     * @brief Instancier la classe depuis des valeurs données
+     * @param int $id
+     *   Identifiant unique de l'utilisateur dans la base de données.
+     * @param string $name
+     *   Pseudonyme de l'utilisateur.
+     * @param string $role
+     *   Rôle de l'utilisateur.
+     * @param int|null $idProducteur
+     *   Identifiant unique du producteur associé à l'utilisateur, le cas échéant.
+     * @param int|null $idClient
+     *   Identifiant unique du client associé à l'utilisateur, le cas échéant.
+     * @return Utilisateur
+     *   Nouvelle instance initialisée avec les valeurs indiquées.
+     */
     public static function fromValues($id, $name, $role, $idProducteur, $idClient) {
         $instance = new self();
         $instance->fillValues($id, $name, $role, $idProducteur, $idClient);
         return $instance;
     }
 
-    // Constructeur de la classe depuis la couche d'accès aux données
-    public static function fromResult(DBQueryResult $result) {
+    /**
+     * @brief Instancier la classe depuis un résultat de requête SELECT
+     * @param DBQueryResult $row
+     *   Résultat de requête SELECT compatible avec un utilisateur.
+     * @return Utilisateur
+     *   Nouvelle instance initialisée avec le résultat de requête.
+     */
+    public static function fromResult(DBQueryResult $row) {
         $instance = new self();
-        $instance->fillRow($result);
+        $instance->fillRow($row);
         return $instance;
     }
 
+    /**
+     * @brief Constructeur de la classe depuis des valeurs données
+     * @param int $id
+     *   Identifiant unique de l'utilisateur dans la base de données.
+     * @param string $name
+     *   Pseudonyme de l'utilisateur.
+     * @param string $role
+     *   Rôle de l'utilisateur.
+     * @param int|null $idProducteur
+     *   Identifiant unique du producteur associé à l'utilisateur, le cas échéant.
+     * @param int|null $idClient
+     *   Identifiant unique du client associé à l'utilisateur, le cas échéant.
+     */
     protected function fillValues($id, $name, $role, $idProducteur, $idClient) {
         $this->_id = $id;
         $this->_name = $name;
@@ -35,6 +69,11 @@ class Utilisateur implements JsonSerializable {
         $this->_idClient = $idClient;
     }
 
+    /**
+     * @brief Constructeur de la classe depuis un résultat de requête SELECT
+     * @param DBQueryResult $row
+     *   Résultat de requête SELECT compatible avec un utilisateur.
+     */
     protected function fillRow(DBQueryResult $row) {
         $this->_id = $row->id;
         $this->_name = $row->name;
@@ -43,8 +82,11 @@ class Utilisateur implements JsonSerializable {
         $this->_idClient = $row->idClient;
     }
 
+    
     /**
-     * Accesseur
+     * @brief Obtenir une variable de la classe.
+     * @param string $var Variable à obtenir.
+     * @return mixed Valeur de la variable choisie.
      */
     public function __get($var){
         switch ($var){
@@ -76,19 +118,26 @@ class Utilisateur implements JsonSerializable {
     }
 
     /**
-     * Vérifie si l'utilisateur a le mot de passe sélectionné.'
+     * @brief Vérifie si le mot de passe de l'utilisateur correspond à une saisie.
+     * @param string $pass
+     *   Mot de passe en clair à comparer au mot de passe de l'utilisateur.
      */
     public function checkPassword($pass) {
         return DBLayer::checkPassword($this, $pass);
     }
 
     /**
-     * Conversion en chaîne de caractères
+     * @brief Conversion en chaîne de caractères
+     * @return string Instance sous forme de chaîne de caractères.
      */
     public function __toString(){
         return $this->_name;
     }
     
+    /**
+     * @brief Sérialisation de la classe au format JSON.
+     * @return string Instance sérialisée au format JSON.
+     */
     public function jsonSerialize() {
         $arr = array('id' => $this->_id, 'nom' => $this->_name, 'role' => $this->_role);
         if(!$this->role == 'producteur') $arr["idProducteur"] = $this->_idProducteur;

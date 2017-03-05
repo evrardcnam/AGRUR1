@@ -1,6 +1,7 @@
 $(function() {
     updateEditLinks();
     $("a#add").click(function() {
+        if(!$("input#newLabel").val()) { showMessage("Erreur de saisie", "Veuillez indiquer un libellé de certification.", "Retour"); return; }
         $.post('php/api.php?action=post_certification', {
             libelle: $("input#newLabel").val()
         }, function(data, status, xhr) {
@@ -26,6 +27,7 @@ function updateEditLinks() {
     $("a.save").click(function() { // Enregistrement d'une modification en cours
         var id = $(this).attr('data-id');
         var row = '.row[data-id="' + id + '"]';
+        if(!$(row + ' .col-sm-10 input').val()) { showMessage("Erreur de saisie", "Veuillez indiquer un libellé de certification.", "Retour"); return; }
         $.post('php/api.php?action=put_certification', {
             id: id,
             libelle: $(row + ' .col-sm-10 input').val()

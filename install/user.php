@@ -1,6 +1,6 @@
 <?php if(isset($_POST["user"], $_POST["pass"])) {
     require_once('../php/config.php');
-    DBLayer::addUtilisateur(Utilisateur::fromValues(null, $_POST["user"], "admin", null), $_POST["pass"]);
+    DBLayer::addUtilisateur(Utilisateur::fromValues(null, $_POST["user"], "admin", null, null), $_POST["pass"]);
     header('Location: end.php');
     exit();
 } ?>

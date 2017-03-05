@@ -9,7 +9,7 @@ header('Content-Type: text/html; charset=utf-8'); ?>
 <div class="container">
     <div class="row">
         <div class="col-sm-10"><h1>Vergers</h1></div>
-        <div class="col-sm-2 rightlink"><a data-link="php/editVerger.php" class="slavePage">Ajouter</a></div>
+        <div class="col-sm-2 rightlink"><a data-link="php/editVerger.php" class="sliderPage">Ajouter</a></div>
     </div>
     <div class="rowtable">
         <div class="row">
@@ -25,8 +25,8 @@ header('Content-Type: text/html; charset=utf-8'); ?>
             <div class="col-xs-6 col-sm-2"><?php echo $v->variete->libelle; ?></div>
             <div class="col-xs-6 col-sm-2"><?php echo DBLayer::getCommuneVerger($v)->nom; ?></div>
             <div class="col-xs-6 col-sm-2">
-                <a data-link="php/editVerger.php?edit=<?php echo htmlspecialchars($v->id); ?>" class="slavePage">Modifier</a><br />
-                <a data-link="php/vergersAdmin.php?delete=<?php echo htmlspecialchars($v->id); ?>" class="slavePage danger">Supprimer</a>
+                <a data-link="php/editVerger.php?edit=<?php echo htmlspecialchars($v->id); ?>" class="sliderPage">Modifier</a><br />
+                <a data-link="php/vergers.php?delete=<?php echo htmlspecialchars($v->id); ?>" class="slavePage danger">Supprimer</a>
             </div>
         </div><?php } ?>
     </div>

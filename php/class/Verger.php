@@ -1,5 +1,8 @@
 <?php
-// Définit un verger
+/**
+ * @class Verger
+ * @brief Décrit un verger.
+ */
 class Verger implements JsonSerializable {
     //données privées de la classe
     private $_idVerger;
@@ -13,20 +16,61 @@ class Verger implements JsonSerializable {
     public function __construct() {
     }
     
-    // Constructeur de la classe depuis l'extérieur
+    /**
+     * @brief Instancier la classe depuis des valeurs données
+     * @param int $id
+     *   Identifiant unique du verger dans la base de données.
+     * @param string $nom
+     *   Nom du verger.
+     * @param int $superficie
+     *   Superficie du verger en hectares.
+     * @param int $arbresParHectare
+     *   Nombre d'arbres par hectare.
+     * @param int $idProducteur
+     *   Identifiant unique du producteur exploitant ce verger.
+     * @param int $idVariete
+     *   Identifiant unique de la variété exploitée dans ce verger.
+     * @param int $idCommune
+     *   Identifiant unique de la commune où se situe ce verger.
+     * @return Verger
+     *   Nouvelle instance initialisée avec les valeurs indiquées.
+     */
     public static function fromValues($id, $nom, $superficie, $arbresParHectare, $idProducteur, $idVariete, $idCommune) {
         $instance = new self();
         $instance->fillValues($id, $nom, $superficie, $arbresParHectare, $idProducteur, $idVariete, $idCommune);
         return $instance;
     }
 
-    // Constructeur de la classe depuis la couche d'accès aux données
-    public static function fromResult(DBQueryResult $result) {
+    /**
+     * @brief Instancier la classe depuis un résultat de requête SELECT
+     * @param DBQueryResult $row
+     *   Résultat de requête SELECT compatible avec un verger.
+     * @return Verger
+     *   Nouvelle instance initialisée avec le résultat de requête.
+     */
+    public static function fromResult(DBQueryResult $row) {
         $instance = new self();
-        $instance->fillRow($result);
+        $instance->fillRow($row);
         return $instance;
     }
 
+    /**
+     * @brief Constructeur de la classe depuis des valeurs données
+     * @param int $id
+     *   Identifiant unique du verger dans la base de données.
+     * @param string $nom
+     *   Nom du verger.
+     * @param int $superficie
+     *   Superficie du verger en hectares.
+     * @param int $arbresParHectare
+     *   Nombre d'arbres par hectare.
+     * @param int $idProducteur
+     *   Identifiant unique du producteur exploitant ce verger.
+     * @param int $idVariete
+     *   Identifiant unique de la variété exploitée dans ce verger.
+     * @param int $idCommune
+     *   Identifiant unique de la commune où se situe ce verger.
+     */
     protected function fillValues($id, $nom, $superficie, $arbresParHectare, $idProducteur, $idVariete, $idCommune) {
         $this->_idVerger = $id;
         $this->_nomVerger = $nom;
@@ -37,6 +81,11 @@ class Verger implements JsonSerializable {
         $this->_idCommune = $idCommune;
     }
 
+    /**
+     * @brief Constructeur de la classe depuis un résultat de requête SELECT
+     * @param DBQueryResult $row
+     *   Résultat de requête SELECT compatible avec un verger.
+     */
     protected function fillRow(DBQueryResult $row) {
         $this->_idVerger = $row->idVerger;
         $this->_nomVerger = $row->nomVerger;
@@ -46,7 +95,12 @@ class Verger implements JsonSerializable {
         $this->_idVariete = $row->idVariete;
         $this->_idCommune = $row->idCommune;
     }
-    // Accesseur
+
+    /**
+     * @brief Obtenir une variable de la classe.
+     * @param string $var Variable à obtenir.
+     * @return mixed Valeur de la variable choisie.
+     */
     public function __get($var){
         switch ($var){
             case 'id':
@@ -84,11 +138,19 @@ class Verger implements JsonSerializable {
                 break;
         }
     }
-    // Conversion en chaînes de caractères
+    
+    /**
+     * @brief Conversion en chaîne de caractères
+     * @return string Instance sous forme de chaîne de caractères.
+     */
     public function __toString(){
         return $this->_nomVerger;
     }
     
+    /**
+     * @brief Sérialisation de la classe au format JSON.
+     * @return string Instance sérialisée au format JSON.
+     */
     public function jsonSerialize() {
         return array('id' => $this->_idVerger, 'nom' => $this->_nomVerger, 'superficie' => $this->_superficie, 'arbresParHectare' => $this->_arbresParHectare, 'idProducteur' => $this->_idProducteur, 'idVariete' => $this->_idVariete, 'idCommune' => $this->_idCommune);
     }
