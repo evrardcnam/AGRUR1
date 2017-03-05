@@ -646,7 +646,7 @@ class DBLayer {
 	 *   Renvoie un objet Utilisateur correspondant, ou null si le critère de recherche ne correspond à aucune entrée dans la base de données.
 	 */
 	public static function getUtilisateurClient(Client $c) {
-		$results = DBLayer::query("SELECT * FROM users WHERE id = " . $c->idUtilisateur . " LIMIT 0,1");
+		$results = DBLayer::query("SELECT * FROM users WHERE idClient = " . $c->idClient . " LIMIT 0,1");
 		if (!$results) { return null; }
 		else { return Utilisateur::fromResult($results[0]); }
 	}
@@ -973,8 +973,8 @@ class DBLayer {
 	 */
 	public static function setConditionnement(Conditionnement $c) {
 		if(!isset($c)) return false;
-		return DBLayer::preparedQuery("UPDATE conditionnement SET `libelleConditionnement`=?, `poids`=? WHERE `idConditionnement`=?",
-			"sdi", $c->libelle, $c->poids, $c->id);
+		return DBLayer::preparedQuery("UPDATE conditionnement SET `libelleConditionnement`=? WHERE `idConditionnement`=?",
+			"si", $c->libelle, $c->id);
 	}
 
 	/**

@@ -65,7 +65,7 @@ class Client implements JsonSerializable {
         $this->_idClient = $id;
         $this->_nomClient = $nom;
         $this->_adresseClient = $adresse;
-        $this->_nomRes = $nomRes;
+        $this->_nomResAchats = $nomRes;
         $this->_idUser = $idUser;
     }
 
