@@ -49,12 +49,12 @@ if(isset($_GET['edit'])) {
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-3"><div class="checkbox">
                 <label>
-                    <input type="checkbox" id="comConditioned" <?php if(!empty($dateCond)) echo "checked"; ?> /> Conditionné
+                    <input type="checkbox" id="compackaged" <?php if(!empty($dateCond)) echo "checked"; ?> /> Conditionné
                 </label>
             </div></div>
-            <label for="comConditionedDate" class="col-sm-3 control-label">Date de conditionnement</label>
+            <label for="compackagedDate" class="col-sm-3 control-label">Date de conditionnement</label>
             <div class="col-sm-4">
-                <input type="date" id="comConditionedDate" class="form-control" value="<?php echo $dateCond; ?>" <?php if(empty($dateCond)) echo "disabled"; ?> />
+                <input type="date" id="compackagedDate" class="form-control" value="<?php echo $dateCond; ?>" <?php if(empty($dateCond)) echo "disabled"; ?> />
             </div>
         </div>
         <div class="form-group">

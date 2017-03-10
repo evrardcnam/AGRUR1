@@ -62,7 +62,7 @@ class AuthManager {
      *   Le rôle de l'utilisateur est U_ADMIN s'il est administrateur, U_PRODUCTEUR s'il est producteur ou U_CLIENT s'il est client.
      */
     public static function loginStatus() {
-        session_start();
+        @session_start();
         if(!isset($_SESSION['user']) || !($_SESSION['user'] instanceof Utilisateur)) return false;
         else if ($_SESSION['user']->role == 'admin') return U_ADMIN;
         else if ($_SESSION['user']->role == 'producteur') return U_PRODUCTEUR;
@@ -93,7 +93,19 @@ class AuthManager {
         return $_SESSION['user'];
     }
 
-    
+    /**
+     * @brief Vérifie l'existence d'un administrateur dans la base de données.
+     * Si l'intranet est ouvert alors qu'il n'existe aucun administrateur sur le système, il devient impossible de gérer l'application.
+     * Cette fonction permet d'afficher sur la page de connexion un message proposant la création d'un nouvel administrateur par l'assistant d'installation.
+     * @return bool
+     *   Présence d'un administrateur dans la base de données.
+     */
+    public static function checkAdministrators() {
+        $users = DBLayer::getUtilisateurs();
+        if(count($users) < 1) return false;
+        foreach($users as $user) { if($user->role == 'admin') return true; }
+        return false;
+    }
 }
 
 /**
