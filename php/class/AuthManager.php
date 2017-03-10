@@ -62,7 +62,7 @@ class AuthManager {
      *   Le rôle de l'utilisateur est U_ADMIN s'il est administrateur, U_PRODUCTEUR s'il est producteur ou U_CLIENT s'il est client.
      */
     public static function loginStatus() {
-        session_start();
+        @session_start();
         if(!isset($_SESSION['user']) || !($_SESSION['user'] instanceof Utilisateur)) return false;
         else if ($_SESSION['user']->role == 'admin') return U_ADMIN;
         else if ($_SESSION['user']->role == 'producteur') return U_PRODUCTEUR;

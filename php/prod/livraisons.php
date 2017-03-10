@@ -14,7 +14,7 @@ $p = AuthManager::getUser()->producteur; ?>
             <div class="col-xs-6 col-sm-2">Actions</div>
         </div>
         <?php foreach(DBLayer::getLivraisonsProducteur($p) as $l) { ?><div class="row">
-            <div class="col-xs-12 col-sm-3"><?php echo $l->verger->nom; ?></div>
+            <div class="col-xs-12 col-sm-3"><a href="php/prod/bdl.php?id=<?php echo $l->id ?>" target="_blank"><span class="glyphicon glyphicon-print"></span></a> <?php echo $l->verger->nom; ?></div>
             <div class="col-xs-6 col-sm-3"><?php echo $l->date; ?></div>
             <div class="col-xs-6 col-sm-3"><?php echo $l->type; ?></div>
             <div class="col-xs-6 col-sm-1"><?php echo $l->nbLots; ?></div>
