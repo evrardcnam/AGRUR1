@@ -3,10 +3,10 @@ $(function() {
         if(!$("#comClient").val()) { showMessage("Erreur de saisie", "Aucun client n'a été sélectionné pour la commande.", "Retour"); return; }
         if(!$("#comLot").val()) { showMessage("Erreur de saisie", "Aucun lot n'a été sélectionné pour la commande.", "Retour"); return; }
         if(!$("#comCond").val()) { showMessage("Erreur de saisie", "Aucun conditionnement n'a été sélectionné pour la commande.", "Retour"); return; }
-        if($("#comConditioned").is(":checked") && !$("#comConditionedDate").val()) { showMessage("Erreur de saisie", "Aucune date de conditionnement n'a été saisie pour la commande, alors qu'elle a été marquée comme conditionnée.", "Retour"); return; }
+        if($("#compackaged").is(":checked") && !$("#compackagedDate").val()) { showMessage("Erreur de saisie", "Aucune date de conditionnement n'a été saisie pour la commande, alors qu'elle a été marquée comme conditionnée.", "Retour"); return; }
         if($("#comSent").is(":checked") && !$("#comSentDate").val()) { showMessage("Erreur de saisie", "Aucune date d'expédition n'a été saisie pour la commande, alors qu'elle a été marquée comme expédiée.", "Retour"); return; }
         sent = {
-            dateConditionnement: $("#comConditioned").is(":checked") ? $("#comConditionedDate").val() : null,
+            dateConditionnement: $("#compackaged").is(":checked") ? $("#compackagedDate").val() : null,
             dateEnvoi: $("#comSent").is(":checked") ? $("#comSentDate").val() : null,
             idClient: $("#comClient").val(),
             idLot: $("#comLot").val(),
@@ -21,19 +21,19 @@ $(function() {
         });
     });
     $("input#comSent").change(function() {
-        if($("input#comSent").is(":checked")) $("input#comConditioned").prop('checked', true);
+        if($("input#comSent").is(":checked")) $("input#compackaged").prop('checked', true);
         updateDateFields();
     });
-    $("input#comConditioned").change(function() {
-        if(!$("input#comConditioned").is(":checked")) $("input#comSent").prop('checked', false);
+    $("input#compackaged").change(function() {
+        if(!$("input#compackaged").is(":checked")) $("input#comSent").prop('checked', false);
         updateDateFields();
     });
-    $("input#comConditionedDate").change(function() {
+    $("input#compackagedDate").change(function() {
         updateDateFields();
     });
     function updateDateFields() {
-        $("input#comSentDate").prop("disabled", (!$("input#comSent").is(":checked")) || (!$("#comConditionedDate").val()));
-        $("input#comSentDate").prop("min", $("#comConditionedDate").val());
-        $("input#comConditionedDate").prop("disabled", !$("input#comConditioned").is(":checked"));
+        $("input#comSentDate").prop("disabled", (!$("input#comSent").is(":checked")) || (!$("#compackagedDate").val()));
+        $("input#comSentDate").prop("min", $("#compackagedDate").val());
+        $("input#compackagedDate").prop("disabled", !$("input#compackaged").is(":checked"));
     }
 });

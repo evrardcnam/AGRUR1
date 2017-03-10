@@ -31,7 +31,7 @@ if($l->verger->idProducteur != $p->id) exit('Accès refusé'); ?>
         <?php foreach(DBLayer::getLotsLivraison($l) as $o) {
             $class = 'false'; $text = 'En attente'; $c = DBLayer::getCommandeLot($o);
             if(isset($c)) { $class = $c->sent ? 'major' : 'true';
-                $text = $c->conditioned ? ($c->sent ? 'Expédié' : 'Conditionné') : 'Commandé'; } ?>
+                $text = $c->packaged ? ($c->sent ? 'Expédié' : 'Conditionné') : 'Commandé'; } ?>
         <div class="row">
             <div class="col-xs-6 col-sm-3"><?php echo $o->code; ?></div>
             <div class="col-xs-6 col-sm-3"><?php echo $o->calibre; ?></div>

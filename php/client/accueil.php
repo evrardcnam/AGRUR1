@@ -25,8 +25,8 @@ $c = AuthManager::getUser()->client;
         <?php foreach(DBLayer::getCommandesUnsentClient($c) as $com) { ?><div class="row">
             <div class="col-xs-4"><?php echo $com->lot->code; ?></div>
             <div class="col-xs-5"><?php echo $com->cond->libelle; ?></div>
-            <div class="col-xs-3 <?php echo ($com->conditioned ? ($com->sent ? 'major' : 'true') : 'false') ?>">
-                <?php echo ($com->conditioned ? ($com->sent ? 'Expédié' : 'Conditionné') : 'En attente') ?>
+            <div class="col-xs-3 <?php echo ($com->packaged ? ($com->sent ? 'major' : 'true') : 'false') ?>">
+                <?php echo ($com->packaged ? ($com->sent ? 'Expédié' : 'Conditionné') : 'En attente') ?>
             </div>
         </div><?php } ?>
     </div>

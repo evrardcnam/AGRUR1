@@ -129,7 +129,7 @@ class Commande implements JsonSerializable
             case 'cond':
             case 'conditionnement':
                 return DBLayer::getConditionnementCommande($this);
-            case 'conditioned':
+            case 'packaged':
                 return $this->_dateConditionnement != null && $this->_dateConditionnement != "" && $this->_dateConditionnement != "0000-00-00";
                 break;
             case 'sent':

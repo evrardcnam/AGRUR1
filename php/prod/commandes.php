@@ -18,10 +18,10 @@ $p = AuthManager::getUser()->producteur; ?>
             <div class="col-xs-6 col-sm-2"><?php echo $c->lot->code; ?></div>
             <div class="col-xs-6 col-sm-2"><?php echo $c->cond->libelle; ?></div>
             <div class="col-xs-6 col-sm-2"><?php echo $c->client->nom; ?></div>
-            <div class="col-xs-6 col-sm-2 <?php echo ($c->conditioned ? ($c->sent ? 'major' : 'true') : 'false') ?>">
-                <?php echo ($c->conditioned ? ($c->sent ? 'Expédié' : 'Conditionné') : 'En attente') ?>
+            <div class="col-xs-6 col-sm-2 <?php echo ($c->packaged ? ($c->sent ? 'major' : 'true') : 'false') ?>">
+                <?php echo ($c->packaged ? ($c->sent ? 'Expédié' : 'Conditionné') : 'En attente') ?>
             </div>
-            <div class="col-xs-6 col-sm-2"><?php echo $c->conditioned ? $c->dateCond : '&mdash;'; ?></div>
+            <div class="col-xs-6 col-sm-2"><?php echo $c->packaged ? $c->dateCond : '&mdash;'; ?></div>
             <div class="col-xs-6 col-sm-2"><?php echo $c->sent ? $c->dateEnvoi : '&mdash;'; ?></div>
         </div><?php } ?>
     </div>
