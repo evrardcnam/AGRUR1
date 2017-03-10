@@ -29,6 +29,7 @@
                 <h1>Configuration de la base de données</h1>
                 <p>Spécifiez le serveur de base de données et la base de données où l'intranet AGRUR stockera les informations. Si les informations sont enregistrées dans le fichier de configuration et la connexion à la base de données réussie, l'assistant d'installation créera automatiquement tous les éléments nécessaires dans la base de données.</p>
                 <p>L'utilisateur MySQL doit disposer des droits de modification sur la structure et sur les données de la base de données de l'intranet.</p>
+                <p>La création de la base de données peut prendre quelques minutes, prenez votre mal en patience.</p>
                 <form action="config2.php" method="post" class="form-horizontal">
                     <div class="form-group">
                         <label for="server" class="col-xs-4 col-sm-2 control-label">Serveur</label>
@@ -51,7 +52,7 @@
                     <div class="form-group">
                         <label for="server" class="col-xs-4 col-sm-2 control-label">Mot de passe</label>
                         <div class="col-xs-8 col-sm-10">
-                            <input type="password" class="form-control" id="pass" name="pass" placeholder="Mot de passe" />
+                            <input type="password" class="form-control" id="pass" name="pass" placeholder="Mot de passe" required />
                         </div>
                     </div>
                     <div class="form-group">

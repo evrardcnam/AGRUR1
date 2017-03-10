@@ -1,53 +1,5 @@
 <?php
-// from http://php.net/manual/en/mysqli.multi-query.php#116408
-function mysqli_multi_query_file($mysqli, $filename) {
-    $sql = file_get_contents($filename);
-    // remove comments
-    $sql = preg_replace('#/\*.*?\*/#s', '', $sql);
-    $sql = preg_replace('/^-- .*[\r\n]*/m', '', $sql);
-    if (preg_match_all('/^DELIMITER\s+(\S+)$/m', $sql, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE)) {
-        $prev = null;
-        $index = 0;
-        foreach ($matches as $match) {
-            $sqlPart = substr($sql, $index, $match[0][1] - $index);
-            // move cursor after the delimiter
-            $index = $match[0][1] + strlen($match[0][0]);
-            if ($prev && $prev[1][0] != ';') {
-                $sqlPart = explode($prev[1][0], $sqlPart);
-                foreach ($sqlPart as $part) {
-                    if (trim($part)) { // no empty queries
-                        $mysqli->query($part);
-                    }
-                }
-            } else {
-                if (trim($sqlPart)) { // no empty queries
-                    $mysqli->multi_query($sqlPart);
-                    while ($mysqli->next_result()) {;}
-                }
-            }
-            $prev = $match;
-        }
-        // run the sql after the last delimiter
-        $sqlPart = substr($sql, $index, strlen($sql)-$index);
-        if ($prev && $prev[1][0] != ';') {
-            $sqlPart = explode($prev[1][0], $sqlPart);
-            foreach ($sqlPart as $part) {
-                if (trim($part)) {
-                    $mysqli->query($part);
-                }
-            }
-        } else {
-            if (trim($sqlPart)) {
-                $mysqli->multi_query($sqlPart);
-                while ($mysqli->next_result()) {;}
-            }
-        }
-    } else {
-        $mysqli->multi_query($sql);
-        while ($mysqli->next_result()) {;}
-    }
-}
-if(!isset($_POST["server"], $_POST["user"], $_POST["pass"], $_POST["db"])) header('Location: config.php'); ?>
+if(!isset($_POST["server"], $_POST["user"], $_POST["pass"], $_POST["db"])) { header('Location: config.php'); exit(); } ?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -108,8 +60,9 @@ if(!isset($_POST["server"], $_POST["user"], $_POST["pass"], $_POST["db"])) heade
                         </ol>
                         <a href="index.php"><button type="button" class="btn btn-danger">Recommencer l'installation</button></a>
                     <?php exit(); } try {
-                        set_time_limit(120);
-                        mysqli_multi_query_file($database, 'CREATE_DB.sql');
+                        set_time_limit(300);
+                        if(!$database->multi_query(file_get_contents('CREATE_DB.sql'))) throw new Exception();
+                        while ($database->next_result()) {;}
                     } catch (Exception $e) { ?>
                         <h1>Erreur lors de la préparation de la base</h1>
                         <p>La connexion à la base de données du serveur avec les identifiants spécifiés a réussi. Cependant, la préparation automatique de la base de données a échoué.</p>
