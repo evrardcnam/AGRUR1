@@ -93,7 +93,19 @@ class AuthManager {
         return $_SESSION['user'];
     }
 
-    
+    /**
+     * @brief Vérifie l'existence d'un administrateur dans la base de données.
+     * Si l'intranet est ouvert alors qu'il n'existe aucun administrateur sur le système, il devient impossible de gérer l'application.
+     * Cette fonction permet d'afficher sur la page de connexion un message proposant la création d'un nouvel administrateur par l'assistant d'installation.
+     * @return bool
+     *   Présence d'un administrateur dans la base de données.
+     */
+    public static function checkAdministrators() {
+        $users = DBLayer::getUtilisateurs();
+        if(count($users) < 1) return false;
+        foreach($users as $user) { if($user->role == 'admin') return true; }
+        return false;
+    }
 }
 
 /**

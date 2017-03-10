@@ -20,7 +20,8 @@ if(isset($_POST["compte"], $_POST["motdepasse"])) {
 	if(AuthManager::login($_POST["compte"], $_POST["motdepasse"], $_POST["cookie"])) redirect();
 	else $err = "<script type=\"text/javascript\">$(function(){showMessage(\"Connexion échouée\", \"L'authentification à l'intranet a échoué.<br />Vérifiez que vos identifiants sont corrects. Si vous n'êtes pas encore inscrit, contactez un administrateur d'AGRUR. Si le problème persiste, contactez le support technique de VDEV.\", \"Retour\")});</script>";
 } else if(isset($_GET["logout"])) AuthManager::logout();
-if(AuthManager::fromCookie() && !isset($_GET["logout"])) redirect(); ?>
+if(AuthManager::fromCookie() && !isset($_GET["logout"])) redirect();
+if(!AuthManager::checkAdministrators()) $err = "<script type=\"text/javascript\">$(function(){showMessage(\"Utilisateur manquant\", \"Il semblerait qu'aucun utilisateur sur l'intranet ne dispose de droits d'administration ou qu'aucun utilisateur n'existe sur l'intranet. Si vous disposez encore de l'assistant d'installation sur votre serveur, <a href=\\\"install/user.php\\\">cliquez ici</a> pour créer un nouvel administrateur.\", \"Retour\")});</script>"; ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
