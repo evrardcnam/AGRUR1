@@ -1,5 +1,7 @@
 // Afficher le contenu d'une page
 function showPage(href) {
+    $("#slider").remove();
+    showLoader();
     $.ajax({
         type: "GET",
         url: href,
@@ -7,11 +9,12 @@ function showPage(href) {
         contentType: "text/html",
         crossDomain:'true',
         success: function (data) {
-            $("#slider").remove();
+            hideLoader();
             $("#content").html(data);
             updateLinks();
         },
         error: function(xhr, err, httperr) {
+            hideLoader();
             showMessage("Erreur" ,"Une erreur s'est produite : <code>" + err + "</code><br />Contactez le support VDEV en décrivant cette erreur et le parcours effectué pour l'atteindre.", "Retour");
         }
     });
@@ -55,6 +58,8 @@ function showConfirm(data, callback) {
 
 // Affichage d'une page sous la forme d'un slider
 function showSlider(href) {
+    $("#slider").remove();
+    showLoader();
     $.ajax({
         type: "GET",
         url: href,
@@ -62,15 +67,26 @@ function showSlider(href) {
         contentType: "text/html",
         crossDomain:'true',
         success: function (data) {
-            $("#slider").remove();
+            hideLoader();
             $("#global").append('<div id="slider"><div id="slider-content">' + data + '</div></div>');
             $("#slider").click(function(event) { if(event.target == this) $(this).remove(); }).show();
             updateLinks();
         },
         error: function(xhr, err, httperr) {
+            hideLoader();
             showMessage("Erreur" ,"Une erreur s'est produite : <code>" + err + "</code><br />Contactez le support VDEV en décrivant cette erreur et le parcours effectué pour l'atteindre.", "Retour");
         }
     });
+}
+
+// Affichage d'un écran de chargement
+function showLoader(text) {
+    $("#global").append('<div class="loader loader-default is-active" data-half data-blink data-text="' + (text ? text : 'Chargement') + '"></div>');
+}
+
+// Disparition de l'écran de chargement
+function hideLoader() {
+    $(".loader").remove();
 }
 
 $(function() { // Code exécuté une fois la page chargée
