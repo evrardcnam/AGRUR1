@@ -722,6 +722,25 @@ class DBLayer {
 	}
 
 	/**
+	 * @brief Obtenir tous les clients associés aux commandes de lots de vergers d'un producteur.
+	 * @param Producteur $p
+	 *   Producteur dont les commandes de lots de ses vergers sont associés aux clients à rechercher.
+	 * @return array
+	 *   Renvoie un tableau d'objets Client correspondant aux clients connus dans la base de données et associés aux commandes de lots de vergers du producteur.
+	 */
+	public static function getClientsProducteur(Producteur $p) {
+		$results = DBLayer::query("SELECT DISTINCT client.* FROM client LEFT JOIN commande ON commande.idClient = client.idClient LEFT JOIN lot ON commande.idLot = lot.idLot LEFT JOIN livraison ON lot.idLivraison = livraison.idLivraison LEFT JOIN verger ON livraison.idVerger = verger.idVerger WHERE verger.idProducteur = ".$p->id." ORDER BY client.nomClient ASC");
+		if (!$results) { return $results; }
+		else {
+			$object_results = array();
+			foreach ($results as $result){
+				$object_results[] = Client::fromResult($result);
+			}
+			return $object_results;
+		}
+	}
+
+	/**
 	 * @brief Obtenir toutes les commandes non expédiées associées à un client.
 	 * @param Client $c
 	 *   Client associé aux commandes à rechercher.
