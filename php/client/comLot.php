@@ -1,4 +1,4 @@
-<?php require_once("..\config.php"); header('Content-Type: text/html; charset=utf-8');
+<?php require_once("../config.php"); header('Content-Type: text/html; charset=utf-8');
 if(AuthManager::loginStatus() != U_CLIENT) exit('Accès refusé');
 if(isset($_POST["idLot"], $_POST["idConditionnement"]))
     exit(DBLayer::addCommande(Commande::fromValues(null, null, null, AuthManager::getUser()->client->id, $_POST["idLot"], $_POST["idConditionnement"])));
