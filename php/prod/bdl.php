@@ -1,4 +1,4 @@
-<?php require_once("..\config.php"); header('Content-Type: text/html; charset=utf-8');
+<?php require_once("../config.php"); header('Content-Type: text/html; charset=utf-8');
 if((AuthManager::loginStatus() != U_PRODUCTEUR && AuthManager::loginStatus() != U_ADMIN) || !isset($_GET["id"])) exit('Accès refusé');
 $l = DBLayer::getLivraison($_GET["id"]);
 $v = $l->verger; $p = $v->producteur;

@@ -142,6 +142,7 @@ class Producteur implements JsonSerializable {
     public function jsonSerialize() {
         $arr = array('id' => $this->_idProducteur, 'nom' => $this->_nomProducteur, 'adherent' => $this->_adherent, 'adresse' => $this->_adresseProducteur, 'idUser' => $this->_idUtilisateur);
         if($this->_adherent) $arr["dateAdhesion"] = $this->_dateAdhesion;
+        return $arr;
     }
 }
 ?>

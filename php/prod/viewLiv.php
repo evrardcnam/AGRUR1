@@ -1,4 +1,4 @@
-<?php require_once("..\config.php"); header('Content-Type: text/html; charset=utf-8');
+<?php require_once("../config.php"); header('Content-Type: text/html; charset=utf-8');
 if(AuthManager::loginStatus() != U_PRODUCTEUR) exit('Accès refusé');
 if(!isset($_GET['id'])) exit('Paramètre manquant');
 $p = AuthManager::getUser()->producteur;

@@ -1,4 +1,4 @@
-<?php require_once("..\config.php"); header('Content-Type: text/html; charset=utf-8');
+<?php require_once("../config.php"); header('Content-Type: text/html; charset=utf-8');
 if(!AuthManager::loginStatus()) exit('Accès refusé'); ?>
 <div class="container">
     <div class="row">
